@@ -13,14 +13,20 @@ from agripredict.advanced import (
 
 
 def test_chronological_masks_reserve_penultimate_and_latest_years() -> None:
-    years = pd.Series([2020, 2020, 2021, 2021, 2022, 2022, 2023, 2024])
+    years = pd.Series(
+        [2020] * 10
+        + [2021] * 10
+        + [2022] * 10
+        + [2023] * 5
+        + [2024] * 5
+    )
     masks = chronological_masks(years)
     assert masks.development_years == (2020, 2021, 2022)
     assert masks.calibration_year == 2023
     assert masks.test_year == 2024
-    assert int(masks.development.sum()) == 6
-    assert int(masks.calibration.sum()) == 1
-    assert int(masks.test.sum()) == 1
+    assert int(masks.development.sum()) == 30
+    assert int(masks.calibration.sum()) == 5
+    assert int(masks.test.sum()) == 5
 
 
 def test_conformal_quantile_is_conservative() -> None:
