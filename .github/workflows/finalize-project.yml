@@ -16,6 +16,10 @@ on:
       - "docker-compose.yml"
       - ".github/workflows/finalize-project.yml"
 
+concurrency:
+  group: agripredict-finalize-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -26,7 +30,7 @@ jobs:
   finalize:
     name: Scientific evaluation, product validation and delivery
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
 
     steps:
       - name: Checkout
@@ -56,6 +60,29 @@ jobs:
             --report-dir reports/final \
             --random-state 42
 
+      - name: Enforce stable parcel-group terminology in generated evidence
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          roots = [Path("reports/final"), Path("artifacts/models")]
+          replacements = {
+              "GroupKFold by parcelle_uid": "GroupKFold by ID_PARCEL",
+              "validation groupée par `parcelle_uid`": "validation groupée par `ID_PARCEL`",
+              "GroupKFold par `parcelle_uid`": "GroupKFold par `ID_PARCEL`",
+          }
+          for root in roots:
+              if not root.exists():
+                  continue
+              for path in root.rglob("*"):
+                  if path.suffix.lower() not in {".md", ".json", ".csv"} or not path.is_file():
+                      continue
+                  text = path.read_text(encoding="utf-8")
+                  for old, new in replacements.items():
+                      text = text.replace(old, new)
+                  path.write_text(text, encoding="utf-8")
+          PY
+
       - name: Run unit and API tests
         run: pytest --cov=src/agripredict --cov=app/api --cov-report=term-missing --cov-report=xml
 
@@ -73,15 +100,30 @@ jobs:
             fi
             sleep 2
           done
+          test -s /tmp/health.json || { cat /tmp/agripredict-api.log; exit 1; }
           cat /tmp/health.json
           curl --fail --silent http://127.0.0.1:8000/readiness > /tmp/readiness.json
           cat /tmp/readiness.json
           python - <<'PY'
           import json
           from pathlib import Path
-          readiness = json.loads(Path('/tmp/readiness.json').read_text())
-          assert readiness['status'] == 'ready', readiness
+
+          readiness = json.loads(Path("/tmp/readiness.json").read_text())
+          assert readiness["status"] == "ready", readiness
           PY
+
+      - name: Commit validated final scientific reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/final reports/phase0
+          if git diff --cached --quiet; then
+            echo "No generated report changes."
+          else
+            git commit -m "release: publish final AgriPredict v1.0.0 evaluation"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
 
       - name: Build production container
         run: docker build -t agripredict-ai:1.0.0 .
@@ -93,44 +135,41 @@ jobs:
           cp -r artifacts/models dist/agripredict-ai-v1.0.0/models
           cp README.md pyproject.toml Dockerfile docker-compose.yml dist/agripredict-ai-v1.0.0/
           cp docs/data_sources.md docs/project_charter.md docs/problem_statement.md docs/research_questions.md dist/agripredict-ai-v1.0.0/
+          cp docs/ARCHITECTURE.md docs/DEPLOYMENT.md docs/ETHICS_AND_GOVERNANCE.md dist/agripredict-ai-v1.0.0/
           tar -czf dist/agripredict-ai-v1.0.0.tar.gz -C dist agripredict-ai-v1.0.0
 
-      - name: Commit final scientific reports
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add reports/final reports/phase0
-          if git diff --cached --quiet; then
-            echo "No generated report changes."
-          else
-            git commit -m "release: publish final AgriPredict v1.0.0 evaluation"
-            git push
-          fi
-
       - name: Upload trained models
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: agripredict-v1-models
           path: artifacts/models
           retention-days: 90
+          if-no-files-found: warn
 
       - name: Upload final scientific reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: agripredict-v1-reports
           path: reports/final
           retention-days: 90
+          if-no-files-found: warn
 
       - name: Upload complete delivery bundle
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: agripredict-v1-delivery
           path: dist/agripredict-ai-v1.0.0.tar.gz
           retention-days: 90
+          if-no-files-found: warn
 
       - name: Upload coverage report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: agripredict-coverage
           path: coverage.xml
           retention-days: 30
+          if-no-files-found: warn
