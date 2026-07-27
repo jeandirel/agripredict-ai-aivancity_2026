@@ -1,154 +1,151 @@
 # AgriPredict AI — Registre des risques et hypothèses
 
-> **Cadre :** Clinique IA d’aivancity — 2026  
-> **Version :** 1.0  
-> **Responsable du suivi :** Jean Direl NZE
+> **Cadre :** Clinique IA d’aivancity — Promotion 2026  
+> **Responsable du suivi :** Jean Direl NZE  
+> **Version :** 2.0
 
-## 1. Méthode de cotation
+## 1. Méthode
 
 - **Probabilité :** Faible, Moyenne, Élevée.
 - **Impact :** Faible, Moyen, Élevé, Critique.
-- **Priorité :** appréciation combinée de la probabilité et de l’impact.
+- **Priorité :** combinaison de la probabilité et de l’impact.
 - **Déclencheur :** signal concret indiquant que le risque devient actif.
 
-Le registre doit être revu chaque semaine et à la fin de chaque phase.
+Le registre est revu chaque semaine et à chaque passage de Quality Gate.
 
 ## 2. Registre des risques
 
-| ID | Risque | Probabilité | Impact | Priorité | Déclencheur | Mesures préventives | Plan de réponse |
+| ID | Risque | Probabilité | Impact | Priorité | Déclencheur | Prévention | Réponse |
 |---|---|---:|---:|---:|---|---|---|
-| R-001 | Données principales indisponibles ou incomplètes | Élevée | Critique | Critique | Fichiers manquants, accès refusé, couverture insuffisante | Inventaire immédiat, sources alternatives, dataset minimal viable | Réduire le périmètre géographique ou temporel sans changer la question scientifique |
-| R-002 | Licence incompatible avec la redistribution GitHub | Moyenne | Élevé | Élevée | Licence absente, restrictive ou incertaine | Documenter chaque licence avant commit | Stocker uniquement scripts, métadonnées et instructions de téléchargement |
-| R-003 | Définition de la cible rendement ambiguë | Moyenne | Critique | Critique | Unités incohérentes ou méthodologie inconnue | Valider unité, période, agrégation et provenance | Suspendre l’entraînement final jusqu’à clarification |
-| R-004 | Trop peu d’années pour une vraie validation temporelle | Élevée | Élevé | Critique | Une ou deux années seulement | Rechercher une extension historique, utiliser GroupKFold géographique | Présenter clairement la limite et éviter de sur-vendre le forecasting |
-| R-005 | Fuite de données temporelle ou géographique | Moyenne | Critique | Critique | Même district ou information future présente dans train et test | Pipelines séparés, splits avant preprocessing, revue de fuite | Invalider les résultats concernés et réentraîner |
-| R-006 | Réseau neuronal surdimensionné pour le volume de données | Élevée | Élevé | Critique | Écart train-test important, forte variance | Baselines obligatoires, architecture compacte, régularisation | Retenir XGBoost ou un réseau plus simple si mieux justifié |
-| R-007 | Fusion multimodale n’améliore pas les performances | Moyenne | Moyen | Élevée | Ablation complète sans gain significatif | Hypothèses explicites, analyse par région et période | Valoriser le résultat négatif et expliquer quand chaque modalité aide |
-| R-008 | Données satellitaires trop manquantes ou bruitées | Élevée | Élevé | Critique | Forte couverture nuageuse, nombreuses valeurs nulles | Masques qualité, stratégie d’imputation comparée | Réduire les fenêtres, utiliser micro-ondes ou indicateurs d’imputation |
-| R-009 | Résolutions spatiales incompatibles | Élevée | Élevé | Critique | Alignement incorrect des rasters et districts | CRS contrôlé, tests géospatiaux, resampling documenté | Refaire la pipeline à partir des données brutes validées |
-| R-010 | Données météo non alignées avec les zones et périodes | Moyenne | Élevé | Élevée | Dates, coordonnées ou unités incohérentes | Data contracts et tables de correspondance | Exclure temporairement la modalité météo et documenter l’impact |
-| R-011 | Résultats excellents mais non reproductibles | Moyenne | Critique | Critique | Notebook manuel, seed absente, dépendances flottantes | Scripts, configurations, DVC, MLflow, lockfile | Ne pas utiliser le résultat dans le rapport tant qu’il n’est pas reproduit |
-| R-012 | Tuning sur le jeu de test | Moyenne | Critique | Critique | Modifications guidées par les scores de test | Jeux train/validation/test séparés | Recréer un test final non consulté |
-| R-013 | Métriques globales masquant des échecs régionaux | Élevée | Élevé | Critique | Grande dispersion des erreurs entre régions | Métriques segmentées obligatoires | Ajouter calibration ou modèles spécialisés, sinon limiter le domaine d’usage |
-| R-014 | Intervalles d’incertitude mal calibrés | Moyenne | Élevé | Élevée | Couverture réelle inférieure à la cible | Jeu de calibration séparé, conformal prediction | Recalibrer ou afficher un niveau de confiance plus prudent |
-| R-015 | Explications instables ou trompeuses | Moyenne | Élevé | Élevée | Variables importantes changeant selon seed/fold | Stabilité des rangs, plusieurs méthodes | Présenter les explications comme associatives et signaler l’instabilité |
-| R-016 | Temps de calcul ou mémoire insuffisants | Moyenne | Élevé | Élevée | OOM, entraînements trop longs | Profilage précoce, traitement par blocs, modèles compacts | Réduire la résolution, échantillonner, utiliser cloud ou CPU optimisé |
-| R-017 | Dérive du périmètre vers trois projets indépendants | Élevée | Élevé | Critique | Trois notebooks sans architecture commune | Rendement prioritaire, composants partagés, backlog priorisé | Geler les extensions et terminer le cœur scientifique |
-| R-018 | Interface esthétique mais faible profondeur scientifique | Moyenne | Élevé | Élevée | Temps excessif consacré au front avant validation | Gate scientifique avant produit | Reporter les améliorations visuelles non essentielles |
-| R-019 | Difficulté à défendre les choix en soutenance | Moyenne | Élevé | Élevée | Choix non documentés, code opaque | Decision log, commentaires, fiches modèles | Préparer questions-réponses et démonstrations d’ablation |
-| R-020 | Absence d’expertise agronomique | Élevée | Élevé | Critique | Variables ou résultats interprétés sans validation métier | Identifier un relecteur métier | Limiter les conclusions et marquer les interprétations à confirmer |
-| R-021 | Utilisateur interprétant la sortie comme une prescription certaine | Moyenne | Critique | Critique | Interface sans avertissement ni incertitude | Avertissements, intervalles, domaine de validité | Bloquer ou dégrader la recommandation en cas d’OOD |
-| R-022 | Données personnelles ou sensibles ajoutées par erreur | Faible | Critique | Élevée | Identifiants, coordonnées sensibles, clés | Scan de secrets, revue des fichiers | Retirer, révoquer, purger l’historique et documenter l’incident |
-| R-023 | Dépendances logicielles vulnérables | Moyenne | Moyen | Moyenne | Alertes de sécurité | Dependabot, scan CI | Mettre à jour ou remplacer la dépendance |
-| R-024 | Démo instable le jour de la soutenance | Moyenne | Critique | Critique | Dépendance réseau ou service externe | Mode local, cache, Docker, données de démonstration | Préparer vidéo et captures comme solution de secours |
+| R-001 | Cible `harvest_doy_derived` construite à partir de variables également utilisées comme features | Élevée | Critique | Critique | Performance anormalement élevée ou méthode de dérivation circulaire | Audit du rapport méthodologique et du code de cible | Exclure les variables concernées, redéfinir l’expérience ou utiliser la variante régionale |
+| R-002 | Variables postérieures au 31 mai présentes dans le jeu 31 mai | Moyenne | Critique | Critique | Date de calcul ou nom de feature incohérent | Registre de disponibilité temporelle par colonne | Supprimer les colonnes et reconstruire le dataset |
+| R-003 | Variables postérieures au 15 juin présentes dans le jeu 15 juin | Moyenne | Critique | Critique | Feature calculée sur toute la saison | Audit temporel et code de génération | Reconstruire les agrégats strictement avant la coupure |
+| R-004 | Même parcelle dans train et test | Élevée | Critique | Critique | `parcelle_uid` commun aux deux ensembles | Split groupé avant preprocessing | Invalider et réentraîner tous les modèles concernés |
+| R-005 | Split aléatoire surestimant la généralisation temporelle | Élevée | Élevé | Critique | Score aléatoire nettement meilleur que le test futur | Test final chronologique obligatoire | Retenir le protocole chronologique comme résultat principal |
+| R-006 | Relation ambiguë entre jeux `final`, `derived` et `regional` | Élevée | Élevé | Critique | Schémas ou lignes différents sans documentation | Comparaison de hashes, clés, colonnes et cibles | Établir une table de lineage avant entraînement |
+| R-007 | Licence Kaggle ou source originale incompatible avec la redistribution | Moyenne | Élevé | Élevée | Licence absente ou restrictive | Relever licence et conditions par source | Garder scripts et liens, retirer les données du dépôt public |
+| R-008 | Données brutes indisponibles ou difficiles à retélécharger | Moyenne | Élevé | Élevée | Échec API, fichier supprimé ou accès restreint | Script Kaggle, manifeste et hashes | Conserver une copie autorisée hors Git et documenter la procédure |
+| R-009 | Couverture temporelle non commune entre Sentinel-1, Sentinel-2 et météo | Élevée | Élevé | Critique | Années ou parcelles manquantes selon modalité | Table de couverture par parcelle-année | Comparer intersection complète et modèles à modalités partielles |
+| R-010 | Valeurs manquantes importantes dans les signaux satellites | Élevée | Élevé | Critique | Taux élevé ou biais saisonnier | Audit par année et modalité | Imputation contrôlée, indicateurs de manque ou exclusion justifiée |
+| R-011 | Propriétés du sol interprétées dans de mauvaises unités | Moyenne | Élevé | Élevée | Plages physiques incohérentes | Utiliser les dictionnaires de données | Corriger unités ou transformations avant modélisation |
+| R-012 | Identifiants de parcelles non stables entre sources | Moyenne | Critique | Critique | Jointures multiples ou perte massive de lignes | Tests d’unicité et de cardinalité | Revoir les clés et produire une table de correspondance |
+| R-013 | Biais de sélection des 1 500 parcelles | Moyenne | Élevé | Élevée | Distribution peu représentative du Centre-Val de Loire | Comparer surfaces, années et sous-zones | Limiter le domaine de validité et documenter l’échantillon |
+| R-014 | Trop peu d’observations pour des réseaux profonds | Élevée | Élevé | Critique | Surapprentissage et forte variance | Architectures compactes et baselines fortes | Retenir un modèle d’arbres ou un MLP plus simple |
+| R-015 | Modèle du 15 juin plus précis mais moins utile opérationnellement | Moyenne | Moyen | Élevée | Gain faible par rapport aux 15 jours perdus | Mesurer gain en jours et discuter avec le métier | Préférer le modèle du 31 mai pour certains usages |
+| R-016 | Fusion multimodale sans gain stable | Moyenne | Moyen | Élevée | Ablations équivalentes au modèle complet | Étude par année et modalité | Présenter le résultat négatif et simplifier le modèle |
+| R-017 | Performance masquant de fortes erreurs tardives ou précoces | Élevée | Élevé | Critique | Erreurs concentrées sur certaines dates | Métriques par quantile et plage de cible | Calibration, modèle spécialisé ou domaine restreint |
+| R-018 | Intervalles d’incertitude trop étroits | Moyenne | Élevé | Élevée | Couverture inférieure au nominal | Jeu de calibration séparé | Recalibrer ou afficher un niveau plus prudent |
+| R-019 | Explications instables entre folds | Moyenne | Élevé | Élevée | Variables importantes changeant fortement | Stabilité des rangs et plusieurs méthodes | Signaler l’instabilité et éviter les conclusions fortes |
+| R-020 | Comparaison 31 mai / 15 juin faite sur des observations différentes | Moyenne | Critique | Critique | Nombre ou clés non identiques | Intersection commune obligatoire | Refaire la comparaison sur les mêmes parcelles-années |
+| R-021 | Tuning indirect sur le test final | Moyenne | Critique | Critique | Choix répétés après lecture du score final | Gel du test et journal de décisions | Reconstituer un test non consulté si possible |
+| R-022 | Résultats non reproductibles | Moyenne | Critique | Critique | Notebook manuel ou dépendances flottantes | Scripts, lockfile, DVC et MLflow | Ne pas inclure le résultat dans le rapport |
+| R-023 | Dépôt public contenant des fichiers non redistribuables | Moyenne | Critique | Critique | Revue de licence défavorable | Audit avant commit | Retirer, purger l’historique et documenter l’incident |
+| R-024 | Absence d’expertise agronomique | Élevée | Élevé | Critique | Interprétation non validée | Identifier un relecteur métier | Limiter les conclusions et employer un vocabulaire prudent |
+| R-025 | Interface présentant la date comme certaine | Moyenne | Critique | Critique | Absence d’intervalle ou d’avertissement | Incertitude et OOD obligatoires | Bloquer ou dégrader la sortie en cas de faible confiance |
+| R-026 | Démo dépendante de Kaggle ou d’Internet | Moyenne | Élevé | Élevée | Échec réseau le jour de la soutenance | Cache local autorisé, Docker et exemple embarqué | Mode démonstration hors ligne et vidéo de secours |
 
 ## 3. Hypothèses structurantes
 
-| ID | Hypothèse | Statut | Comment la vérifier | Conséquence si fausse |
+| ID | Hypothèse | Statut | Vérification | Conséquence si fausse |
 |---|---|---|---|---|
-| A-001 | Les données de rendement disposent d’une unité cohérente | À confirmer | Audit des fichiers et documentation | Réviser la cible ou normaliser les unités |
-| A-002 | Les observations peuvent être reliées à un district et une année | Probable | Vérification des clés | Repenser le niveau d’agrégation |
-| A-003 | Les séries NDVI/EVI et SH/SV sont disponibles sur des périodes communes | À confirmer | Jointure temporelle et audit de couverture | Utiliser sous-ensembles communs ou modèles à modalités manquantes |
-| A-004 | Les variables météo sont accessibles pour les mêmes zones | À confirmer | Cartographie des stations/grilles | Retirer ou approximer la modalité météo |
-| A-005 | Les propriétés du sol sont suffisamment stables à l’échelle étudiée | Probable | Documentation de la source | Limiter l’interprétation temporelle du sol |
-| A-006 | L’agrégation par périodes de quinze jours reste agronomiquement pertinente | À confirmer métier | Revue bibliographique et expert | Tester d’autres fenêtres temporelles |
-| A-007 | Le volume est suffisant pour au moins un réseau compact | À confirmer | Comptage après nettoyage | Garder les réseaux comme expérimentation secondaire |
-| A-008 | Une année ou région peut être réservée pour le test final | À confirmer | Inventaire des données | Utiliser nested CV et expliciter la limite |
-| A-009 | Le dataset sécheresse contient une vraie dimension temporelle | À confirmer | Vérification des timestamps et séquences | Requalifier le problème en régression, pas forecasting |
-| A-010 | Les 22 classes de cultures sont suffisamment représentées | Probable | Distribution par classe | Regroupement, pondération ou collecte complémentaire |
-| A-011 | Les ressources de calcul permettent le traitement géospatial | À confirmer | Benchmark sur un échantillon | Traitement par tuiles, cloud ou réduction de résolution |
-| A-012 | Le dépôt peut rester public | À confirmer | Revue des licences et données | Passer les données hors dépôt ou rendre certaines ressources privées |
-| A-013 | Un référent académique validera le cadrage | Probable | Revue formelle Phase 0 | Documenter les décisions en autonomie et demander validation ultérieure |
-| A-014 | Un expert métier peut relire les conclusions | Incertain | Identifier un contact | Renforcer les réserves et limiter les recommandations métier |
+| A-001 | La culture étudiée est le blé | Confirmée par les noms des jeux sources | Vérifier les fichiers et dictionnaires | Revoir le domaine agronomique |
+| A-002 | La zone principale est le Centre-Val de Loire | Confirmée par les sources | Vérifier `region` et les parcelles | Réviser le périmètre géographique |
+| A-003 | L’unité d’observation est parcelle × année | Très probable | Tester l’unicité de la clé | Repenser les splits et l’agrégation |
+| A-004 | `harvest_doy_derived` représente un jour de récolte dérivé | Très probable | Rapport méthodologique et distributions | Redéfinir la cible |
+| A-005 | La cible ne dépend pas de features postérieures aux coupures | À confirmer | Audit de construction | Invalider ou reconstruire la cible |
+| A-006 | Le jeu du 31 mai ne contient que des données disponibles au 31 mai | À confirmer | Registre temporel par colonne | Reconstruire le jeu |
+| A-007 | Le jeu du 15 juin ne contient que des données disponibles au 15 juin | À confirmer | Registre temporel par colonne | Reconstruire le jeu |
+| A-008 | Les années complètes communes sont probablement 2020–2024 | À confirmer | Audit de l’intersection | Adapter le split temporel |
+| A-009 | Environ 1 500 parcelles existent dans les sources brutes | À confirmer par comptage | Comptage d’identifiants uniques | Ajuster le protocole et la complexité |
+| A-010 | Les modèles d’arbres sont de fortes baselines | Probable | Benchmark | Retenir un autre modèle si démontré |
+| A-011 | Un réseau compact peut être testé sans devenir le cœur artificiel du projet | Probable | Courbes d’apprentissage | Supprimer ou simplifier le réseau |
+| A-012 | La variante régionale est comparable ou utilisable comme référence | À confirmer | Dictionnaire et jointure | La conserver comme analyse séparée |
+| A-013 | Les datasets Kaggle sont téléchargeables via API | À confirmer | Test automatisé | Documenter téléchargement manuel ou stockage contrôlé |
+| A-014 | Les licences permettent au moins l’usage académique | À confirmer | Revue de chaque source | Restreindre redistribution et usage |
+| A-015 | Un référent académique validera le cadrage | Probable | Revue Phase 0 | Conserver un decision log détaillé |
+| A-016 | Un expert métier pourra relire la valeur du délai d’anticipation | Incertain | Identifier un contact | Présenter l’analyse comme hypothèse opérationnelle |
 
-## 4. Risques éthiques spécifiques
+## 4. Risques éthiques et d’usage
 
-### 4.1 Biais géographique
+### 4.1 Surconfiance
 
-Un modèle entraîné sur certaines régions peut être moins fiable dans des zones présentant d’autres pratiques agricoles, sols ou climats.
-
-**Mesures :**
-
-- métriques par région ;
-- Leave-One-Region-Out ;
-- avertissement de domaine ;
-- rejet OOD.
-
-### 4.2 Surconfiance
-
-Une prédiction numérique précise en apparence peut masquer une forte incertitude.
+Une date précise peut donner une impression de certitude excessive.
 
 **Mesures :**
 
-- intervalle prédictif ;
-- calibration ;
-- explication des limites ;
-- pas de recommandation automatique irréversible.
+- intervalle en jours ;
+- avertissement explicite ;
+- affichage du modèle et de l’horizon ;
+- rejet ou prudence en cas d’entrée hors domaine.
 
-### 4.3 Corrélation et causalité
+### 4.2 Usage hors domaine
 
-Les variables importantes pour un modèle ne prouvent pas qu’elles causent directement le rendement.
+Le modèle ne doit pas être appliqué sans validation à :
 
-**Mesures :**
+- d’autres cultures ;
+- d’autres régions ;
+- des années climatiquement très différentes ;
+- des parcelles présentant des caractéristiques absentes de l’entraînement.
 
-- vocabulaire prudent ;
-- ne pas formuler de prescription agronomique causale ;
-- validation métier.
+### 4.3 Nature dérivée de la cible
 
-### 4.4 Usage hors domaine
+La cible ne doit jamais être présentée comme une mesure terrain directe si elle est reconstruite à partir d’indicateurs.
 
-Le modèle pourrait être appliqué à une culture, une année, une zone ou un type de sol absent de l’entraînement.
+### 4.4 Corrélation et causalité
 
-**Mesures :**
+Les variables importantes pour le modèle ne prouvent pas qu’elles déterminent causalement la date de récolte.
 
-- domaine de validité dans la Model Card ;
-- détection OOD ;
-- blocage ou avertissement fort.
+### 4.5 Identifiants parcellaires
 
-## 5. Plan de contingence par niveau
+Même sans nom de personne, les identifiants et géométries de parcelles doivent être traités avec prudence selon leur niveau de précision et les conditions de redistribution.
 
-### Niveau 1 — Ajustement mineur
+## 5. Plans de contingence
 
-- Corriger une source.
-- Modifier une feature.
-- Réentraîner sans changer la problématique.
+### Niveau 1 — Correction locale
 
-### Niveau 2 — Réduction contrôlée du périmètre
+- corriger une unité ;
+- supprimer une feature temporellement invalide ;
+- réentraîner sans modifier la question centrale.
 
-- Réduire le nombre de régions.
-- Se concentrer sur une culture.
-- Limiter les modules secondaires.
+### Niveau 2 — Réduction contrôlée
+
+- utiliser uniquement les années communes ;
+- utiliser l’intersection des modalités ;
+- limiter les modèles neuronaux ;
+- réduire l’analyse à la cible dérivée validée.
 
 ### Niveau 3 — Recentrage scientifique
 
-- Conserver uniquement le module rendement.
-- Transformer un module secondaire en étude exploratoire.
-- Remplacer un réseau lourd par une baseline mieux justifiée.
+- faire de l’audit de cible une contribution principale ;
+- comparer uniquement 31 mai / 15 juin avec baselines fortes ;
+- conserver la reconstruction brute comme démonstration partielle.
 
 ### Niveau 4 — Blocage critique
 
-- Suspendre les conclusions.
-- Documenter l’impossibilité de répondre avec les données disponibles.
-- Livrer une pipeline reproductible et un protocole expérimental prêt à être exécuté dès disponibilité des données.
+Si la cible est scientifiquement invalide ou circulaire :
 
-## 6. Revue hebdomadaire
+- suspendre les conclusions prédictives ;
+- documenter le problème ;
+- reconstruire une cible défendable ou utiliser la référence régionale ;
+- ne jamais présenter un score élevé comme une réussite.
+
+## 6. Risques bloquants avant la Phase 1
+
+- méthode exacte de construction de `harvest_doy_derived` ;
+- relation entre les jeux `final`, `derived` et `regional` ;
+- variables autorisées pour chaque date de coupure ;
+- licences et redistribution ;
+- années et parcelles réellement communes ;
+- stratégie de test temporel ;
+- stratégie de séparation par parcelle.
+
+## 7. Revue hebdomadaire
 
 À chaque revue :
 
 1. vérifier les nouveaux risques ;
-2. mettre à jour la probabilité et l’impact ;
-3. associer une action et une échéance ;
-4. fermer les risques résolus avec preuve ;
-5. escalader tout risque critique affectant la cible, la licence ou la validité scientifique.
-
-## 7. Risques bloquants avant la Phase 1
-
-Les éléments suivants doivent être clarifiés ou explicitement acceptés comme hypothèses :
-
-- données réellement accessibles ;
-- licence et droit de redistribution ;
-- définition exacte des cibles ;
-- zone, culture et période définitives ;
-- capacité de validation temporelle ;
-- disponibilité des ressources de calcul ;
-- présence ou absence d’un expert agronome.
+2. actualiser probabilité et impact ;
+3. attribuer une action et une échéance ;
+4. relier les preuves aux commits et rapports ;
+5. invalider immédiatement tout résultat affecté par une fuite ;
+6. fermer les risques uniquement avec une preuve vérifiable.
