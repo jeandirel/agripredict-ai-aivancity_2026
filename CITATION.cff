@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "Please cite this software when using AgriPredict AI."
+title: "AgriPredict AI: Multimodal Parcel-Level Wheat Harvest-Date Forecasting"
+version: 1.0.0
+date-released: 2026-07-28
+type: software
+authors:
+  - family-names: "NZE"
+    given-names: "Jean Direl"
+repository-code: "https://github.com/jeandirel/agripredict-ai-aivancity_2026"
+license: MIT
+keywords:
+  - artificial intelligence
+  - precision agriculture
+  - wheat
+  - harvest-date forecasting
+  - Sentinel-1
+  - Sentinel-2
+  - NASA POWER
+  - multimodal machine learning
+  - conformal prediction
+  - aivancity
+abstract: >-
+  AgriPredict AI is an aivancity AI Clinic 2026 research prototype for
+  parcel-level wheat harvest-date forecasting in Centre-Val de Loire using
+  soil, Sentinel-1, Sentinel-2 and meteorological data. It compares May 31 and
+  June 15 information cutoffs under temporal and parcel-grouped validation.
