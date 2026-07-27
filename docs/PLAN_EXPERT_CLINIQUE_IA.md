@@ -1,265 +1,155 @@
 # AgriPredict AI — Plan expert de réalisation
 
-> Projet développé dans le cadre de la **Clinique IA d’aivancity — 2026**.
->
-> Objectif : construire une plateforme d’intelligence artificielle agricole **scientifiquement rigoureuse, reproductible, explicable, testée et déployée**, afin de viser un niveau d’excellence académique et professionnel.
+> Projet développé dans le cadre de la **Clinique IA d’aivancity — Promotion 2026**.
 
-Aucun plan ne peut garantir une note, mais cette feuille de route couvre les dimensions attendues d’un projet de très haut niveau : **data science, deep learning, géospatial, séries temporelles, MLOps, logiciel, produit, éthique, gouvernance et soutenance**.
+## 1. Vision finale
 
----
+AgriPredict AI doit devenir une solution complète de **prévision multimodale de la date de récolte du blé à l’échelle parcellaire en Centre-Val de Loire**.
 
-## 1. Vision finale du projet
+La plateforme doit exploiter :
 
-### Nom du projet
+- les propriétés du sol ;
+- Sentinel-1 ;
+- Sentinel-2 ;
+- NASA POWER ;
+- les caractéristiques parcellaires ;
+- les années culturales ;
+- les références agricoles utilisées pour définir ou comparer la cible.
 
-**AgriPredict AI — Multimodal Agricultural Intelligence Platform**
+La sortie finale doit comprendre :
 
-### Problématique scientifique principale
+- un jour de récolte prédit ;
+- une date calendaire ;
+- un intervalle d’incertitude en jours ;
+- une explication des facteurs prédictifs ;
+- un indicateur de domaine de validité.
 
-> Dans quelle mesure la fusion de données satellitaires, météorologiques, pédologiques et historiques permet-elle d’améliorer la prédiction des rendements agricoles, la prévision de la sécheresse et la recommandation des cultures par rapport à des modèles utilisant une seule source de données ?
+## 2. Expérience centrale
 
-### Positionnement fonctionnel
+Le cœur scientifique est la comparaison entre :
 
-Le projet comporte trois modules complémentaires, avec une priorité scientifique claire :
+- le dataset arrêté au **31 mai** ;
+- le dataset arrêté au **15 juin**.
 
-| Priorité | Module | Problème IA | Sortie attendue |
-|---|---|---|---|
-| Cœur scientifique | Prédiction du rendement agricole | Régression multimodale | Rendement estimé + intervalle d’incertitude |
-| Module avancé | Prévision de la sécheresse | Prévision de séries temporelles | Sévérité future + niveau de risque |
-| Module opérationnel | Recommandation de cultures | Classification multiclasse | Top 3 cultures + probabilités |
+La question centrale est :
 
-Le cœur du rapport et de la soutenance doit rester la **prédiction multimodale du rendement**, afin de conserver une vraie profondeur scientifique. Les deux autres modules renforcent la plateforme sans diluer le sujet central.
+> Quel gain de précision obtient-on en attendant le 15 juin, et ce gain compense-t-il la perte de quinze jours d’anticipation ?
 
-### Données envisagées
-
-- **Sentinel-2** : NDVI, EVI, bandes spectrales et indicateurs de végétation.
-- **EOS-06 SCAT-3** : rétrodiffusion SH, SV et ratio SH/SV.
-- **Données météorologiques** : température, précipitations, humidité, vent, point de rosée.
-- **Données pédologiques** : N, P, K, pH, AWC, FC, WP, SWC.
-- **Données historiques agricoles** : cultures, surfaces, productions, rendements, districts, années.
-- **Masques de cultures et limites administratives** pour le traitement géospatial.
-
----
-
-## 2. Livrable final attendu
-
-À la fin du projet, le dépôt doit contenir :
-
-1. une pipeline complète de préparation et de validation des données ;
-2. trois pipelines de machine learning ;
-3. des baselines classiques et des réseaux neuronaux adaptés ;
-4. une comparaison scientifique reproductible ;
-5. une API FastAPI ;
-6. une interface web de démonstration ;
-7. un système d’explicabilité et d’estimation d’incertitude ;
-8. des tests automatisés ;
-9. une image Docker ;
-10. une documentation complète ;
-11. un rapport scientifique ;
-12. une présentation de soutenance ;
-13. une démonstration exécutable ;
-14. une release GitHub `v1.0.0`.
-
-### Commande cible de reproductibilité
-
-```bash
-make reproduce
-```
-
-Cette commande devra idéalement :
-
-- vérifier l’environnement ;
-- préparer les données ;
-- entraîner les modèles principaux ;
-- générer les métriques et figures ;
-- exécuter les tests ;
-- produire les artefacts de rapport.
-
----
-
-## 3. Architecture fonctionnelle cible
+## 3. Architecture de données
 
 ```text
-Données satellitaires
-Sentinel-2 + SCAT-3
-          │
-          ▼
-Pipeline géospatiale
-NDVI, EVI, SH, SV, SH/SV
-          │
-          ├────────────────────┐
-          │                    │
-Données météo           Données pédologiques
-pluie, température,     N, P, K, pH, AWC,
-humidité, vent          FC, WP, SWC
-          │                    │
-          └──────────┬─────────┘
-                     ▼
-             Feature Store unifié
-                     │
-       ┌─────────────┼─────────────┐
-       ▼             ▼             ▼
-Recommandation   Rendement      Sécheresse
-des cultures     agricole       météorologique
-       │             │             │
- RF/XGBoost     XGBoost +       XGBoost +
- TabNet/MLP     LSTM/TCN        LSTM/TabNet
-       └─────────────┼─────────────┘
-                     ▼
-           Fusion / Ensemble Learning
-                     ▼
-     API FastAPI + Dashboard + Cartographie
+Données françaises de parcelles
+SoilGrids
+NASA POWER
+Sentinel-1
+Sentinel-2
+Céré'Obs
+        │
+        ▼
+Jeux bruts Kaggle
+        │
+        ▼
+master_raw_regional / master_raw_derived
+        │
+        ▼
+master_ml_regional / master_ml_derived_*
+        │
+        ▼
+master_ml_final_may31 / master_ml_final_june15
+        │
+        ▼
+Modèles + incertitude + explicabilité
+        │
+        ▼
+API FastAPI + interface web
 ```
-
----
-
-# PHASES DE RÉALISATION
 
 ## 4. Phase 0 — Cadrage scientifique
 
 ### Objectif
 
-Éviter de transformer le projet en accumulation de modèles sans fil conducteur.
+Établir une base scientifiquement défendable avant tout entraînement.
 
-### Documents à créer avant de coder
+### Livrables
 
-```text
-docs/
-├── project_charter.md
-├── problem_statement.md
-├── research_questions.md
-├── success_metrics.md
-├── risks_and_assumptions.md
-└── data_sources.md
-```
+- `docs/project_charter.md` ;
+- `docs/problem_statement.md` ;
+- `docs/research_questions.md` ;
+- `docs/success_metrics.md` ;
+- `docs/risks_and_assumptions.md` ;
+- `docs/data_sources.md`.
 
-### Questions de recherche
+### Travaux obligatoires
 
-#### RQ1 — Rendement
+1. figer les URLs officielles ;
+2. télécharger les datasets ;
+3. calculer les hashes ;
+4. comparer les variantes `final`, `derived` et `regional` ;
+5. documenter la cible `harvest_doy_derived` ;
+6. vérifier la disponibilité temporelle de chaque feature ;
+7. identifier les variables postérieures aux dates de coupure ;
+8. fixer le protocole de split ;
+9. relever les licences ;
+10. faire valider le cadrage par l’encadrement.
 
-> La fusion des séries NDVI, EVI, SH, SV et des propriétés du sol améliore-t-elle la prédiction du rendement par rapport aux données satellitaires ou pédologiques utilisées séparément ?
+### Gate G0
 
-#### RQ2 — Architecture neuronale
+La Phase 0 est terminée lorsque la cible, les horizons, les données, les risques et les critères de validation sont entièrement alignés.
 
-> Une architecture neuronale à deux branches, temporelle et statique, généralise-t-elle mieux qu’un modèle XGBoost sur des districts ou des années non observés ?
+## 5. Phase 1 — Fondation logicielle
 
-#### RQ3 — Sécheresse
-
-> Un ensemble XGBoost–LSTM–TabNet améliore-t-il la prévision de la sévérité de la sécheresse par rapport à chaque modèle individuel ?
-
-#### RQ4 — Explicabilité
-
-> Quelles variables et quelles périodes du cycle de culture influencent le plus les prédictions ?
-
-### Hypothèses principales
-
-- La fusion multimodale doit surpasser les modèles mono-source.
-- Les variables satellitaires temporelles doivent être particulièrement importantes pendant certaines phases phénologiques.
-- XGBoost sera probablement très compétitif lorsque le dataset est limité.
-- Les réseaux neuronaux seront réellement utiles seulement si la structure temporelle et le volume des données sont suffisants.
-- L’incertitude et l’explicabilité doivent être intégrées au produit final, et non ajoutées à la fin.
-
-### Gate de validation
-
-La phase est terminée uniquement lorsque chaque module possède :
-
-- une entrée précisément définie ;
-- une cible ;
-- une unité de mesure ;
-- une métrique principale ;
-- une méthode de validation ;
-- un critère d’acceptation.
-
----
-
-## 5. Phase 1 — Mise en place du dépôt professionnel
-
-### Arborescence recommandée
+### Arborescence cible
 
 ```text
 agripredict-ai-aivancity_2026/
 ├── README.md
-├── LICENSE
 ├── pyproject.toml
 ├── requirements.lock
 ├── Makefile
 ├── Dockerfile
 ├── docker-compose.yml
 ├── .env.example
-├── .gitignore
 ├── .pre-commit-config.yaml
-│
 ├── configs/
-│   ├── data/
-│   ├── models/
-│   ├── experiments/
-│   └── deployment/
-│
 ├── data/
 │   ├── raw/
 │   ├── interim/
-│   ├── processed/
-│   └── external/
-│
+│   └── processed/
 ├── notebooks/
-│   ├── 01_data_audit.ipynb
-│   ├── 02_geospatial_eda.ipynb
-│   ├── 03_crop_recommendation.ipynb
-│   ├── 04_yield_prediction.ipynb
-│   └── 05_drought_forecasting.ipynb
-│
 ├── src/agripredict/
 │   ├── data/
 │   ├── features/
 │   ├── models/
 │   ├── evaluation/
+│   ├── uncertainty/
 │   ├── explainability/
-│   ├── monitoring/
 │   └── utils/
-│
 ├── pipelines/
-│   ├── build_crop_dataset.py
-│   ├── build_yield_dataset.py
-│   ├── build_drought_dataset.py
-│   ├── train_crop_model.py
-│   ├── train_yield_model.py
-│   └── train_drought_model.py
-│
 ├── app/
 │   ├── api/
 │   └── dashboard/
-│
 ├── tests/
-│   ├── unit/
-│   ├── integration/
-│   └── data_validation/
-│
-├── models/
 ├── reports/
-├── docs/
 └── .github/workflows/
 ```
 
-### Stack technique recommandée
+### Outils
 
 - Python 3.11 ;
+- pandas, NumPy, scikit-learn ;
+- XGBoost et CatBoost ;
 - PyTorch ;
-- scikit-learn ;
-- XGBoost ;
 - Optuna ;
 - MLflow ;
 - DVC ;
-- Pandera ou Great Expectations ;
-- GeoPandas, Rasterio, Xarray ;
+- Pandera ;
 - FastAPI ;
-- Streamlit ou React/Next.js ;
+- Streamlit ou React ;
 - Pytest ;
-- Ruff ;
-- MyPy ;
-- GitHub Actions ;
-- Docker.
+- Ruff et MyPy ;
+- GitHub Actions.
 
-### Gate de validation
+### Gate G1
 
 ```bash
 make install
@@ -269,949 +159,353 @@ make test
 
 doivent fonctionner sur une machine propre.
 
----
+## 6. Phase 2 — Téléchargement et audit des données
 
-## 6. Phase 2 — Audit et gouvernance des données
+### Pipeline de téléchargement
 
-Cette phase détermine une grande partie de la qualité scientifique du projet.
+Créer un script utilisant l’API Kaggle et un manifeste YAML contenant :
 
-### 6.1 Inventaire des datasets
-
-#### Dataset A — Recommandation de cultures
-
-Variables principales :
-
-- azote ;
-- phosphore ;
-- potassium ;
-- température ;
-- humidité ;
-- pH ;
-- précipitations ;
-- culture cible.
-
-#### Dataset B — Rendement agricole
-
-Le dataset principal devra réunir :
-
-- État ;
-- district ;
-- année ;
-- rendement ;
-- NDVI par période ;
-- EVI par période ;
-- SH par période ;
-- SV par période ;
-- ratio SH/SV ;
-- capacité au champ ;
-- point de flétrissement ;
-- teneur en eau disponible ;
-- teneur en eau saturée ;
-- variables météorologiques agrégées.
-
-#### Dataset C — Sécheresse
-
-Variables envisagées :
-
-- température ;
-- précipitations ;
-- humidité ;
-- vitesse du vent ;
-- point de rosée ;
-- région ;
-- État ;
-- durée de la sécheresse ;
-- indice de sévérité ;
-- date ou pas de temps.
-
-### 6.2 Contrôles obligatoires
-
-Pour chaque dataset :
-
-- provenance ;
+- slug Kaggle ;
+- nom du dataset ;
+- couche Bronze, Silver ou Gold ;
+- version ;
+- date de téléchargement ;
+- hash SHA-256 ;
 - licence ;
-- période ;
-- région ;
-- définition de la cible ;
-- unités ;
-- taux de valeurs manquantes ;
-- doublons ;
-- incohérences ;
-- valeurs extrêmes ;
-- déséquilibre des classes ;
-- risque de fuite de données ;
-- représentativité géographique ;
-- possibilité de reproduction.
+- fichiers attendus.
 
-### 6.3 Data contracts
+### Audit programmatique
 
-Créer un schéma Pandera par dataset.
+Pour chaque table :
 
-```python
-import pandera.pandas as pa
-from pandera.typing import Series
-
-
-class YieldSchema(pa.DataFrameModel):
-    state: Series[str]
-    district: Series[str]
-    year: Series[int]
-    yield_t_ha: Series[float]
-    ndvi_t1: Series[float]
-    evi_t1: Series[float]
-    soil_awc: Series[float]
-```
-
-### 6.4 Organisation Bronze–Silver–Gold
-
-```text
-Raw/Bronze     = fichiers originaux immuables
-Interim/Silver = données nettoyées et harmonisées
-Processed/Gold = tables prêtes pour l’entraînement
-```
-
-Ne jamais modifier manuellement les données brutes.
-
-### Gate de validation
-
-Un rapport automatique doit afficher :
-
-- nombre de lignes et colonnes ;
-- qualité des variables ;
-- distribution des cibles ;
+- forme ;
+- types ;
 - valeurs manquantes ;
-- anomalies ;
-- conformité au schéma ;
-- empreinte du dataset ;
-- version DVC.
+- doublons ;
+- clés ;
+- années ;
+- parcelles uniques ;
+- régions ;
+- distribution de la cible ;
+- plages physiques ;
+- corrélations suspectes ;
+- colonnes constantes ;
+- différences de schéma.
 
----
+### Comparaisons obligatoires
 
-## 7. Phase 3 — Pipeline géospatiale et feature engineering
+- final 31 mai vs derived 31 mai ;
+- final 15 juin vs derived 15 juin ;
+- derived vs regional ;
+- couverture 31 mai vs 15 juin ;
+- observations communes ;
+- années communes ;
+- parcelles communes.
 
-### 7.1 Traitement Sentinel-2
+### Gate G2
 
-- contrôle du système de coordonnées ;
-- harmonisation des résolutions ;
-- suppression ou masquage des nuages ;
-- calcul du NDVI ;
-- calcul de l’EVI ;
-- extraction par zone ;
-- agrégation par district ;
-- agrégation par fenêtres de quinze jours ;
-- production de séries temporelles propres.
+Aucune modélisation finale avant :
 
-### 7.2 Traitement SCAT-3
+- validation du schéma ;
+- audit de la cible ;
+- contrôle des dates de coupure ;
+- séparation des données définie.
 
-- conversion des valeurs brutes en coefficient de rétrodiffusion ;
-- alignement spatial ;
-- application des masques de riz ;
-- comparaison de plusieurs seuils de couverture ;
-- extraction de SH et SV ;
-- calcul du ratio SH/SV ;
-- agrégation par district et période ;
-- contrôle des valeurs aberrantes.
+## 7. Phase 3 — Audit de la cible
 
-### 7.3 Gestion des données manquantes
+### Question critique
 
-Comparer scientifiquement :
+Comment `harvest_doy_derived` a-t-elle été calculée ?
 
-1. suppression ;
-2. interpolation temporelle ;
-3. KNN Imputer ;
-4. nearest neighbour spatial ;
-5. stratégie hybride haute qualité + nearest neighbour ;
-6. indicateurs binaires signalant les valeurs imputées.
+### Contrôles
 
-### 7.4 Features avancées
+- identifier toutes les sources ;
+- reproduire la formule ou la pipeline ;
+- vérifier les variables utilisées ;
+- rechercher une circularité ;
+- vérifier les dates disponibles ;
+- comparer à la référence régionale ;
+- produire un rapport de sensibilité.
 
-Créer notamment :
+### Expériences
 
-- moyenne, minimum et maximum saisonniers ;
-- tendance NDVI ;
-- amplitude NDVI ;
-- date du pic NDVI ;
-- aire sous la courbe NDVI ;
-- volatilité SH/SV ;
-- anomalies par rapport aux moyennes régionales ;
-- précipitations cumulées ;
-- nombre de jours secs ;
-- température moyenne et extrême ;
-- interactions sol × précipitations ;
-- interactions satellite × sol ;
-- lags temporels ;
-- moyennes glissantes ;
-- indicateurs phénologiques.
+1. modèle avec toutes les variables ;
+2. modèle sans variables potentiellement utilisées pour dériver la cible ;
+3. modèle satellite uniquement ;
+4. modèle météo + sol ;
+5. comparaison à la référence régionale.
 
-### Gate de validation
+### Gate G2.5
 
-Chaque feature doit avoir :
+La cible est déclarée :
 
-- une définition ;
-- une formule ;
-- une justification agronomique ;
-- une unité ;
-- un test automatique ;
-- une vérification de l’absence de fuite de cible.
+- valide ;
+- valide sous conditions ;
+- exploratoire seulement ;
+- ou à reconstruire.
 
----
+## 8. Phase 4 — Feature engineering
 
-## 8. Phase 4 — Stratégie expérimentale
+### Groupes de variables
 
-### Règle absolue
+- parcelle et temps ;
+- sol ;
+- Sentinel-2 ;
+- Sentinel-1 ;
+- météo ;
+- interactions contrôlées.
 
-Ne jamais commencer par le modèle le plus complexe.
+### Features possibles
 
-L’ordre scientifique correct est :
+- différences entre profondeurs du sol ;
+- moyennes pondérées par profondeur ;
+- anomalies par rapport à l’année ;
+- ratios radar ;
+- amplitudes phénologiques ;
+- écarts entre dates de pics ;
+- bilans hydriques ;
+- degrés-jours ;
+- interactions sol × météo ;
+- indicateurs de valeurs manquantes.
 
-```text
-Dummy baseline
-→ modèle linéaire
-→ modèle ML classique
-→ réseau neuronal
-→ ensemble
-→ analyse d’ablation
-```
+Toute feature doit avoir :
 
-### Traçabilité MLflow
+- définition ;
+- unité ;
+- justification ;
+- date de disponibilité ;
+- test automatique ;
+- statut de risque de fuite.
 
-Chaque expérience devra enregistrer :
+## 9. Phase 5 — Baselines
 
-- version du code ;
-- version du dataset ;
-- hyperparamètres ;
-- seed ;
-- métriques ;
-- figures ;
-- temps d’entraînement ;
-- consommation mémoire ;
-- modèle ;
-- matrice de confusion ou résidus ;
-- environnement logiciel ;
-- protocole de split.
-
-### Principes scientifiques
-
-- Fixer les seeds.
-- Conserver un jeu de test final réellement indépendant.
-- Ne jamais tuner sur le jeu de test.
-- Comparer les modèles avec les mêmes folds.
-- Enregistrer aussi les modèles qui échouent.
-- Répéter les expériences lorsque la variance est importante.
-- Rapporter moyenne et écart-type des métriques.
-
----
-
-## 9. Phase 5 — Module de recommandation des cultures
-
-### Objectif
-
-Retourner les trois cultures les plus adaptées, avec probabilités, facteurs explicatifs et avertissement de confiance.
-
-### Modèles de référence
-
-- DummyClassifier ;
-- régression logistique ;
-- KNN ;
-- arbre de décision.
-
-### Modèles performants
-
-- Random Forest ;
-- XGBoost ;
-- LightGBM uniquement si autorisé dans le cadre du projet.
-
-### Réseaux neuronaux
-
-- MLP régularisé ;
-- TabNet ;
-- FT-Transformer comme expérimentation complémentaire.
-
-Avec un dataset limité, un modèle très lourd risque de surapprendre. Le réseau devra être compact, régularisé et comparé honnêtement aux modèles d’arbres.
-
-### Validation
-
-- split stratifié ;
-- cross-validation stratifiée ;
-- vérification des doublons ;
-- recherche d’hyperparamètres par Optuna ;
-- calibration des probabilités.
-
-### Métriques
-
-- macro-F1 ;
-- balanced accuracy ;
-- précision macro ;
-- rappel macro ;
-- top-3 accuracy ;
-- matrice de confusion ;
-- Expected Calibration Error.
-
-### Sortie API cible
-
-```json
-{
-  "recommended_crops": [
-    {"crop": "rice", "probability": 0.72},
-    {"crop": "maize", "probability": 0.18},
-    {"crop": "jute", "probability": 0.06}
-  ],
-  "main_factors": [
-    "high rainfall",
-    "acidic soil",
-    "high humidity"
-  ],
-  "confidence_level": "high"
-}
-```
-
----
-
-## 10. Phase 6 — Module principal de prédiction du rendement
-
-### 10.1 Baselines
+### Baselines naïves
 
 - moyenne globale ;
-- moyenne par État ;
-- moyenne par district ;
+- médiane globale ;
+- moyenne par année ;
+- référence régionale si compatible.
+
+### Baselines statistiques
+
 - régression linéaire ;
 - Ridge ;
 - ElasticNet.
 
-### 10.2 Modèles classiques
+### Gate G3
 
-- Random Forest Regressor ;
-- XGBoost Regressor ;
-- Extra Trees ;
-- HistGradientBoosting.
+Les baselines 31 mai et 15 juin doivent être enregistrées dans MLflow avant tout modèle complexe.
 
-### 10.3 Réseau neuronal multimodal recommandé
-
-Le réseau doit respecter la structure des données. Les données décrites sont surtout des séries temporelles agrégées par district, enrichies de variables statiques.
-
-#### Branche temporelle
-
-Entrée :
-
-```text
-T = plusieurs périodes temporelles
-Canaux = NDVI, EVI, SH, SV, SH/SV, météo
-```
-
-Modèles à comparer :
-
-- LSTM bidirectionnel ;
-- Temporal CNN 1D ;
-- TCN résiduel ;
-- Transformer temporel compact, seulement si le volume le justifie.
-
-#### Branche statique
-
-Entrée :
-
-- AWC ;
-- FC ;
-- WP ;
-- SWC ;
-- État ;
-- district ;
-- caractéristiques géographiques ;
-- statistiques historiques autorisées.
-
-Traitement :
-
-- embeddings pour les catégories ;
-- couches fully connected ;
-- batch normalization ;
-- dropout.
-
-#### Fusion
-
-```text
-Temporal Encoder ──────┐
-                       ├── Concatenation
-Static Encoder ────────┘
-                              │
-                         Attention/Gating
-                              │
-                         Dense Regression
-                              │
-                 Yield + intervalle d’incertitude
-```
-
-### 10.4 Fonctions de coût
+## 10. Phase 6 — Modèles d’arbres
 
 Comparer :
 
-- MSE ;
-- Huber Loss ;
-- Quantile Loss.
-
-Huber Loss peut améliorer la robustesse aux valeurs extrêmes.
-
-### 10.5 Protocoles de validation rigoureux
-
-Un simple split aléatoire peut produire une estimation trop optimiste lorsque le même district apparaît dans les ensembles d’entraînement et de test.
-
-#### Validation temporelle
-
-```text
-Train : années antérieures
-Test  : année future
-```
-
-#### Validation géographique
-
-```text
-GroupKFold(group = district)
-```
-
-#### Validation de généralisation
-
-```text
-Leave-One-State-Out
-```
-
-Un modèle ne sera considéré comme robuste que s’il fonctionne sur une année, un district ou un État non observé.
-
-### 10.6 Métriques
-
-- MAE ;
-- RMSE ;
-- R² ;
-- nRMSE ;
-- biais moyen ;
-- erreur par État ;
-- erreur par district ;
-- intervalle de confiance des métriques ;
-- couverture des intervalles prédictifs.
-
-### 10.7 Études d’ablation
-
-Entraîner séparément :
-
-1. sol uniquement ;
-2. Sentinel-2 uniquement ;
-3. SCAT-3 uniquement ;
-4. météo uniquement ;
-5. Sentinel-2 + SCAT-3 ;
-6. satellite + sol ;
-7. satellite + météo + sol ;
-8. modèle complet sans attention ;
-9. modèle complet sans embeddings géographiques.
-
-L’étude d’ablation doit démontrer la valeur réelle de chaque modalité et de chaque choix d’architecture.
-
----
-
-## 11. Phase 7 — Module de prévision de la sécheresse
-
-### Définition précise
-
-Prévoir un indice de sévérité à un horizon explicitement défini :
-
-- J+7 ;
-- J+30 ;
-- mois suivant ;
-- ou prochaine période disponible.
-
-Ne pas utiliser le mot « forecasting » si les lignes sont indépendantes et qu’aucune chronologie n’est respectée.
-
-### Préparation temporelle
-
-- tri par région et date ;
-- création des lags ;
-- moyennes glissantes ;
-- anomalies saisonnières ;
-- séquences d’entrée ;
-- prévention de l’utilisation d’informations futures ;
-- contrôle des trous temporels.
-
-### Baselines
-
-- dernière valeur connue ;
-- moyenne mobile ;
-- régression linéaire ;
-- XGBoost avec variables retardées.
-
-### Réseaux
-
-- LSTM ;
-- GRU ;
-- Temporal CNN ;
-- TabNet pour les variables tabulaires ;
-- Transformer temporel compact si le dataset est réellement longitudinal.
-
-### Ensemble
-
-Construire les prédictions hors-fold de :
-
+- Random Forest ;
+- Extra Trees ;
+- HistGradientBoosting ;
 - XGBoost ;
-- LSTM ;
-- TabNet.
+- CatBoost.
 
-Puis entraîner un méta-modèle uniquement sur ces prédictions hors-fold.
+### Tuning
 
-```text
-XGBoost ───┐
-LSTM ──────┼── XGBoost Meta-Regressor ── Sévérité finale
-TabNet ────┘
-```
+- nested cross-validation ou validation interne stricte ;
+- Optuna ;
+- budget identique par modèle ;
+- aucune consultation du test final ;
+- early stopping lorsque applicable.
 
-### Validation
+## 11. Phase 7 — Réseaux neuronaux
 
-- walk-forward validation ;
-- aucune permutation aléatoire temporelle ;
-- test sur une période future ;
-- test sur une région non observée.
+Les données actuelles sont tabulaires et de taille modérée. Les réseaux doivent donc rester compacts.
+
+Comparer :
+
+- MLP avec batch normalization et dropout ;
+- TabNet ;
+- FT-Transformer compact comme extension.
+
+Ne pas utiliser arbitrairement :
+
+- CNN 2D sans images ;
+- LSTM sans vraies séquences ;
+- gros Transformer sans volume suffisant.
+
+### Gate G4
+
+Un réseau n’est retenu que s’il présente un gain stable ou une propriété utile démontrée face à XGBoost et CatBoost.
+
+## 12. Phase 8 — Validation scientifique
+
+### Validation temporelle
+
+- train sur les premières années ;
+- validation sur l’avant-dernière ;
+- test final sur la dernière.
+
+### Validation groupée
+
+- `GroupKFold` par `parcelle_uid` ;
+- aucune parcelle commune entre train et test.
+
+### Comparaison des horizons
+
+- intersection exacte des lignes ;
+- même split ;
+- même cible ;
+- même protocole ;
+- mêmes métriques.
 
 ### Métriques
 
 - MAE ;
 - RMSE ;
+- MedAE ;
 - R² ;
-- NSE ;
-- KGE ;
-- macro-F1 après transformation en classes de sévérité ;
-- matrice de transition des niveaux de sécheresse.
+- biais ;
+- ±3, ±5, ±7 et ±10 jours ;
+- erreur au 90e percentile.
 
----
+## 13. Phase 9 — Ablations
 
-## 12. Phase 8 — Incertitude, explicabilité et robustesse
+Entraîner séparément :
 
-Cette partie différencie fortement un projet académique moyen d’un projet expert.
+1. parcelle + année ;
+2. sol ;
+3. Sentinel-2 ;
+4. Sentinel-1 ;
+5. météo ;
+6. Sentinel-1 + Sentinel-2 ;
+7. satellite + météo ;
+8. satellite + sol ;
+9. météo + sol ;
+10. fusion complète.
 
-### 12.1 Incertitude
+Cette étude doit prouver la contribution de chaque modalité.
 
-Exemple de sortie :
+## 14. Phase 10 — Incertitude
 
-```text
-Prévision : 4,2 t/ha
-Intervalle à 90 % : [3,7 ; 4,8]
-```
-
-Méthodes possibles :
+Comparer :
 
 - quantile regression ;
 - bootstrap ;
-- conformal prediction ;
-- Monte Carlo Dropout pour certains réseaux.
+- conformal prediction.
 
-### 12.2 Explicabilité
+Produire :
 
-- SHAP pour XGBoost ;
+- intervalle à 90 % ;
+- couverture réelle ;
+- largeur moyenne ;
+- couverture par année ;
+- couverture par plage de récolte.
+
+## 15. Phase 11 — Explicabilité
+
+- SHAP pour les arbres ;
 - permutation importance ;
-- Partial Dependence Plots ;
-- Integrated Gradients pour les réseaux ;
-- analyse temporelle des contributions ;
-- importance par période de culture ;
-- Grad-CAM seulement si de vraies images sont traitées par CNN.
+- importance par modalité ;
+- explications locales ;
+- stabilité entre folds ;
+- analyse d’au moins cinq erreurs majeures.
 
-Ne jamais présenter les poids d’attention comme une preuve causale.
+Ne jamais présenter l’importance comme une causalité.
 
-### 12.3 Robustesse
+## 16. Phase 12 — Robustesse
 
 Tester :
 
-- 10 % de valeurs manquantes ;
-- bruit sur les mesures NPK ;
-- absence d’une période satellitaire ;
-- changement de région ;
-- changement d’année ;
-- données hors distribution ;
-- dérive simulée des précipitations ou températures.
+- valeurs manquantes simulées ;
+- bruit numérique ;
+- suppression d’une modalité ;
+- année future ;
+- parcelles inconnues ;
+- observations hors distribution.
 
-### 12.4 Analyse des erreurs
+## 17. Phase 13 — API et interface
 
-Créer une taxonomie :
-
-- erreurs liées aux données manquantes ;
-- erreurs géographiques ;
-- erreurs sur valeurs extrêmes ;
-- erreurs sur cultures rares ;
-- erreurs pendant les épisodes climatiques atypiques ;
-- erreurs de calibration ;
-- erreurs de généralisation temporelle.
-
----
-
-## 13. Phase 9 — API et application
-
-### API FastAPI
-
-Endpoints cibles :
+### API
 
 ```text
 GET  /health
 GET  /model-info
-POST /predict/crop
-POST /predict/yield
-POST /forecast/drought
+POST /predict/harvest-date
 POST /explain
 ```
 
-### Interface utilisateur
+### Interface
 
-#### Page 1 — Vue générale
-
-- indicateurs du projet ;
-- carte des régions ;
-- qualité des données ;
-- performances des modèles ;
-- version des modèles.
-
-#### Page 2 — Recommandation de culture
-
-- saisie NPK ;
-- pH ;
-- météo ;
-- top 3 cultures ;
-- probabilités ;
+- choix du modèle 31 mai ou 15 juin ;
+- sélection ou saisie d’une parcelle ;
+- DOY prédit ;
+- date calendaire ;
+- intervalle en jours ;
 - facteurs explicatifs ;
-- niveau de confiance.
+- avertissement OOD.
 
-#### Page 3 — Prédiction de rendement
-
-- district ;
-- année ;
-- courbes NDVI/EVI ;
-- prédiction ;
-- intervalle d’incertitude ;
-- comparaison régionale ;
-- explication locale.
-
-#### Page 4 — Sécheresse
-
-- historique météo ;
-- évolution prévue ;
-- niveau de risque ;
-- carte ;
-- alerte ;
-- horizon de prévision.
-
-#### Page 5 — Laboratoire scientifique
-
-- modèles comparés ;
-- métriques ;
-- ablations ;
-- SHAP ;
-- erreurs par région ;
-- résultats de robustesse ;
-- journal d’expériences.
-
----
-
-## 14. Phase 10 — MLOps et qualité logicielle
-
-### Versionnement
+## 18. Phase 14 — MLOps
 
 - Git pour le code ;
 - DVC pour les données ;
 - MLflow pour les expériences ;
-- tags Git pour les releases ;
-- artefacts versionnés pour les modèles.
+- configurations YAML ;
+- CI GitHub Actions ;
+- Docker ;
+- tests unitaires, données et intégration ;
+- Model Card et Data Card.
 
-### Tests unitaires
+## 19. Phase 15 — Rapport et soutenance
 
-- calcul du NDVI ;
-- calcul du ratio SH/SV ;
-- agrégation temporelle ;
-- préparation des séquences ;
-- validation des schémas ;
-- format des prédictions ;
-- transformation des catégories ;
-- calcul des métriques.
+Le rapport doit inclure :
 
-### Tests de données
+1. contexte agronomique ;
+2. problématique ;
+3. sources et lineage ;
+4. audit de cible ;
+5. préparation des données ;
+6. protocoles de validation ;
+7. baselines ;
+8. modèles d’arbres ;
+9. réseaux tabulaires ;
+10. comparaison 31 mai / 15 juin ;
+11. ablations ;
+12. incertitude ;
+13. explicabilité ;
+14. robustesse ;
+15. produit ;
+16. limites ;
+17. perspectives.
 
-- types ;
-- plages ;
-- valeurs manquantes ;
-- catégories inconnues ;
-- dérive de schéma ;
-- contrôle des unités ;
-- absence de fuite temporelle.
-
-### Tests d’intégration
-
-```text
-raw data
-→ preprocessing
-→ features
-→ model
-→ prediction
-→ API response
-```
-
-### CI GitHub Actions
-
-À chaque pull request :
-
-```text
-lint
-type checking
-unit tests
-data schema tests
-security scan
-Docker build
-```
-
-### Monitoring
-
-Même pour une démonstration académique :
-
-- latence ;
-- taux d’erreurs ;
-- distributions des entrées ;
-- dérive des variables ;
-- niveau de confiance ;
-- version du modèle ;
-- statistiques de prédiction.
-
----
-
-## 15. Phase 11 — Éthique, gouvernance et limites
-
-### Risques principaux
-
-- recommandation inadaptée pouvant influencer une décision économique ;
-- biais géographique ;
-- dataset non représentatif ;
-- dérive climatique ;
-- incertitude mal communiquée ;
-- surconfiance envers le modèle ;
-- dépendance à des données historiques ;
-- mauvais usage hors de la zone étudiée ;
-- confusion entre corrélation et causalité.
-
-### Mesures de maîtrise
-
-- afficher les limites géographiques ;
-- ne jamais présenter la prédiction comme une certitude ;
-- fournir un intervalle d’incertitude ;
-- conserver une validation humaine ;
-- documenter chaque source ;
-- produire une Model Card ;
-- produire une Data Card ;
-- journaliser les versions ;
-- documenter l’impact environnemental de l’entraînement ;
-- distinguer aide à la décision et décision automatique.
-
-### Formulation à afficher dans l’application
-
-> Cette estimation constitue un outil d’aide à la décision. Elle ne remplace pas une expertise agronomique ni une analyse locale du terrain.
-
----
-
-## 16. Phase 12 — Rapport scientifique
-
-### Structure recommandée
-
-1. résumé exécutif ;
-2. contexte et enjeux ;
-3. problématique ;
-4. état de l’art ;
-5. données ;
-6. méthodologie ;
-7. pipeline géospatiale ;
-8. modèles classiques ;
-9. réseaux neuronaux ;
-10. stratégie d’ensemble ;
-11. protocole expérimental ;
-12. résultats ;
-13. ablations ;
-14. explicabilité ;
-15. robustesse ;
-16. application ;
-17. MLOps ;
-18. éthique ;
-19. limites ;
-20. perspectives ;
-21. bibliographie ;
-22. annexes de reproductibilité.
-
-### Tableaux indispensables
-
-- caractéristiques des datasets ;
-- comparaison des modèles ;
-- comparaison des protocoles de validation ;
-- résultats des ablations ;
-- temps d’entraînement ;
-- performances par région ;
-- couverture des intervalles d’incertitude ;
-- consommation des ressources.
-
-### Figures indispensables
-
-- architecture complète ;
-- carte des zones étudiées ;
-- distributions des cibles ;
-- courbes temporelles ;
-- prédictions vs valeurs réelles ;
-- résidus ;
-- SHAP ;
-- performances par région ;
-- matrice de confusion ;
-- courbes de calibration ;
-- résultats de robustesse ;
-- comparaison des ablations.
-
----
-
-## 17. Plan d’exécution sur 14 semaines
+## 20. Calendrier indicatif sur 12 semaines
 
 | Semaine | Travail | Livrable |
 |---|---|---|
-| 1 | Cadrage, problématique, questions de recherche | Project Charter |
-| 2 | Initialisation GitHub, environnement, CI | Dépôt professionnel |
-| 3 | Inventaire, audit et versionnement des données | Data Report |
-| 4 | Pipeline de recommandation des cultures | Dataset Gold 1 |
-| 5 | Pipeline géospatiale de rendement | Dataset Gold 2 |
-| 6 | Pipeline temporelle de sécheresse | Dataset Gold 3 |
-| 7 | Baselines des trois modules | Benchmark v1 |
-| 8 | XGBoost, Random Forest, tuning Optuna | Benchmark v2 |
-| 9 | LSTM, TCN, MLP, TabNet | Deep Learning v1 |
-| 10 | Fusion multimodale et stacking | Modèles finaux |
-| 11 | Ablations, incertitude, SHAP, robustesse | Rapport expérimental |
-| 12 | API FastAPI et interface | Démo fonctionnelle |
-| 13 | Docker, tests, documentation, Model Cards | Release candidate |
-| 14 | Rapport, slides, répétition, release | `v1.0.0` |
+| 1 | Clôture Phase 0 et téléchargement | Registre et manifeste |
+| 2 | Audit des jeux | Rapport de données |
+| 3 | Audit de cible | Rapport de validité |
+| 4 | Pipeline et features | Tables Gold validées |
+| 5 | Baselines | Benchmark v1 |
+| 6 | Modèles d’arbres | Benchmark v2 |
+| 7 | Réseaux compacts | Benchmark v3 |
+| 8 | 31 mai vs 15 juin | Étude centrale |
+| 9 | Ablations et validation | Rapport scientifique |
+| 10 | Incertitude et explicabilité | Artefacts finaux |
+| 11 | API, interface et Docker | Démo |
+| 12 | Rapport, slides et release | `v1.0.0` |
 
----
+## 21. Definition of Done
 
-## 18. Definition of Done
+Le projet est terminé lorsque :
 
-Le projet ne sera considéré comme terminé que lorsque :
-
-- [ ] le dépôt s’installe depuis zéro ;
-- [ ] les données sont versionnées ;
-- [ ] les trois tâches ont une baseline ;
-- [ ] chaque réseau est comparé à un modèle classique ;
-- [ ] aucun split ne provoque de fuite temporelle ou géographique ;
-- [ ] les expériences sont suivies dans MLflow ;
-- [ ] les résultats sont reproductibles ;
-- [ ] les ablations sont terminées ;
-- [ ] les erreurs sont analysées ;
-- [ ] les prédictions possèdent une mesure d’incertitude ;
-- [ ] l’application fonctionne ;
-- [ ] l’API est documentée ;
-- [ ] Docker fonctionne ;
-- [ ] les tests passent ;
-- [ ] les limites sont écrites ;
-- [ ] le rapport correspond exactement au code ;
-- [ ] la démonstration peut être exécutée sans modification manuelle ;
-- [ ] une release GitHub est publiée.
-
----
-
-## 19. Erreurs à éviter absolument
-
-- utiliser un CNN uniquement parce qu’il paraît sophistiqué ;
-- annoncer une précision de 99 % sans vérifier les fuites ;
-- faire un split aléatoire sur des séries temporelles ;
-- utiliser les mêmes districts dans le train et le test sans justification ;
-- présenter trois notebooks indépendants comme une plateforme ;
-- ne pas versionner les données ;
-- ne montrer que les meilleurs résultats ;
-- ignorer les modèles qui échouent ;
-- ne pas analyser les erreurs ;
-- confondre corrélation et causalité ;
-- oublier les incertitudes ;
-- déployer un modèle différent de celui évalué ;
-- présenter une belle interface sans profondeur scientifique ;
-- présenter une recherche brillante sans démonstration fonctionnelle ;
-- utiliser un modèle très lourd sans justification par le volume de données.
-
----
-
-## 20. Premières actions à exécuter
-
-### Jour 1
-
-1. créer et structurer le dépôt ;
-2. écrire la problématique ;
-3. écrire les questions de recherche ;
-4. créer le tableau des datasets ;
-5. créer les premières issues GitHub ;
-6. définir le protocole de validation.
-
-### Jour 2
-
-1. installer l’environnement ;
-2. configurer Ruff, MyPy, Pytest et pre-commit ;
-3. configurer DVC ;
-4. créer les schémas de données ;
-5. importer les fichiers bruts sans modification.
-
-### Jour 3
-
-1. produire l’audit automatique ;
-2. identifier la cible de chaque module ;
-3. implémenter les splits ;
-4. créer un premier Dummy Model ;
-5. enregistrer la première expérience MLflow.
-
-### Première milestone recommandée
-
-```text
-M1 — Reproducible Data Foundation
-```
-
-### Première issue recommandée
-
-```text
-[DATA] Audit, validate and version all project datasets
-```
-
----
-
-## 21. Critères de qualité pour la soutenance
-
-Le projet doit pouvoir répondre clairement aux questions suivantes :
-
-1. Pourquoi ce problème est-il important ?
-2. Quelle est la contribution scientifique du projet ?
-3. Pourquoi ces données ont-elles été choisies ?
-4. Comment les fuites de données ont-elles été évitées ?
-5. Pourquoi le réseau neuronal est-il adapté à la structure des données ?
-6. Le deep learning surpasse-t-il réellement XGBoost ?
-7. Quelle modalité apporte le plus de valeur ?
-8. Le modèle généralise-t-il à une nouvelle année ou région ?
-9. Comment l’incertitude est-elle estimée ?
-10. Comment expliquer une prédiction individuelle ?
-11. Quelles sont les limites du modèle ?
-12. Comment reproduire les résultats ?
-13. Comment déployer et surveiller la solution ?
-14. Comment éviter un usage dangereux ou abusif ?
-
----
-
-## 22. Sources de travail initiales
-
-Documents utilisés comme base de cadrage :
-
-- `RYP_Content_Report.pdf` — intégration de données Sentinel-2, SCAT-3, sol et rendement du riz ;
-- `Drought_Forecasting.pdf` — ensemble XGBoost, LSTM et TabNet pour la sécheresse ;
-- `Predicting_Agriculture_Yields_Based_on_Machine_Lea_251008_101501.pdf` — comparaison de modèles ML/DL pour le rendement ;
-- `Crop_prediction_using_machine_learning_251008_101410.pdf` — recommandation de cultures par apprentissage supervisé.
-
-Les résultats publiés dans ces documents doivent être considérés comme des **points de comparaison**, et non comme des performances automatiquement reproductibles dans ce dépôt.
-
----
-
-## Conclusion
-
-Le niveau expert ne vient pas uniquement de l’utilisation de réseaux neuronaux puissants. Il vient de la combinaison cohérente de :
-
-- données fiables et versionnées ;
-- protocoles expérimentaux rigoureux ;
-- modèles adaptés à la structure des données ;
-- comparaison honnête avec des baselines ;
-- généralisation temporelle et géographique ;
-- explicabilité et incertitude ;
-- qualité logicielle et MLOps ;
-- produit démontrable ;
-- gouvernance et éthique ;
-- rapport scientifique reproductible.
-
-Ce document constitue la feuille de route officielle du projet **AgriPredict AI — Clinique IA aivancity 2026**.
+- la cible est documentée et défendable ;
+- les datasets sont téléchargeables et hashés ;
+- la chaîne Bronze–Silver–Gold est reproductible ;
+- les baselines sont enregistrées ;
+- les modèles sont comparés équitablement ;
+- les horizons 31 mai et 15 juin sont comparés ;
+- la validation temporelle et par parcelle est terminée ;
+- les ablations sont terminées ;
+- l’incertitude est calibrée ;
+- l’explicabilité et la robustesse sont documentées ;
+- l’API et l’interface fonctionnent ;
+- les tests et la CI passent ;
+- le rapport correspond au code ;
+- une release `v1.0.0` est publiée.
