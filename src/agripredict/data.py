@@ -36,12 +36,7 @@ def load_dataset(path: str | Path) -> pd.DataFrame:
 
 
 def temporal_risk_reason(column: str, horizon: str) -> str | None:
-    """Return a conservative leakage-risk reason for one feature.
-
-    Peak, day-of-year and April-May-June aggregate features are excluded until
-    their generation windows and target lineage are proven. This intentionally
-    favors scientific validity over an optimistic score.
-    """
+    """Return a conservative leakage-risk reason for one feature."""
     lower = column.lower()
     if column == TARGET:
         return "target"
@@ -67,8 +62,9 @@ def prepare_data(
     """Build leakage-aware features and aligned target/group/year vectors.
 
     `parcelle_uid` is the parcel-year row key. `ID_PARCEL` is the stable parcel
-    identifier used for grouped validation so that the same physical parcel
-    cannot leak across folds through different years.
+    identifier used for grouped validation. Identifiers are always excluded,
+    including from sensitivity experiments. The optional flag only allows
+    temporal features whose cutoff or target lineage still requires review.
     """
     if horizon not in {"may31", "june15"}:
         raise ValueError("horizon must be 'may31' or 'june15'")
@@ -84,7 +80,7 @@ def prepare_data(
     feature_columns: list[str] = []
     for column in clean.columns:
         reason = temporal_risk_reason(column, horizon)
-        if column == TARGET:
+        if column == TARGET or column in IDENTIFIER_COLUMNS:
             excluded.append(column)
         elif reason and not allow_temporal_risk_features:
             excluded.append(column)
