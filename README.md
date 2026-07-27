@@ -31,6 +31,7 @@ Le projet mesure le compromis entre **anticipation et précision**, sous validat
 Les données officielles sont répertoriées dans :
 
 - [Registre officiel des données](docs/data_sources.md)
+- [Décisions officielles de Phase 0](docs/PHASE0_DATA_DECISIONS.md)
 - [Charte du projet](docs/project_charter.md)
 - [Problématique scientifique](docs/problem_statement.md)
 - [Questions de recherche](docs/research_questions.md)
