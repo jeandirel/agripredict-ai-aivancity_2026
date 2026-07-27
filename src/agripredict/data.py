@@ -8,9 +8,10 @@ from pathlib import Path
 import pandas as pd
 
 TARGET = "harvest_doy_derived"
-GROUP_COLUMN = "parcelle_uid"
+ROW_KEY_COLUMN = "parcelle_uid"
+GROUP_COLUMN = "ID_PARCEL"
 YEAR_COLUMN = "year"
-IDENTIFIER_COLUMNS = {"parcelle_uid", "ID_PARCEL"}
+IDENTIFIER_COLUMNS = {ROW_KEY_COLUMN, GROUP_COLUMN}
 
 
 @dataclass(frozen=True)
@@ -25,7 +26,7 @@ class PreparedData:
 def load_dataset(path: str | Path) -> pd.DataFrame:
     """Load a CSV and enforce the minimum project schema."""
     frame = pd.read_csv(path, low_memory=False)
-    required = {TARGET, GROUP_COLUMN, YEAR_COLUMN}
+    required = {TARGET, ROW_KEY_COLUMN, GROUP_COLUMN, YEAR_COLUMN}
     missing = required - set(frame.columns)
     if missing:
         raise ValueError(f"Missing required columns in {path}: {sorted(missing)}")
@@ -63,14 +64,21 @@ def prepare_data(
     *,
     allow_temporal_risk_features: bool = False,
 ) -> PreparedData:
-    """Build leakage-aware features and aligned target/group/year vectors."""
+    """Build leakage-aware features and aligned target/group/year vectors.
+
+    `parcelle_uid` is the parcel-year row key. `ID_PARCEL` is the stable parcel
+    identifier used for grouped validation so that the same physical parcel
+    cannot leak across folds through different years.
+    """
     if horizon not in {"may31", "june15"}:
         raise ValueError("horizon must be 'may31' or 'june15'")
 
     clean = frame.copy()
     clean[TARGET] = pd.to_numeric(clean[TARGET], errors="coerce")
     clean[YEAR_COLUMN] = pd.to_numeric(clean[YEAR_COLUMN], errors="coerce")
-    clean = clean.dropna(subset=[TARGET, YEAR_COLUMN, GROUP_COLUMN]).reset_index(drop=True)
+    clean = clean.dropna(
+        subset=[TARGET, YEAR_COLUMN, ROW_KEY_COLUMN, GROUP_COLUMN]
+    ).reset_index(drop=True)
 
     excluded: list[str] = []
     feature_columns: list[str] = []
@@ -97,7 +105,7 @@ def prepare_data(
 
 def common_parcel_year_keys(left: pd.DataFrame, right: pd.DataFrame) -> pd.DataFrame:
     """Return the parcel-year intersection used for a fair horizon comparison."""
-    keys = [GROUP_COLUMN, YEAR_COLUMN]
+    keys = [ROW_KEY_COLUMN, YEAR_COLUMN]
     left_keys = left[keys].drop_duplicates()
     right_keys = right[keys].drop_duplicates()
     return left_keys.merge(right_keys, on=keys, how="inner")
