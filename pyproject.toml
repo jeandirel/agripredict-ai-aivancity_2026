@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agripredict-ai"
-version = "0.1.0"
+version = "1.0.0"
 description = "Multimodal parcel-level wheat harvest-date forecasting for aivancity AI Clinic 2026"
 readme = "README.md"
 requires-python = ">=3.11"
