@@ -1,0 +1,655 @@
+{
+  "generated_at": "2026-07-27T23:32:27.983544+00:00",
+  "horizon_comparison": {
+    "common_parcel_years": 1363,
+    "target_equal_count": 1363,
+    "target_different_count": 0,
+    "max_absolute_target_difference": 0.0
+  },
+  "horizons": {
+    "may31": {
+      "generated_at": "2026-07-27T23:31:23.159421+00:00",
+      "horizon": "may31",
+      "dataset": "data/master_ml_final_may31.csv",
+      "task": "parcel-level wheat harvest-date regression",
+      "target": "harvest_doy_derived",
+      "target_unit": "day_of_year",
+      "test_year": 2024,
+      "train_rows": 1200,
+      "test_rows": 163,
+      "feature_count": 67,
+      "feature_columns": [
+        "year",
+        "SURF_PARC",
+        "phh2o_0-5cm",
+        "phh2o_5-15cm",
+        "phh2o_15-30cm",
+        "nitrogen_0-5cm",
+        "nitrogen_5-15cm",
+        "nitrogen_15-30cm",
+        "soc_0-5cm",
+        "soc_5-15cm",
+        "soc_15-30cm",
+        "clay_0-5cm",
+        "clay_5-15cm",
+        "clay_15-30cm",
+        "sand_0-5cm",
+        "silt_0-5cm",
+        "cec_0-5cm",
+        "cec_5-15cm",
+        "cec_15-30cm",
+        "bdod_0-5cm",
+        "bdod_5-15cm",
+        "bdod_15-30cm",
+        "cfvo_0-5cm",
+        "cfvo_5-15cm",
+        "cfvo_15-30cm",
+        "wv0033_0-5cm",
+        "wv1500_0-5cm",
+        "wv0010_0-5cm",
+        "wv0010_15-30cm",
+        "ocd_0-5cm",
+        "ocd_5-15cm",
+        "ocd_15-30cm",
+        "s2_ndvi_march_mean",
+        "s2_ndvi_april_mean",
+        "s2_ndvi_may_mean",
+        "s2_ndvi_winter_mean",
+        "s2_ndvi_spring_mean",
+        "s2_ndwi_amplitude",
+        "s2_ndvi_std",
+        "s2_ndvi_amplitude",
+        "s2_evi_std",
+        "s1_vv_min",
+        "s1_vv_max",
+        "s1_vv_mean",
+        "s1_vh_min",
+        "s1_vh_mean",
+        "s1_vh_amplitude",
+        "s1_ratio_min",
+        "s1_ratio_max",
+        "s1_ratio_mean",
+        "s1_ratio_amplitude",
+        "s1_vv_march_mean",
+        "s1_vv_april_mean",
+        "s1_vv_may_mean",
+        "s1_vv_winter_mean",
+        "s1_vv_std",
+        "s1_vh_std",
+        "s1_ratio_std",
+        "meteo_t_winter_mean",
+        "meteo_precip_winter_sum",
+        "meteo_precip_spring_sum",
+        "meteo_et0_spring_sum",
+        "meteo_wb_spring",
+        "meteo_gdd_spring",
+        "meteo_gdd_to_may31",
+        "meteo_frost_days",
+        "region"
+      ],
+      "excluded_columns": [
+        "ID_PARCEL",
+        "harvest_doy_derived",
+        "parcelle_uid",
+        "s1_ratio_min_doy",
+        "s1_vv_min_doy",
+        "s2_ndwi_peak",
+        "s2_peak_ndvi"
+      ],
+      "allow_temporal_risk_features": false,
+      "selected_model": "ridge",
+      "temporal_metrics": {
+        "mae_days": 8.508090413569825,
+        "rmse_days": 10.63856478371954,
+        "median_absolute_error_days": 7.523005853880761,
+        "r2": 0.05597912526755122,
+        "bias_days": -1.682096689082091,
+        "p90_absolute_error_days": 17.201247479272187,
+        "within_3_days": 0.25153374233128833,
+        "within_5_days": 0.3619631901840491,
+        "within_7_days": 0.4785276073619632,
+        "within_10_days": 0.6625766871165644
+      },
+      "group_cv_mae_mean": 6.072219159061345,
+      "group_cv_mae_std": 0.22743147708196745,
+      "residual_absolute_error_q90_days": 17.201247479272187,
+      "global_feature_importance": [
+        {
+          "feature": "meteo_gdd_to_may31",
+          "importance_mean": 0.46331784604982684,
+          "importance_std": 0.10480306013542366
+        },
+        {
+          "feature": "s1_ratio_mean",
+          "importance_mean": 0.4122436746481897,
+          "importance_std": 0.14165542564516018
+        },
+        {
+          "feature": "s2_ndvi_may_mean",
+          "importance_mean": 0.3020901520302284,
+          "importance_std": 0.13472768592175557
+        },
+        {
+          "feature": "s1_vh_min",
+          "importance_mean": 0.2629676525464504,
+          "importance_std": 0.057409020421507424
+        },
+        {
+          "feature": "s1_vv_may_mean",
+          "importance_mean": 0.23114714675546066,
+          "importance_std": 0.076337643527221
+        },
+        {
+          "feature": "s1_vv_winter_mean",
+          "importance_mean": 0.2247265807781509,
+          "importance_std": 0.0982868286030507
+        },
+        {
+          "feature": "s1_vh_std",
+          "importance_mean": 0.2064402071263931,
+          "importance_std": 0.06426072431870043
+        },
+        {
+          "feature": "s1_vv_mean",
+          "importance_mean": 0.19305131420140786,
+          "importance_std": 0.10527980591661132
+        },
+        {
+          "feature": "wv0010_0-5cm",
+          "importance_mean": 0.1715981824539201,
+          "importance_std": 0.03733394633421098
+        },
+        {
+          "feature": "meteo_gdd_spring",
+          "importance_mean": 0.1412570363712442,
+          "importance_std": 0.04104697866524754
+        },
+        {
+          "feature": "soc_0-5cm",
+          "importance_mean": 0.12773563239042418,
+          "importance_std": 0.07267611387870225
+        },
+        {
+          "feature": "wv1500_0-5cm",
+          "importance_mean": 0.12346073435169935,
+          "importance_std": 0.0635586061015686
+        },
+        {
+          "feature": "s2_ndvi_std",
+          "importance_mean": 0.11916633219542483,
+          "importance_std": 0.048750821355930896
+        },
+        {
+          "feature": "phh2o_5-15cm",
+          "importance_mean": 0.1138341870686519,
+          "importance_std": 0.05905732399534127
+        },
+        {
+          "feature": "s1_ratio_min",
+          "importance_mean": 0.10316360730284702,
+          "importance_std": 0.11089492392387026
+        },
+        {
+          "feature": "s1_vv_min",
+          "importance_mean": 0.1031094003023334,
+          "importance_std": 0.09359456105136085
+        },
+        {
+          "feature": "s1_ratio_amplitude",
+          "importance_mean": 0.09703519312999198,
+          "importance_std": 0.021782562757272583
+        },
+        {
+          "feature": "s1_vv_march_mean",
+          "importance_mean": 0.09040043722413693,
+          "importance_std": 0.0513105048080067
+        },
+        {
+          "feature": "cec_5-15cm",
+          "importance_mean": 0.08749871184730451,
+          "importance_std": 0.024827719769666065
+        },
+        {
+          "feature": "clay_0-5cm",
+          "importance_mean": 0.07815525404357548,
+          "importance_std": 0.0680854483156758
+        }
+      ],
+      "caution": "Predictive associations are not causal. The target is derived and must be presented as such.",
+      "candidate_results": [
+        {
+          "model": "ridge",
+          "temporal_metrics": {
+            "mae_days": 8.508090413569825,
+            "rmse_days": 10.63856478371954,
+            "median_absolute_error_days": 7.523005853880761,
+            "r2": 0.05597912526755122,
+            "bias_days": -1.682096689082091,
+            "p90_absolute_error_days": 17.201247479272187,
+            "within_3_days": 0.25153374233128833,
+            "within_5_days": 0.3619631901840491,
+            "within_7_days": 0.4785276073619632,
+            "within_10_days": 0.6625766871165644
+          },
+          "group_cv_mae_mean": 6.072219159061345,
+          "group_cv_mae_std": 0.22743147708196745
+        },
+        {
+          "model": "hist_gradient_boosting",
+          "temporal_metrics": {
+            "mae_days": 8.62790620670268,
+            "rmse_days": 10.644535004901478,
+            "median_absolute_error_days": 7.149940615674751,
+            "r2": 0.054919284026735515,
+            "bias_days": -3.1212719417732213,
+            "p90_absolute_error_days": 16.490768890026388,
+            "within_3_days": 0.17791411042944785,
+            "within_5_days": 0.3128834355828221,
+            "within_7_days": 0.49079754601226994,
+            "within_10_days": 0.6625766871165644
+          },
+          "group_cv_mae_mean": 6.020662651249475,
+          "group_cv_mae_std": 0.1905855944182338
+        },
+        {
+          "model": "random_forest",
+          "temporal_metrics": {
+            "mae_days": 8.778283363031258,
+            "rmse_days": 10.881786091022677,
+            "median_absolute_error_days": 7.0256339921653534,
+            "r2": 0.012320859626751446,
+            "bias_days": -4.24589900929992,
+            "p90_absolute_error_days": 17.824131353137666,
+            "within_3_days": 0.15337423312883436,
+            "within_5_days": 0.3619631901840491,
+            "within_7_days": 0.49693251533742333,
+            "within_10_days": 0.6809815950920245
+          },
+          "group_cv_mae_mean": 5.907362358369239,
+          "group_cv_mae_std": 0.18074236393361084
+        },
+        {
+          "model": "extra_trees",
+          "temporal_metrics": {
+            "mae_days": 8.931986818992192,
+            "rmse_days": 11.113810110862891,
+            "median_absolute_error_days": 7.117072649572577,
+            "r2": -0.030247233654115746,
+            "bias_days": -4.909861209427973,
+            "p90_absolute_error_days": 18.54679166666666,
+            "within_3_days": 0.17791411042944785,
+            "within_5_days": 0.37423312883435583,
+            "within_7_days": 0.49693251533742333,
+            "within_10_days": 0.6687116564417178
+          },
+          "group_cv_mae_mean": 5.961771020299149,
+          "group_cv_mae_std": 0.1982352147923701
+        },
+        {
+          "model": "dummy_median",
+          "temporal_metrics": {
+            "mae_days": 9.50613496932515,
+            "rmse_days": 11.657555600996304,
+            "median_absolute_error_days": 9.166666666666657,
+            "r2": -0.133523435757958,
+            "bias_days": -4.00102249488752,
+            "p90_absolute_error_days": 20.5,
+            "within_3_days": 0.12883435582822086,
+            "within_5_days": 0.17791411042944785,
+            "within_7_days": 0.48466257668711654,
+            "within_10_days": 0.7239263803680982
+          },
+          "group_cv_mae_mean": 8.019508547008545,
+          "group_cv_mae_std": 0.1296469292211854
+        },
+        {
+          "model": "mlp_neural_network",
+          "temporal_metrics": {
+            "mae_days": 141.79086801098046,
+            "rmse_days": 145.7535798964279,
+            "median_absolute_error_days": 142.16051162813068,
+            "r2": -176.19602426649556,
+            "bias_days": 141.79086801098046,
+            "p90_absolute_error_days": 180.90519099616813,
+            "within_3_days": 0.0,
+            "within_5_days": 0.0,
+            "within_7_days": 0.0,
+            "within_10_days": 0.0
+          },
+          "group_cv_mae_mean": 11.54692858649842,
+          "group_cv_mae_std": 0.46833493435926477
+        }
+      ]
+    },
+    "june15": {
+      "generated_at": "2026-07-27T23:32:27.981766+00:00",
+      "horizon": "june15",
+      "dataset": "data/master_ml_final_june15.csv",
+      "task": "parcel-level wheat harvest-date regression",
+      "target": "harvest_doy_derived",
+      "target_unit": "day_of_year",
+      "test_year": 2024,
+      "train_rows": 1200,
+      "test_rows": 163,
+      "feature_count": 72,
+      "feature_columns": [
+        "year",
+        "SURF_PARC",
+        "phh2o_0-5cm",
+        "phh2o_5-15cm",
+        "phh2o_15-30cm",
+        "nitrogen_0-5cm",
+        "nitrogen_5-15cm",
+        "nitrogen_15-30cm",
+        "soc_0-5cm",
+        "soc_5-15cm",
+        "soc_15-30cm",
+        "clay_0-5cm",
+        "clay_5-15cm",
+        "clay_15-30cm",
+        "sand_0-5cm",
+        "silt_0-5cm",
+        "cec_0-5cm",
+        "cec_5-15cm",
+        "cec_15-30cm",
+        "bdod_0-5cm",
+        "bdod_5-15cm",
+        "bdod_15-30cm",
+        "cfvo_0-5cm",
+        "cfvo_5-15cm",
+        "cfvo_15-30cm",
+        "wv0033_0-5cm",
+        "wv1500_0-5cm",
+        "wv0010_0-5cm",
+        "wv0010_15-30cm",
+        "ocd_0-5cm",
+        "ocd_5-15cm",
+        "ocd_15-30cm",
+        "s2_ndvi_march_mean",
+        "s2_ndvi_april_mean",
+        "s2_ndvi_may_mean",
+        "s2_ndvi_winter_mean",
+        "s2_ndvi_spring_mean",
+        "s2_ndwi_amplitude",
+        "s2_ndvi_std",
+        "s2_ndvi_amplitude",
+        "s2_evi_std",
+        "s1_vv_min",
+        "s1_vv_max",
+        "s1_vv_mean",
+        "s1_vh_min",
+        "s1_vh_mean",
+        "s1_vh_amplitude",
+        "s1_ratio_min",
+        "s1_ratio_max",
+        "s1_ratio_mean",
+        "s1_ratio_amplitude",
+        "s1_vv_march_mean",
+        "s1_vv_april_mean",
+        "s1_vv_may_mean",
+        "s1_vv_winter_mean",
+        "s1_vv_std",
+        "s1_vh_std",
+        "s1_ratio_std",
+        "meteo_t_winter_mean",
+        "meteo_precip_winter_sum",
+        "meteo_precip_spring_sum",
+        "meteo_et0_spring_sum",
+        "meteo_wb_spring",
+        "meteo_gdd_spring",
+        "meteo_gdd_to_may31",
+        "meteo_frost_days",
+        "meteo_wb_amj",
+        "meteo_gdd_amj",
+        "meteo_heat_stress_days",
+        "meteo_dry_streak_max",
+        "meteo_wet_streak_max",
+        "region"
+      ],
+      "excluded_columns": [
+        "ID_PARCEL",
+        "harvest_doy_derived",
+        "meteo_et0_amj_sum",
+        "meteo_precip_amj_n_days",
+        "meteo_precip_amj_sum",
+        "meteo_radiation_amj_sum",
+        "meteo_t_amj_max",
+        "meteo_t_amj_mean",
+        "meteo_t_amj_min",
+        "meteo_t_amj_std",
+        "parcelle_uid",
+        "s1_ratio_min_doy",
+        "s1_vv_min_doy",
+        "s2_ndwi_peak",
+        "s2_ndwi_peak_doy",
+        "s2_peak_doy",
+        "s2_peak_evi",
+        "s2_peak_ndvi"
+      ],
+      "allow_temporal_risk_features": false,
+      "selected_model": "extra_trees",
+      "temporal_metrics": {
+        "mae_days": 8.463989434219492,
+        "rmse_days": 10.320967063374454,
+        "median_absolute_error_days": 7.162227564102579,
+        "r2": 0.11150232258467452,
+        "bias_days": -1.7056106785171523,
+        "p90_absolute_error_days": 18.442198717948887,
+        "within_3_days": 0.15337423312883436,
+        "within_5_days": 0.25153374233128833,
+        "within_7_days": 0.49079754601226994,
+        "within_10_days": 0.7300613496932515
+      },
+      "group_cv_mae_mean": 5.962312304131055,
+      "group_cv_mae_std": 0.18819432322174828,
+      "residual_absolute_error_q90_days": 18.442198717948887,
+      "global_feature_importance": [
+        {
+          "feature": "s2_ndvi_may_mean",
+          "importance_mean": 0.12323233328745253,
+          "importance_std": 0.04885073144729703
+        },
+        {
+          "feature": "wv0010_0-5cm",
+          "importance_mean": 0.1125528084198526,
+          "importance_std": 0.04222494202933176
+        },
+        {
+          "feature": "meteo_gdd_amj",
+          "importance_mean": 0.07407043088983434,
+          "importance_std": 0.024152315444907313
+        },
+        {
+          "feature": "meteo_gdd_spring",
+          "importance_mean": 0.0710157519925545,
+          "importance_std": 0.032257188461005656
+        },
+        {
+          "feature": "s2_ndvi_winter_mean",
+          "importance_mean": 0.04699282860757514,
+          "importance_std": 0.016651829651499646
+        },
+        {
+          "feature": "s1_vv_april_mean",
+          "importance_mean": 0.03499144234046336,
+          "importance_std": 0.01833055758856713
+        },
+        {
+          "feature": "s1_vv_march_mean",
+          "importance_mean": 0.03430371211525829,
+          "importance_std": 0.014542713812253997
+        },
+        {
+          "feature": "clay_15-30cm",
+          "importance_mean": 0.03253951516700648,
+          "importance_std": 0.006944459757689017
+        },
+        {
+          "feature": "s2_ndvi_march_mean",
+          "importance_mean": 0.029054384766137975,
+          "importance_std": 0.010756188841243056
+        },
+        {
+          "feature": "s1_vv_std",
+          "importance_mean": 0.026195880689264817,
+          "importance_std": 0.008943914980845314
+        },
+        {
+          "feature": "wv0010_15-30cm",
+          "importance_mean": 0.02393638000760623,
+          "importance_std": 0.010137000149963535
+        },
+        {
+          "feature": "silt_0-5cm",
+          "importance_mean": 0.02154973110351177,
+          "importance_std": 0.012158327279442922
+        },
+        {
+          "feature": "s2_ndvi_april_mean",
+          "importance_mean": 0.020990759038593154,
+          "importance_std": 0.018572541821431143
+        },
+        {
+          "feature": "s1_vv_min",
+          "importance_mean": 0.020239438316029812,
+          "importance_std": 0.01641916155376309
+        },
+        {
+          "feature": "s2_ndvi_spring_mean",
+          "importance_mean": 0.019719870811702345,
+          "importance_std": 0.007999808075000045
+        },
+        {
+          "feature": "clay_0-5cm",
+          "importance_mean": 0.018689404069005988,
+          "importance_std": 0.007263942094191524
+        },
+        {
+          "feature": "sand_0-5cm",
+          "importance_mean": 0.01734992347674491,
+          "importance_std": 0.007161376884807554
+        },
+        {
+          "feature": "s1_ratio_std",
+          "importance_mean": 0.017320178543336784,
+          "importance_std": 0.014391891272652531
+        },
+        {
+          "feature": "ocd_0-5cm",
+          "importance_mean": 0.017267366026952446,
+          "importance_std": 0.006075973586754172
+        },
+        {
+          "feature": "cec_0-5cm",
+          "importance_mean": 0.01553157444549158,
+          "importance_std": 0.0073971145933336025
+        }
+      ],
+      "caution": "Predictive associations are not causal. The target is derived and must be presented as such.",
+      "candidate_results": [
+        {
+          "model": "extra_trees",
+          "temporal_metrics": {
+            "mae_days": 8.463989434219492,
+            "rmse_days": 10.320967063374454,
+            "median_absolute_error_days": 7.162227564102579,
+            "r2": 0.11150232258467452,
+            "bias_days": -1.7056106785171523,
+            "p90_absolute_error_days": 18.442198717948887,
+            "within_3_days": 0.15337423312883436,
+            "within_5_days": 0.25153374233128833,
+            "within_7_days": 0.49079754601226994,
+            "within_10_days": 0.7300613496932515
+          },
+          "group_cv_mae_mean": 5.962312304131055,
+          "group_cv_mae_std": 0.18819432322174828
+        },
+        {
+          "model": "random_forest",
+          "temporal_metrics": {
+            "mae_days": 8.464628533950433,
+            "rmse_days": 10.384785342017322,
+            "median_absolute_error_days": 6.844568757631265,
+            "r2": 0.10048054570675524,
+            "bias_days": -2.058483296277974,
+            "p90_absolute_error_days": 17.640752508371293,
+            "within_3_days": 0.1656441717791411,
+            "within_5_days": 0.2822085889570552,
+            "within_7_days": 0.50920245398773,
+            "within_10_days": 0.7177914110429447
+          },
+          "group_cv_mae_mean": 5.922992025511365,
+          "group_cv_mae_std": 0.17936415644798875
+        },
+        {
+          "model": "hist_gradient_boosting",
+          "temporal_metrics": {
+            "mae_days": 8.708681871876491,
+            "rmse_days": 10.599201350381648,
+            "median_absolute_error_days": 7.4244090492497605,
+            "r2": 0.06295208758103898,
+            "bias_days": -1.8905774897165264,
+            "p90_absolute_error_days": 17.538374661967115,
+            "within_3_days": 0.17791411042944785,
+            "within_5_days": 0.294478527607362,
+            "within_7_days": 0.44171779141104295,
+            "within_10_days": 0.6871165644171779
+          },
+          "group_cv_mae_mean": 6.071833787756959,
+          "group_cv_mae_std": 0.20250418520210747
+        },
+        {
+          "model": "ridge",
+          "temporal_metrics": {
+            "mae_days": 8.715106087665013,
+            "rmse_days": 10.988651462386567,
+            "median_absolute_error_days": 7.726600052397146,
+            "r2": -0.007173545348417409,
+            "bias_days": -1.8248941948106956,
+            "p90_absolute_error_days": 17.86868034436553,
+            "within_3_days": 0.2331288343558282,
+            "within_5_days": 0.37423312883435583,
+            "within_7_days": 0.4539877300613497,
+            "within_10_days": 0.6319018404907976
+          },
+          "group_cv_mae_mean": 6.073185022605221,
+          "group_cv_mae_std": 0.2129303063867853
+        },
+        {
+          "model": "dummy_median",
+          "temporal_metrics": {
+            "mae_days": 9.50613496932515,
+            "rmse_days": 11.657555600996304,
+            "median_absolute_error_days": 9.166666666666657,
+            "r2": -0.133523435757958,
+            "bias_days": -4.00102249488752,
+            "p90_absolute_error_days": 20.5,
+            "within_3_days": 0.12883435582822086,
+            "within_5_days": 0.17791411042944785,
+            "within_7_days": 0.48466257668711654,
+            "within_10_days": 0.7239263803680982
+          },
+          "group_cv_mae_mean": 8.019508547008545,
+          "group_cv_mae_std": 0.1296469292211854
+        },
+        {
+          "model": "mlp_neural_network",
+          "temporal_metrics": {
+            "mae_days": 92.25198454707002,
+            "rmse_days": 96.89677056826426,
+            "median_absolute_error_days": 89.10579183202805,
+            "r2": -77.31304638332183,
+            "bias_days": 92.25198454707002,
+            "p90_absolute_error_days": 127.28764206475897,
+            "within_3_days": 0.0,
+            "within_5_days": 0.0,
+            "within_7_days": 0.0,
+            "within_10_days": 0.0
+          },
+          "group_cv_mae_mean": 10.495083256695732,
+          "group_cv_mae_std": 0.28411632174993073
+        }
+      ]
+    }
+  }
+}

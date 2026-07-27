@@ -1,0 +1,165 @@
+dataset,column,modality,availability_status,rationale
+may31,parcelle_uid,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,year,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,ID_PARCEL,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,SURF_PARC,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,phh2o_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,phh2o_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,phh2o_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,nitrogen_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,nitrogen_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,nitrogen_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,soc_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,soc_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,soc_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,clay_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,clay_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,clay_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,sand_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,silt_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,cec_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,cec_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,cec_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,bdod_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,bdod_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,bdod_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,cfvo_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,cfvo_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,cfvo_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,wv0033_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,wv1500_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,wv0010_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,wv0010_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,ocd_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,ocd_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,ocd_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_peak_ndvi,sentinel2,manual_review,Peak statistic: verify that the peak is computed only with observations available by cutoff.
+may31,s2_ndvi_march_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_ndvi_april_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_ndvi_may_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_ndvi_winter_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_ndvi_spring_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_ndwi_peak,sentinel2,manual_review,Peak statistic: verify that the peak is computed only with observations available by cutoff.
+may31,s2_ndwi_amplitude,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_ndvi_std,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_ndvi_amplitude,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s2_evi_std,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_min,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_min_doy,sentinel1,manual_review,Phenological day-of-year feature: verify its observation window and target lineage.
+may31,s1_vv_max,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vh_min,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vh_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vh_amplitude,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_ratio_min,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_ratio_min_doy,sentinel1,manual_review,Phenological day-of-year feature: verify its observation window and target lineage.
+may31,s1_ratio_max,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_ratio_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_ratio_amplitude,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_march_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_april_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_may_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_winter_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vv_std,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_vh_std,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,s1_ratio_std,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_t_winter_mean,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_precip_winter_sum,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_precip_spring_sum,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_et0_spring_sum,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_wb_spring,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_gdd_spring,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_gdd_to_may31,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,meteo_frost_days,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+may31,harvest_doy_derived,target,target,Target; never used as an input feature.
+may31,region,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,parcelle_uid,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,year,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,ID_PARCEL,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,SURF_PARC,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,phh2o_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,phh2o_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,phh2o_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,nitrogen_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,nitrogen_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,nitrogen_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,soc_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,soc_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,soc_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,clay_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,clay_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,clay_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,sand_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,silt_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,cec_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,cec_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,cec_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,bdod_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,bdod_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,bdod_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,cfvo_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,cfvo_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,cfvo_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,wv0033_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,wv1500_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,wv0010_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,wv0010_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,ocd_0-5cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,ocd_5-15cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,ocd_15-30cm,soil,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_peak_ndvi,sentinel2,manual_review,Peak statistic: verify that the peak is computed only with observations available by cutoff.
+june15,s2_ndvi_march_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_ndvi_april_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_ndvi_may_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_ndvi_winter_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_ndvi_spring_mean,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_ndwi_peak,sentinel2,manual_review,Peak statistic: verify that the peak is computed only with observations available by cutoff.
+june15,s2_ndwi_amplitude,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_ndvi_std,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_ndvi_amplitude,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_evi_std,sentinel2,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s2_peak_doy,sentinel2,manual_review,Phenological day-of-year feature: verify its observation window and target lineage.
+june15,s2_ndwi_peak_doy,sentinel2,manual_review,Phenological day-of-year feature: verify its observation window and target lineage.
+june15,s2_peak_evi,sentinel2,manual_review,Peak statistic: verify that the peak is computed only with observations available by cutoff.
+june15,s1_vv_min,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vv_min_doy,sentinel1,manual_review,Phenological day-of-year feature: verify its observation window and target lineage.
+june15,s1_vv_max,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vv_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vh_min,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vh_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vh_amplitude,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_ratio_min,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_ratio_min_doy,sentinel1,manual_review,Phenological day-of-year feature: verify its observation window and target lineage.
+june15,s1_ratio_max,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_ratio_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_ratio_amplitude,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vv_march_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vv_april_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vv_may_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vv_winter_mean,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vv_std,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_vh_std,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,s1_ratio_std,sentinel1,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_t_winter_mean,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_precip_winter_sum,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_precip_spring_sum,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_et0_spring_sum,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_wb_spring,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_gdd_spring,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_gdd_to_may31,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_frost_days,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_t_amj_mean,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,meteo_t_amj_max,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,meteo_t_amj_min,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,meteo_t_amj_std,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,meteo_precip_amj_sum,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,meteo_precip_amj_n_days,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,meteo_et0_amj_sum,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,meteo_wb_amj,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_gdd_amj,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_heat_stress_days,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_dry_streak_max,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_wet_streak_max,weather,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
+june15,meteo_radiation_amj_sum,weather,manual_review,"AMJ aggregate must stop on 15 June, not at the end of June."
+june15,harvest_doy_derived,target,target,Target; never used as an input feature.
+june15,region,identity_geography,provisionally_allowed,No obvious cutoff violation from the column name; pipeline evidence still required.
