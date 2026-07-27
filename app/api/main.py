@@ -46,19 +46,40 @@ class ModelRegistry:
 registry = ModelRegistry(MODEL_ROOT)
 app = FastAPI(
     title="AgriPredict AI API",
-    version="0.1.0",
-    description="Parcel-level wheat harvest-date prediction for the aivancity AI Clinic 2026.",
+    version="1.0.0",
+    description=(
+        "Parcel-level wheat harvest-date prediction for the aivancity AI Clinic 2026. "
+        "Research prototype restricted to Centre-Val de Loire."
+    ),
 )
 
 
 @app.get("/health")
 def health() -> dict[str, Any]:
-    return {"status": "ok", "available_models": registry.available()}
+    return {
+        "status": "ok",
+        "version": app.version,
+        "available_models": registry.available(),
+    }
+
+
+@app.get("/readiness")
+def readiness() -> dict[str, Any]:
+    required = {"may31", "june15"}
+    available = set(registry.available())
+    ready = required.issubset(available)
+    return {
+        "status": "ready" if ready else "not_ready",
+        "required_models": sorted(required),
+        "available_models": sorted(available),
+        "missing_models": sorted(required - available),
+    }
 
 
 @app.get("/model-info")
 def model_info() -> dict[str, Any]:
     return {
+        "version": app.version,
         "model_root": str(MODEL_ROOT),
         "available_models": registry.available(),
         "metadata": registry.metadata,
@@ -71,6 +92,42 @@ def reload_models() -> dict[str, Any]:
     return {"status": "reloaded", "available_models": registry.available()}
 
 
+def _input_warnings(
+    expected: list[str],
+    supplied: dict[str, Any],
+    year: int,
+    metadata: dict[str, Any],
+) -> tuple[list[str], float]:
+    warnings: list[str] = []
+    non_year_expected = [column for column in expected if column != "year"]
+    supplied_count = sum(
+        column in supplied and supplied[column] is not None for column in non_year_expected
+    )
+    coverage = supplied_count / max(1, len(non_year_expected))
+    if coverage < 0.50:
+        warnings.append(
+            "Moins de 50 % des variables attendues sont fournies ; la majorité sera imputée et l’incertitude réelle peut être supérieure."
+        )
+    elif coverage < 0.80:
+        warnings.append(
+            "Certaines variables sont absentes et seront imputées. Interprétez la prédiction avec prudence."
+        )
+
+    protocol = metadata.get("evaluation_protocol", {})
+    test_year = protocol.get("test_year", metadata.get("test_year"))
+    development_years = protocol.get("development_years", [])
+    known_years = [int(value) for value in development_years if value is not None]
+    if protocol.get("calibration_year") is not None:
+        known_years.append(int(protocol["calibration_year"]))
+    if test_year is not None:
+        known_years.append(int(test_year))
+    if known_years and (year < min(known_years) or year > max(known_years)):
+        warnings.append(
+            f"L’année {year} est hors de la période évaluée {min(known_years)}–{max(known_years)}."
+        )
+    return warnings, coverage
+
+
 @app.post("/predict/harvest-date")
 def predict_harvest_date(request: PredictionRequest) -> dict[str, Any]:
     if request.horizon not in registry.models:
@@ -78,6 +135,9 @@ def predict_harvest_date(request: PredictionRequest) -> dict[str, Any]:
 
     metadata = registry.metadata[request.horizon]
     expected = metadata.get("feature_columns", [])
+    if not expected:
+        raise HTTPException(status_code=503, detail="Model metadata does not contain feature_columns")
+
     row = dict(request.features)
     row.setdefault("year", request.year)
     frame = pd.DataFrame([{column: row.get(column) for column in expected}])
@@ -93,21 +153,27 @@ def predict_harvest_date(request: PredictionRequest) -> dict[str, Any]:
     high_doy = min(366, int(round(predicted_doy + half_width)))
     low_date = datetime(request.year, 1, 1) + timedelta(days=low_doy - 1)
     high_date = datetime(request.year, 1, 1) + timedelta(days=high_doy - 1)
+    warnings, input_coverage = _input_warnings(expected, row, request.year, metadata)
 
     return {
+        "version": app.version,
         "horizon": request.horizon,
         "model": metadata.get("selected_model"),
         "predicted_doy": predicted_doy,
         "predicted_date": predicted_date.date().isoformat(),
         "prediction_interval_approx_90": {
+            "method": metadata.get("conformal_interval", {}).get("method", "split-conformal or residual quantile"),
             "half_width_days": half_width,
             "low_doy": low_doy,
             "high_doy": high_doy,
             "low_date": low_date.date().isoformat(),
             "high_date": high_date.date().isoformat(),
         },
+        "input_coverage": input_coverage,
+        "warnings": warnings,
         "domain": "Wheat parcels in Centre-Val de Loire; extrapolation requires validation.",
         "target_notice": "The target is derived and is not presented as a direct field observation.",
+        "human_oversight": "The final harvest decision must remain with qualified agricultural actors.",
     }
 
 
@@ -120,5 +186,6 @@ def explain(horizon: Literal["may31", "june15"]) -> dict[str, Any]:
         "horizon": horizon,
         "method": "permutation importance on the chronological test year",
         "global_feature_importance": metadata.get("global_feature_importance", []),
+        "ablation_study": metadata.get("ablation_study", []),
         "caution": "Importance is predictive association, not causality.",
     }
