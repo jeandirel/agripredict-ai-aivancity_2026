@@ -1,320 +1,280 @@
-# AgriPredict AI — Inventaire initial des données et sources
+# AgriPredict AI — Registre officiel des données
 
-> **Cadre :** Clinique IA d’aivancity — 2026  
-> **Version :** 1.0  
-> **Statut :** Inventaire initial fondé sur les documents disponibles dans le dépôt et les références du projet. Les fichiers de données brutes, leurs licences et leurs schémas doivent encore être vérifiés avant modélisation.
+> **Cadre :** Clinique IA d’aivancity — Promotion 2026  
+> **Responsable :** Jean Direl NZE  
+> **Version :** 2.0  
+> **Statut :** sources officielles du projet confirmées par le responsable du projet
 
-## 1. Règle de gouvernance
+## 1. Objet du registre
 
-Une publication, un rapport ou un PDF décrivant un dataset ne constitue pas automatiquement un droit d’accès ni de redistribution du dataset.
+Ce document constitue la source de vérité de la Phase 0 pour les données d’AgriPredict AI. Il remplace le cadrage provisoire fondé sur un projet de rendement du riz en Inde.
 
-Chaque source doit donc être classée comme :
+Le projet réel porte sur des **parcelles de blé du Centre-Val de Loire** et sur la **prédiction de la date de récolte à l’échelle parcellaire**, à partir de données multimodales issues du sol, de Sentinel-1, de Sentinel-2, de la météorologie et de références agricoles.
 
-- **référence scientifique** ;
-- **source de téléchargement** ;
-- **fichier de données effectivement acquis** ;
-- **donnée dérivée produite par la pipeline**.
+La cible principale observée dans les tables ML est `harvest_doy_derived`, exprimée en **jour de l’année**. Sa méthode de construction doit être auditée à partir des rapports méthodologiques présents dans le dépôt avant tout entraînement final.
 
-Aucune donnée brute ne doit être ajoutée au dépôt public avant validation de sa licence.
+## 2. Architecture des données
 
-## 2. Inventaire synthétique
+```text
+Sources originales
+RPG / France data.gouv + NASA POWER + SoilGrids + Sentinel-1 + Sentinel-2 + Céré'Obs
+                                  │
+                                  ▼
+                    Jeux bruts sans transformation
+                                  │
+                                  ▼
+                  Tables brutes combinées et alignées
+                                  │
+                                  ▼
+                 Tables prêtes pour le Machine Learning
+                                  │
+                                  ▼
+                   Jeux finaux au 31 mai et au 15 juin
+```
 
-| ID | Source | Nature | Module | Statut d’accès | Licence / redistribution | Action suivante |
-|---|---|---|---|---|---|---|
-| DS-001 | Rapport RYP — intégration télédétection et ML pour rendement du riz | Rapport de projet / référence | Rendement | PDF disponible | À vérifier pour les datasets sous-jacents | Localiser les fichiers bruts et confirmer les droits |
-| DS-002 | Sentinel-2 / Copernicus | Imagerie satellitaire optique | Rendement | Source identifiée | Conditions Copernicus à documenter | Définir zone, période et méthode de téléchargement |
-| DS-003 | EOS-06 SCAT-3 / MOSDAC | Données micro-ondes | Rendement | Source identifiée | Conditions MOSDAC à vérifier | Confirmer accès, format et droits d’usage |
-| DS-004 | Masques riz 2023–2024 | Raster de cultures | Rendement | Mentionnés dans le rapport | Source et licence non précisées | Identifier le fournisseur exact |
-| DS-005 | GADM | Limites administratives | Rendement | Source identifiée | Licence GADM à vérifier pour l’usage prévu | Documenter la version et la redistribution |
-| DS-006 | Paramètres du sol AWC, FC, WP, SWC | Données pédologiques | Rendement | Mentionnés dans le rapport | Source exacte à confirmer | Retrouver fichier et documentation |
-| DS-007 | Rendements de riz par district | Cible supervisée | Rendement | Rapports gouvernementaux mentionnés | Source et licence à confirmer | Identifier organisme, unité et années |
-| DS-008 | Données météo associées aux districts | Séries météorologiques | Rendement | Non fixées | À déterminer | Choisir une source cohérente avec la zone |
-| DS-009 | US drought meteorological data | Dataset tabulaire / temporel potentiel | Sécheresse | Source Kaggle mentionnée | Licence Kaggle/dataset à vérifier | Télécharger et auditer la chronologie réelle |
-| DS-010 | Crop Recommendation dataset | Dataset tabulaire | Recommandation | Source Kaggle mentionnée | Licence à vérifier | Télécharger, empreinter et vérifier les doublons |
-| DS-011 | data.gov.in | Statistiques agricoles | Rendement / extension | Portail identifié | Licence ouverte à confirmer par ressource | Identifier les jeux précis utilisés |
-| DS-012 | aps.dac.gov.in | Production agricole indienne | Rendement / extension | Portail identifié | Conditions à vérifier | Vérifier disponibilité historique et granularité |
+Cette architecture doit permettre deux niveaux de reproductibilité :
 
-## 3. Source principale — Rendement du riz multimodal
+1. **reproductibilité scientifique rapide**, à partir des jeux ML finaux ;
+2. **reproductibilité complète de la chaîne**, depuis les sources brutes jusqu’aux tables finales.
 
-### 3.1 Référence
+## 3. Jeux finaux à utiliser
 
-Le rapport **Integrating Remote Sensing Data with Machine Learning for Predicting Rice Crop Yields: A Geospatial Analysis Approach** décrit un cadre de prédiction du rendement du riz à l’échelle des districts.
+| ID | Dataset | Rôle | URL officielle |
+|---|---|---|---|
+| FIN-031 | Dataset final au 31 mai | Prévision précoce de la récolte avec les informations disponibles au 31 mai | <http://kaggle.com/datasets/rgislikassi/master-ml-final-may31/data> |
+| FIN-0615 | Dataset final au 15 juin | Prévision plus tardive avec un signal agronomique enrichi jusqu’au 15 juin | <https://www.kaggle.com/datasets/rgislikassi/master-ml-final-juin15> |
 
-### 3.2 Périmètre décrit
+### Décision d’usage
 
-- 13 États rizicoles de l’Inde : Andhra Pradesh, Assam, Bihar, Chhattisgarh, Haryana, Jharkhand, Karnataka, Madhya Pradesh, Odisha, Punjab, Telangana, Uttar Pradesh et West Bengal ;
-- années 2023 et 2024 ;
-- sorties à l’échelle district × année ;
-- agrégation temporelle par périodes de quinze jours entre juillet et septembre.
+- `master-ml-final-may31` est le dataset de **prévision précoce**.
+- `master-ml-final-juin15` est le dataset de **prévision enrichie** et le candidat principal pour la meilleure performance.
+- Les deux jeux doivent être évalués avec le même protocole afin de mesurer le compromis entre **anticipation** et **précision**.
 
-### 3.3 Variables décrites
+### Question expérimentale associée
 
-#### Satellitaire optique
+> Combien de jours de précision supplémentaire obtient-on en attendant le 15 juin, et ce gain justifie-t-il la réduction du délai d’anticipation par rapport à une prévision arrêtée au 31 mai ?
+
+## 4. Jeux bruts sans transformation
+
+Ces jeux proviennent des sources originales ou de leurs extractions directes. Ils constituent la couche Bronze du projet.
+
+| ID | Dataset | Contenu principal | Couverture indiquée par le titre | URL officielle |
+|---|---|---|---|---|
+| RAW-SOIL | Soil Features Centre-Val de Loire — 1 500 parcelles | Propriétés pédologiques multi-profondeurs issues de SoilGrids | Environ 1 500 parcelles | <https://www.kaggle.com/datasets/rgislikassi/soil-features-centre-val-de-loire-1500-parcels/data> |
+| RAW-RPG | `parcele_ble_cvl_300` | Parcelles de blé issues des données parcellaires françaises | Centre-Val de Loire | <https://www.kaggle.com/datasets/rgislikassi/parcele-ble-cvl-300/data> |
+| RAW-METEO | Météo Centre-Val de Loire NASA POWER | Variables météorologiques et agroclimatiques | 2019–2024 | <https://www.kaggle.com/datasets/rgislikassi/meteo-centre-vale-de-loire-2019-2024-nasapower/data> |
+| RAW-CEREOBS | `cereb_dataset` | Références Céré'Obs utilisées dans la construction ou la validation de la cible | À confirmer par audit | <https://www.kaggle.com/datasets/rgislikassi/cereb-dataset/data> |
+| RAW-S2 | Sentinel-2 Indices CVL — 1 500 parcelles de blé | NDVI, EVI, NDWI et variables phénologiques optiques | 2019–2024 | <https://www.kaggle.com/datasets/rgislikassi/sentinel-2-indice-cvl-wheat-parcels-2019-2024> |
+| RAW-S1 | Sentinel-1 SAR Backscatter CVL — 1 500 parcelles de blé | VV, VH, ratios et indicateurs radar | 2020–2024 | <https://www.kaggle.com/datasets/rgislikassi/sentinel-1-sar-backscatter-cvl-1500-wheat-parcels/data> |
+
+## 5. Jeux bruts combinés
+
+Ces tables correspondent à la couche Silver : sources jointes, alignées et structurées, mais pas nécessairement prêtes pour l’apprentissage final.
+
+| ID | Dataset | Rôle | URL officielle |
+|---|---|---|---|
+| COMB-REG | `master_raw_regional` | Table brute combinée utilisant la référence régionale | <https://www.kaggle.com/datasets/rgislikassi/master-raw-regional> |
+| COMB-DER | `master_raw_derived` | Table brute combinée utilisant la cible dérivée | <https://www.kaggle.com/datasets/rgislikassi/master-raw-derived> |
+
+## 6. Jeux prêts pour le Machine Learning
+
+Ces tables constituent la couche Gold. Elles doivent être auditées, versionnées et utilisées par les pipelines d’entraînement.
+
+| ID | Dataset | Rôle | URL officielle |
+|---|---|---|---|
+| ML-DER-0615 | `master_ml_derived_june15` | Cible dérivée, variables disponibles jusqu’au 15 juin | <https://www.kaggle.com/datasets/rgislikassi/master-ml-derived-june15> |
+| ML-DER-0531 | `master_ml_derived_may31` | Cible dérivée, variables disponibles jusqu’au 31 mai | <https://www.kaggle.com/datasets/rgislikassi/master-ml-derived-may31> |
+| ML-REG | `master_ml_regional` | Variante utilisant la cible ou référence régionale | <https://www.kaggle.com/datasets/rgislikassi/master-ml-regional> |
+
+## 7. Fichiers déjà présents dans le dépôt
+
+```text
+data/
+├── master_ml_final_may31.csv
+└── master_ml_final_june15.csv
+```
+
+L’audit initial du schéma montre des variables relatives :
+
+- aux identifiants et surfaces de parcelles ;
+- au sol et à plusieurs profondeurs ;
+- aux indices Sentinel-2 ;
+- aux rétrodiffusions Sentinel-1 ;
+- aux variables météo et agroclimatiques ;
+- à la région ;
+- à la cible `harvest_doy_derived`.
+
+## 8. Modalités de données
+
+### 8.1 Identité et géographie
+
+- `parcelle_uid` ;
+- `ID_PARCEL` ;
+- `year` ;
+- `SURF_PARC` ;
+- `region`.
+
+### 8.2 Sol
+
+- pH ;
+- azote ;
+- carbone organique ;
+- argile, sable et limon ;
+- capacité d’échange cationique ;
+- densité apparente ;
+- fragments grossiers ;
+- rétention d’eau ;
+- variables calculées à plusieurs profondeurs.
+
+### 8.3 Sentinel-2
 
 - NDVI ;
 - EVI ;
-- Sentinel-2 ;
-- résolution annoncée de 10 à 20 mètres selon les bandes.
+- NDWI ;
+- pics, amplitudes, moyennes saisonnières et écarts-types ;
+- jours de pics phénologiques.
 
-#### Micro-ondes
+### 8.4 Sentinel-1
 
-- coefficient de rétrodiffusion SH ;
-- coefficient de rétrodiffusion SV ;
-- ratio SH/SV ;
-- EOS-06 SCAT-3 ;
-- résolution annoncée proche de 2 km.
+- VV ;
+- VH ;
+- ratio VV/VH ou indicateur équivalent selon le dictionnaire ;
+- minima, maxima, moyennes, amplitudes et jours associés.
 
-#### Sol
-
-- AWC — Available Water Content ;
-- FC — Field Capacity ;
-- WP — Wilting Point ;
-- SWC — Saturated Water Content.
-
-#### Géographie et agriculture
-
-- État ;
-- district ;
-- année ;
-- rendement ;
-- masque de riz ;
-- limites administratives.
-
-### 3.4 Pipeline décrit
-
-- calibration des valeurs SCAT-3 ;
-- filtrage par couverture de riz ;
-- agrégation spatiale par district ;
-- comblement hybride des valeurs manquantes ;
-- agrégation en fenêtres de quinze jours ;
-- fusion satellite + sol + rendement ;
-- comparaison Random Forest et XGBoost.
-
-### 3.5 Points critiques à vérifier
-
-- Les fichiers bruts sont-ils présents dans le dépôt ou accessibles séparément ?
-- Quelle est la source exacte des masques riz 2023 et 2024 ?
-- Quelle est la source exacte des quatre propriétés du sol ?
-- Quelle est l’unité du rendement ?
-- Combien de districts et d’observations restent après nettoyage ?
-- Les données 2023 et 2024 sont-elles suffisantes pour une validation temporelle crédible ?
-- Les NDVI/EVI sont-ils des rasters bruts ou déjà agrégés ?
-- Les valeurs SH/SV ont-elles déjà subi calibration, filtrage et imputation ?
-- La formule exacte du ratio SH/SV doit être vérifiée dans le code ou les données, car la notation du rapport doit être contrôlée.
-
-### 3.6 Schéma Gold envisagé
-
-| Colonne | Type | Unité | Rôle | Statut |
-|---|---|---|---|---|
-| state | catégorie | — | groupe géographique | À confirmer |
-| district | catégorie | — | groupe géographique | À confirmer |
-| year | entier | année | temps | À confirmer |
-| yield_t_ha | flottant | t/ha | cible | Unité à confirmer |
-| ndvi_t1…t6 | flottant | indice | série optique | Décrit |
-| evi_t1…t6 | flottant | indice | série optique | Décrit, présence finale à confirmer |
-| sh_t1…t6 | flottant | dB | série micro-ondes | Décrit |
-| sv_t1…t6 | flottant | dB | série micro-ondes | Décrit |
-| sh_sv_ratio_t1…t6 | flottant | ratio | feature dérivée | À recalculer de manière contrôlée |
-| awc | flottant | à confirmer | sol | Décrit |
-| fc | flottant | à confirmer | sol | Décrit |
-| wp | flottant | à confirmer | sol | Décrit |
-| swc | flottant | à confirmer | sol | Décrit |
-| imputed_* | booléen | — | traçabilité | À créer |
-
-## 4. Source sécheresse
-
-### 4.1 Référence
-
-L’article **Meteorological drought severity forecasting utilizing blended modelling**, publié dans MethodsX en 2025, décrit une approche d’ensemble combinant XGBoost, LSTM et TabNet.
-
-### 4.2 Dataset décrit
-
-- environ 50 000 lignes ;
-- variables météorologiques ;
-- score de sévérité de sécheresse ;
-- données historiques sur plusieurs années selon l’article ;
-- source Kaggle indiquée : dataset de données météorologiques de sécheresse aux États-Unis.
-
-### 4.3 Variables mentionnées
+### 8.5 Météorologie et agroclimat
 
 - température ;
 - précipitations ;
-- humidité ;
-- vitesse du vent ;
-- point de rosée ;
-- région ;
-- État ;
-- durée de sécheresse ;
-- indice ou score de sévérité.
+- évapotranspiration de référence ;
+- bilan hydrique ;
+- degrés-jours de croissance ;
+- gel ;
+- stress thermique ;
+- séquences sèches et humides ;
+- rayonnement.
 
-### 4.4 Risque majeur
+### 8.6 Cibles
 
-Le PDF décrit un problème de forecasting, mais il faut vérifier dans le fichier réel :
+- cible dérivée : `harvest_doy_derived` ;
+- variante régionale : définition exacte à confirmer dans `master_ml_regional` et les rapports associés.
 
-- l’existence d’un timestamp fiable ;
-- la fréquence temporelle ;
-- la continuité des séquences ;
-- l’identifiant géographique ;
-- la définition exacte de la cible ;
-- l’absence de variables calculées avec des informations futures.
+## 9. Périmètre géographique et temporel
 
-Sans chronologie exploitable, le module devra être requalifié en régression de sévérité plutôt qu’en prévision temporelle.
+- **Culture :** blé ;
+- **Zone :** Centre-Val de Loire, France ;
+- **Granularité :** parcelle × année ;
+- **Couverture brute la plus large indiquée :** 2019–2024 ;
+- **Intersection multimodale complète attendue :** probablement 2020–2024, car Sentinel-1 commence en 2020 ;
+- **Nombre de parcelles annoncé par plusieurs sources :** environ 1 500.
 
-### 4.5 Schéma Gold envisagé
+Les nombres définitifs d’années, de parcelles et d’observations doivent être calculés depuis chaque fichier et non déduits uniquement du titre Kaggle.
 
-| Colonne | Type | Unité | Rôle |
-|---|---|---|---|
-| timestamp | datetime | — | temps |
-| region | catégorie | — | groupe |
-| state | catégorie | — | groupe |
-| temperature | flottant | à confirmer | entrée |
-| precipitation | flottant | à confirmer | entrée |
-| humidity | flottant | % probable | entrée |
-| wind_speed | flottant | à confirmer | entrée |
-| dew_point | flottant | à confirmer | entrée |
-| severity | flottant / ordinal | 0–4 selon le document | cible |
-| drought_duration | entier | jours selon le document | entrée à auditer pour fuite |
+## 10. Cible scientifique principale
 
-## 5. Source recommandation de cultures
+### Définition opérationnelle
 
-### 5.1 Référence
-
-L’article **Crop prediction using machine learning** décrit l’utilisation du dataset Kaggle « Crop Recommendation ».
-
-### 5.2 Dataset décrit
-
-- 2 200 observations ;
-- 22 cultures comme classes ;
-- 7 variables d’entrée ;
-- split 80/20 dans l’étude de référence.
-
-### 5.3 Variables
-
-- N — azote ;
-- P — phosphore ;
-- K — potassium ;
-- température ;
-- humidité relative ;
-- pH ;
-- précipitations ;
-- label de culture.
-
-### 5.4 Contrôles nécessaires
-
-- licence du dataset ;
-- doublons exacts ou quasi-doublons ;
-- équilibre des 22 classes ;
-- plausibilité des plages de valeurs ;
-- unité des nutriments et précipitations ;
-- représentativité géographique ;
-- existence d’un biais synthétique ou d’une séparation artificiellement facile.
-
-### 5.5 Schéma Gold envisagé
-
-| Colonne | Type | Unité | Rôle |
-|---|---|---|---|
-| nitrogen | flottant | à confirmer | entrée |
-| phosphorus | flottant | à confirmer | entrée |
-| potassium | flottant | à confirmer | entrée |
-| temperature | flottant | °C probable | entrée |
-| humidity | flottant | % probable | entrée |
-| ph | flottant | pH | entrée |
-| rainfall | flottant | mm probable | entrée |
-| crop | catégorie | — | cible |
-
-## 6. Source statistique agricole historique
-
-L’article **Predicting Agriculture Yields Based on Machine Learning Using Regression and Deep Learning** indique que les données ont été réunies à partir de portails publics indiens, notamment `data.gov.in` et `aps.dac.gov.in`.
-
-Le dataset décrit couvre les années 1997 à 2020 et comprend notamment :
-
-- État ;
-- district ;
-- année culturale ;
-- saison ;
-- type de culture ;
-- pluie ;
-- vent ;
-- humidité ;
-- zone irriguée ;
-- surface ;
-- production ;
-- rendement.
-
-Cette source peut servir :
-
-- d’extension historique ;
-- de baseline statistique ;
-- de comparaison avec la télédétection ;
-- de source pour élargir le nombre d’années.
-
-Elle ne doit pas être fusionnée automatiquement avec le dataset riz 2023–2024 sans vérifier les définitions, unités, niveaux géographiques et méthodologies de collecte.
-
-## 7. Classification Bronze–Silver–Gold
-
-### Bronze
-
-- fichiers téléchargés sans modification ;
-- nom d’origine conservé ;
-- hash SHA-256 ;
-- date d’acquisition ;
-- URL ou instruction de téléchargement ;
-- licence associée.
-
-### Silver
-
-- colonnes renommées ;
-- unités harmonisées ;
-- dates normalisées ;
-- géographies alignées ;
-- doublons traités ;
-- anomalies marquées ;
-- aucune feature utilisant la cible.
-
-### Gold
-
-- table prête pour un module précis ;
-- split défini ;
-- schéma Pandera validé ;
-- version DVC ;
-- dictionnaire de données ;
-- indicateurs d’imputation ;
-- absence de fuite vérifiée.
-
-## 8. Métadonnées obligatoires pour chaque fichier
-
-```yaml
-source_id: DS-XXX
-name: example_dataset
-source_url: "À renseigner"
-provider: "À renseigner"
-acquired_at: "YYYY-MM-DD"
-license: "À confirmer"
-redistribution_allowed: false
-geographic_scope: "À renseigner"
-temporal_scope: "À renseigner"
-granularity: "À renseigner"
-target_definition: "À renseigner"
-sha256: "À calculer"
-notes: ""
+```text
+Entrées  : sol + Sentinel-1 + Sentinel-2 + météo + parcelle + année
+Cible    : harvest_doy_derived
+Unité    : jour de l’année
+Sortie   : date de récolte prévue + intervalle d’incertitude en jours
 ```
 
-## 9. Checklist avant modélisation
+### Point critique
 
-- [ ] Le fichier brut est disponible.
-- [ ] La source est identifiable.
-- [ ] La licence est documentée.
-- [ ] Le droit de redistribution est connu.
-- [ ] Le hash du fichier est calculé.
-- [ ] Les unités sont définies.
-- [ ] La cible est précisément définie.
-- [ ] La granularité temporelle est connue.
-- [ ] La granularité géographique est connue.
-- [ ] Les clés de jointure sont validées.
-- [ ] Les risques de fuite sont documentés.
-- [ ] Le schéma Bronze est enregistré.
-- [ ] Le plan de split est défini avant le feature engineering final.
+La cible est qualifiée de **dérivée**. Il faut donc démontrer :
 
-## 10. Décision de Phase 0
+1. comment elle a été produite ;
+2. quelles sources ont contribué à sa construction ;
+3. si certaines features ML ont aussi servi directement à fabriquer la cible ;
+4. si le calcul utilise des informations postérieures à la date de coupure du 31 mai ou du 15 juin ;
+5. si une fuite de cible est possible ;
+6. comment elle se compare à la référence régionale.
 
-Le module rendement est prioritaire, mais son lancement dépend de la confirmation des fichiers réellement disponibles. Le module recommandation constitue le dataset le plus simple pour valider rapidement la chaîne technique. Le module sécheresse ne sera qualifié de prévision temporelle qu’après audit de sa chronologie.
+Aucun résultat final ne sera accepté avant validation de cette analyse.
+
+## 11. Relations à vérifier entre les variantes
+
+Les noms suivants ne doivent pas être considérés comme synonymes sans preuve :
+
+- `master_ml_final_may31` et `master_ml_derived_may31` ;
+- `master_ml_final_juin15` et `master_ml_derived_june15` ;
+- cible dérivée et cible régionale.
+
+Pour chaque paire, l’audit doit comparer :
+
+- hash SHA-256 ;
+- nombre de lignes ;
+- nombre et ordre des colonnes ;
+- clés uniques ;
+- périodes ;
+- taux de valeurs manquantes ;
+- définition de la cible ;
+- transformations appliquées.
+
+## 12. Provenance et gouvernance
+
+Pour chaque dataset utilisé dans une expérience finale, enregistrer :
+
+- URL Kaggle ;
+- propriétaire Kaggle `rgislikassi` ;
+- version Kaggle ou date de téléchargement ;
+- nom exact des fichiers ;
+- empreinte SHA-256 ;
+- licence affichée ;
+- sources originales ;
+- transformations ;
+- responsable de validation ;
+- restrictions de redistribution.
+
+Kaggle est ici une plateforme de distribution. La licence et les conditions des sources originales restent à documenter, notamment pour les données françaises, NASA POWER, SoilGrids et Copernicus.
+
+## 13. Classification Bronze–Silver–Gold
+
+| Couche | Contenu | Règle |
+|---|---|---|
+| Bronze | Jeux bruts sans transformation | Fichiers immuables, hashés et accompagnés de leur provenance |
+| Silver | `master_raw_regional`, `master_raw_derived` | Jointures et harmonisations reproductibles, sans préparation spécifique au modèle |
+| Gold | Jeux `master_ml_*` et jeux finaux | Schéma validé, cible documentée, split défini, fuite contrôlée |
+
+## 14. Contrôles obligatoires avant modélisation
+
+- téléchargement reproductible via l’API Kaggle ;
+- calcul des hashes ;
+- comparaison des versions 31 mai et 15 juin ;
+- validation des types et unités ;
+- unicité de `parcelle_uid` par année ;
+- audit des doublons ;
+- audit des valeurs manquantes ;
+- audit des plages physiques ;
+- distribution de `harvest_doy_derived` ;
+- couverture par année ;
+- couverture par parcelle ;
+- couverture par région ;
+- recherche de variables postérieures à la date de coupure ;
+- recherche de fuite liée à la construction de la cible ;
+- vérification des licences.
+
+## 15. Décisions de Phase 0
+
+| ID | Décision |
+|---|---|
+| DATA-D01 | Le projet est centré sur les parcelles de blé du Centre-Val de Loire. |
+| DATA-D02 | La tâche principale est la prédiction de la date de récolte en jour de l’année. |
+| DATA-D03 | Les horizons 31 mai et 15 juin sont comparés expérimentalement. |
+| DATA-D04 | Le jeu du 15 juin est candidat principal pour la performance ; le jeu du 31 mai mesure la valeur de l’anticipation. |
+| DATA-D05 | Les sources brutes et combinées servent à rendre la chaîne totalement reproductible. |
+| DATA-D06 | La cible dérivée ne sera utilisée définitivement qu’après audit de sa construction et des fuites potentielles. |
+| DATA-D07 | La variante régionale sert de référence, de comparaison ou d’analyse de sensibilité selon sa définition documentée. |
+
+## 16. Gate données de la Phase 0
+
+Le registre est validé lorsque :
+
+- toutes les URLs officielles sont enregistrées ;
+- les datasets finaux sont téléchargés et hashés ;
+- les relations entre variantes sont clarifiées ;
+- la cible dérivée est documentée ;
+- les licences sont relevées ;
+- la période réelle et le nombre d’observations sont mesurés ;
+- le protocole de validation temporelle et par parcelle est fixé.
