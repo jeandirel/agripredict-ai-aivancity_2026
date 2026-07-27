@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Secrets
+.env
+.kaggle/
+kaggle.json
+
+# Generated data and models
+data/external/
+data/raw/
+data/interim/
+data/processed/
+data/_archives/
+artifacts/
+mlruns/
+
+# Keep lightweight manifests and reports
+!data/manifests/
+!data/manifests/**
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
