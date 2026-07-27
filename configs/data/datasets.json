@@ -1,0 +1,127 @@
+{
+  "project": "AgriPredict AI — aivancity 2026",
+  "updated_at": "2026-07-28",
+  "datasets": [
+    {
+      "id": "final_may31",
+      "name": "Dataset final 31 mai",
+      "slug": "rgislikassi/master-ml-final-may31",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/master-ml-final-may31/data",
+      "layer": "gold",
+      "role": "final_early_forecast",
+      "cutoff": "05-31",
+      "required": true
+    },
+    {
+      "id": "final_june15",
+      "name": "Dataset final 15 juin",
+      "slug": "rgislikassi/master-ml-final-juin15",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/master-ml-final-juin15",
+      "layer": "gold",
+      "role": "final_enriched_forecast",
+      "cutoff": "06-15",
+      "required": true
+    },
+    {
+      "id": "soil_features",
+      "name": "Soil Features Centre-Val de Loire 1500 Parcels",
+      "slug": "rgislikassi/soil-features-centre-val-de-loire-1500-parcels",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/soil-features-centre-val-de-loire-1500-parcels/data",
+      "layer": "bronze",
+      "role": "soil",
+      "required": true
+    },
+    {
+      "id": "wheat_parcels",
+      "name": "parcele_ble_cvl_300",
+      "slug": "rgislikassi/parcele-ble-cvl-300",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/parcele-ble-cvl-300/data",
+      "layer": "bronze",
+      "role": "parcel_reference",
+      "required": true
+    },
+    {
+      "id": "weather_nasapower",
+      "name": "meteo_centre_vale_de_loire_2019_2024_nasapower",
+      "slug": "rgislikassi/meteo-centre-vale-de-loire-2019-2024-nasapower",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/meteo-centre-vale-de-loire-2019-2024-nasapower/data",
+      "layer": "bronze",
+      "role": "weather",
+      "required": true
+    },
+    {
+      "id": "cereobs",
+      "name": "cereb_dataset",
+      "slug": "rgislikassi/cereb-dataset",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/cereb-dataset/data",
+      "layer": "bronze",
+      "role": "target_reference",
+      "required": true
+    },
+    {
+      "id": "sentinel2",
+      "name": "Sentinel-2 Indices CVL 1500 Wheat Parcels 2019-2024",
+      "slug": "rgislikassi/sentinel-2-indice-cvl-wheat-parcels-2019-2024",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/sentinel-2-indice-cvl-wheat-parcels-2019-2024",
+      "layer": "bronze",
+      "role": "satellite_optical",
+      "required": true
+    },
+    {
+      "id": "sentinel1",
+      "name": "Sentinel-1 SAR Backscatter CVL 1500 Wheat Parcels 2020-2024",
+      "slug": "rgislikassi/sentinel-1-sar-backscatter-cvl-1500-wheat-parcels",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/sentinel-1-sar-backscatter-cvl-1500-wheat-parcels/data",
+      "layer": "bronze",
+      "role": "satellite_radar",
+      "required": true
+    },
+    {
+      "id": "master_raw_regional",
+      "name": "master_raw_regional",
+      "slug": "rgislikassi/master-raw-regional",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/master-raw-regional",
+      "layer": "silver",
+      "role": "combined_regional",
+      "required": true
+    },
+    {
+      "id": "master_raw_derived",
+      "name": "master_raw_derived",
+      "slug": "rgislikassi/master-raw-derived",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/master-raw-derived",
+      "layer": "silver",
+      "role": "combined_derived",
+      "required": true
+    },
+    {
+      "id": "master_ml_derived_june15",
+      "name": "master_ml_derived_june15",
+      "slug": "rgislikassi/master-ml-derived-june15",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/master-ml-derived-june15",
+      "layer": "gold",
+      "role": "ml_derived_june15",
+      "cutoff": "06-15",
+      "required": true
+    },
+    {
+      "id": "master_ml_derived_may31",
+      "name": "master_ml_derived_may31",
+      "slug": "rgislikassi/master-ml-derived-may31",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/master-ml-derived-may31",
+      "layer": "gold",
+      "role": "ml_derived_may31",
+      "cutoff": "05-31",
+      "required": true
+    },
+    {
+      "id": "master_ml_regional",
+      "name": "master_ml_regional",
+      "slug": "rgislikassi/master-ml-regional",
+      "url": "https://www.kaggle.com/datasets/rgislikassi/master-ml-regional",
+      "layer": "gold",
+      "role": "ml_regional_reference",
+      "required": true
+    }
+  ]
+}
