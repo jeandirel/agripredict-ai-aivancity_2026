@@ -1,222 +1,242 @@
 # AgriPredict AI — Problématique scientifique
 
-> **Cadre :** Clinique IA d’aivancity — 2026  
-> **Version :** 1.0  
-> **Statut :** À valider avec l’encadrement académique
+> **Cadre :** Clinique IA d’aivancity — Promotion 2026  
+> **Version :** 2.0  
+> **Statut :** aligné sur les datasets officiels
 
 ## 1. Contexte
 
-La production agricole dépend d’interactions complexes entre le climat, l’état du sol, la dynamique de la végétation, les pratiques culturales et les caractéristiques géographiques. Les méthodes traditionnelles d’estimation du rendement reposent souvent sur des enquêtes, des mesures terrain ou des statistiques historiques. Elles peuvent être précises localement mais difficiles à généraliser rapidement à grande échelle.
+La date de récolte du blé dépend d’interactions complexes entre la phénologie de la culture, la météo, les propriétés du sol, l’état hydrique, la dynamique du couvert végétal et les conditions propres à chaque parcelle.
 
-Les données de télédétection apportent une observation répétée des cultures. Les indices optiques tels que le NDVI et l’EVI décrivent la vigueur de la végétation, tandis que les mesures micro-ondes comme les rétrodiffusions SH et SV restent disponibles dans des conditions nuageuses et renseignent indirectement sur la structure du couvert et l’humidité. Les propriétés du sol et les données météorologiques complètent ces observations.
+Une estimation suffisamment précoce peut aider à préparer :
 
-Cependant, la réunion de ces sources pose plusieurs difficultés :
+- la mobilisation des machines ;
+- l’organisation des équipes ;
+- la logistique de collecte et de stockage ;
+- la planification des interventions ;
+- l’anticipation des écarts liés aux conditions climatiques.
 
-- résolutions spatiales et temporelles différentes ;
-- valeurs manquantes et couverture nuageuse ;
-- données agricoles fragmentées ;
-- faible nombre d’années ou d’observations pour certaines zones ;
-- risques de fuite de données géographiques et temporelles ;
-- décalage entre performance sur un split aléatoire et généralisation réelle ;
-- difficulté à expliquer et calibrer les prédictions.
+Les données disponibles pour AgriPredict AI réunissent plusieurs modalités complémentaires :
+
+- informations parcellaires françaises ;
+- propriétés de sol issues de SoilGrids ;
+- indices optiques Sentinel-2 ;
+- rétrodiffusions radar Sentinel-1 ;
+- variables météorologiques NASA POWER ;
+- références Céré'Obs ;
+- tables combinées et jeux ML arrêtés au 31 mai ou au 15 juin.
 
 ## 2. Problème métier
 
-Les acteurs agricoles ont besoin d’indicateurs plus précoces et plus fiables pour :
+Le besoin central est de répondre à la question suivante :
 
-- anticiper les rendements ;
-- détecter les risques de sécheresse ;
-- comparer plusieurs cultures possibles ;
-- comprendre les facteurs qui influencent une estimation ;
-- distinguer une prédiction fiable d’une prédiction incertaine.
+> **À quelle date une parcelle de blé du Centre-Val de Loire sera-t-elle probablement récoltée, en utilisant uniquement les informations disponibles jusqu’à une date de coupure donnée ?**
 
-Une simple valeur prédite sans explication, sans intervalle d’incertitude et sans validation hors distribution est insuffisante pour soutenir une décision responsable.
+Le système doit produire une estimation compréhensible, accompagnée d’un intervalle d’incertitude et d’un avertissement lorsque la parcelle est éloignée du domaine d’entraînement.
 
 ## 3. Problème scientifique principal
 
-> **Comment concevoir et évaluer un système d’intelligence artificielle multimodal capable de prédire le rendement agricole à partir de séries satellitaires, de données météorologiques, de propriétés du sol et d’informations géographiques, tout en démontrant sa généralisation temporelle et spatiale, son explicabilité et la fiabilité de son incertitude ?**
+> **Comment concevoir et évaluer un modèle d’intelligence artificielle multimodal capable de prévoir le jour de récolte du blé à l’échelle parcellaire à partir de données de sol, Sentinel-1, Sentinel-2 et météo, tout en quantifiant le compromis entre précocité de la prévision, précision, généralisation temporelle, explicabilité et incertitude ?**
 
-## 4. Sous-problèmes scientifiques
+## 4. Originalité de l’étude
 
-### 4.1 Fusion multimodale
+L’originalité principale repose sur une comparaison contrôlée entre deux dates de coupure :
 
-Déterminer si la combinaison de sources complémentaires améliore réellement la prédiction par rapport à chaque source utilisée séparément.
+- **31 mai** : prévision plus précoce, mais avec moins d’informations ;
+- **15 juin** : prévision plus proche de la récolte, avec davantage de signaux phénologiques et météo.
 
-### 4.2 Représentation temporelle
+Le projet doit donc mesurer non seulement la meilleure performance possible, mais également la **valeur opérationnelle du délai d’anticipation**.
 
-Identifier l’architecture la plus adaptée pour représenter l’évolution de la végétation et des conditions météorologiques : agrégats tabulaires, LSTM, GRU, TCN ou Transformer temporel compact.
+## 5. Formulation IA
 
-### 4.3 Représentation statique
+### Type de problème
 
-Combiner correctement les propriétés du sol, les variables géographiques et les variables catégorielles avec les séries temporelles.
+Régression supervisée tabulaire multimodale.
 
-### 4.4 Généralisation
+### Unité d’observation
 
-Mesurer la capacité du modèle à fonctionner sur :
+Parcelle × année.
 
-- une année future ;
-- un district non observé ;
-- un État ou une région non observé ;
-- des observations présentant davantage de valeurs manquantes.
+### Entrées
 
-### 4.5 Incertitude
+- identifiants et surface de parcelle ;
+- année et région ;
+- propriétés du sol à plusieurs profondeurs ;
+- variables Sentinel-2 ;
+- variables Sentinel-1 ;
+- variables météorologiques et agroclimatiques ;
+- variables disponibles avant la date de coupure retenue.
 
-Produire un intervalle prédictif exploitable et vérifier sa couverture réelle.
+### Cible principale
 
-### 4.6 Explicabilité
+```text
+harvest_doy_derived
+```
 
-Identifier les variables, périodes et modalités qui contribuent aux prédictions, sans présenter une corrélation comme une causalité.
+### Unité de la cible
 
-## 5. Définition opérationnelle des trois modules
+Jour de l’année, ou DOY — Day of Year.
 
-## 5.1 Module principal — Rendement agricole
+### Sorties attendues
 
-### Question métier
+- jour de récolte prédit ;
+- date calendaire correspondante ;
+- intervalle prédictif en jours ;
+- facteurs les plus influents ;
+- indicateur de domaine de validité.
 
-Quel rendement agricole peut être attendu pour une zone et une période données ?
+## 6. Sous-problèmes scientifiques
 
-### Formulation IA
+### 6.1 Construction de la cible
 
-Régression supervisée multimodale.
+La cible est dérivée. Il faut déterminer :
 
-### Entrées envisagées
+- la méthode exacte de génération ;
+- les sources utilisées ;
+- l’existence éventuelle d’informations futures ;
+- le lien avec la variante régionale ;
+- le risque de circularité avec les features satellitaires ou météo.
 
-- séries NDVI et EVI ;
-- séries SH et SV ;
-- ratio SH/SV ;
-- température, précipitations, humidité et vent ;
-- AWC, FC, WP et SWC ;
-- État, district, année et variables géographiques.
+### 6.2 Précocité contre précision
 
-### Cible
+Le gain de précision du dataset du 15 juin doit être comparé au bénéfice opérationnel d’une prévision disponible dès le 31 mai.
 
-Rendement agricole rapporté, idéalement exprimé en tonnes par hectare.
+### 6.3 Fusion multimodale
 
-### Unité
+Il faut mesurer la contribution réelle de chaque famille de variables :
 
-`t/ha`, à confirmer dans les fichiers de données définitifs.
+1. parcelle et année ;
+2. sol ;
+3. Sentinel-2 ;
+4. Sentinel-1 ;
+5. météo ;
+6. toutes modalités combinées.
 
-### Sortie attendue
+### 6.4 Généralisation temporelle
 
-- estimation ponctuelle ;
-- intervalle d’incertitude ;
-- explication globale et locale ;
-- indicateur de confiance ou de domaine de validité.
+Le modèle doit être évalué sur une année future non utilisée pour l’ajustement ni le tuning.
 
-### Protocoles de validation obligatoires
+### 6.5 Généralisation par parcelle
 
-- validation temporelle ;
-- GroupKFold par district ;
-- Leave-One-State-Out ou équivalent géographique ;
-- comparaison à des baselines simples.
+Lorsque la même parcelle est observée sur plusieurs années, elle ne doit pas être distribuée naïvement entre entraînement et test. Une validation groupée par `parcelle_uid` est nécessaire.
 
-## 5.2 Module avancé — Sécheresse
+### 6.6 Modèles classiques contre réseaux neuronaux
 
-### Question métier
+La taille et la structure tabulaire du dataset rendent les modèles d’arbres très compétitifs. Les réseaux neuronaux doivent être compacts, régularisés et comparés équitablement.
 
-Quel sera le niveau de sévérité de la sécheresse à un horizon futur défini ?
+### 6.7 Incertitude
 
-### Formulation IA
+Le système doit indiquer la fiabilité de sa prévision, par exemple :
 
-Prévision de série temporelle ou régression temporelle supervisée.
+```text
+Date prévue : 3 juillet
+Intervalle à 90 % : du 28 juin au 8 juillet
+```
 
-### Entrées envisagées
+### 6.8 Explicabilité
 
-- température ;
-- précipitations ;
-- humidité ;
-- vent ;
-- point de rosée ;
-- historiques de sévérité ;
-- région et saisonnalité.
+L’étude doit identifier les variables associées aux prédictions, tout en évitant toute conclusion causale non démontrée.
 
-### Cible
+## 7. Protocoles de validation
 
-Indice futur de sévérité de la sécheresse.
+### Protocole principal
 
-### Horizon
+- entraînement sur les premières années ;
+- validation sur une année intermédiaire ;
+- test final sur la dernière année disponible.
 
-À fixer explicitement après audit : J+7, J+30 ou période suivante.
+### Protocole par parcelle
 
-### Sortie attendue
+- `GroupKFold` ou `GroupShuffleSplit` avec `parcelle_uid` comme groupe ;
+- aucune parcelle identique entre train et test dans ce protocole.
 
-- valeur future ;
-- classe de risque ;
-- intervalle d’incertitude ;
-- facteurs principaux.
+### Comparaison des horizons
 
-### Condition de validité
+- mêmes observations communes ;
+- même split ;
+- mêmes métriques ;
+- même budget de tuning ;
+- analyse du gain en jours et de la perte d’anticipation.
 
-Le module ne pourra être qualifié de « forecasting » que si les données comportent une chronologie exploitable et si le protocole interdit toute information future dans l’entraînement.
+## 8. Métriques
 
-## 5.3 Module opérationnel — Recommandation de cultures
+### Métrique principale
 
-### Question métier
+- MAE en jours.
 
-Quelles cultures sont les plus compatibles avec les conditions du sol et du climat fournies ?
+### Métriques secondaires
 
-### Formulation IA
+- RMSE en jours ;
+- erreur médiane absolue ;
+- R² ;
+- biais moyen ;
+- pourcentage de prédictions à ±3, ±5, ±7 et ±10 jours ;
+- couverture et largeur des intervalles prédictifs ;
+- métriques par année ;
+- métriques par plage de date de récolte ;
+- latence et coût d’inférence.
 
-Classification multiclasse avec classement Top-k.
+## 9. Baselines et modèles
 
-### Entrées envisagées
+### Baselines naïves
 
-- azote ;
-- phosphore ;
-- potassium ;
-- température ;
-- humidité ;
-- pH ;
-- précipitations.
+- moyenne globale de la cible ;
+- médiane globale ;
+- moyenne par année ;
+- référence régionale lorsque sa définition le permet.
 
-### Cible
+### Modèles classiques
 
-Type de culture.
+- Ridge ;
+- ElasticNet ;
+- Random Forest ;
+- Extra Trees ;
+- XGBoost ;
+- CatBoost.
 
-### Sortie attendue
+### Modèles neuronaux
 
-- top 3 des cultures ;
-- probabilités calibrées ;
-- facteurs explicatifs ;
-- avertissement en cas d’entrée hors distribution.
+- MLP régularisé ;
+- TabNet ;
+- FT-Transformer compact comme extension contrôlée.
 
-## 6. Écart de recherche visé
+LSTM, CNN et Vision Transformer ne sont pas prioritaires avec les tables agrégées actuelles. Ils ne deviennent pertinents que si des séquences ou images brutes sont préparées explicitement.
 
-Le projet ne doit pas seulement reproduire un modèle existant. Sa contribution doit être démontrée par :
+## 10. Hypothèses de recherche
 
-1. une pipeline commune et reproductible ;
-2. une comparaison contrôlée mono-source contre multimodale ;
-3. une validation temporelle et géographique ;
-4. une architecture neuronale adaptée aux séries et variables statiques ;
-5. une étude d’ablation ;
-6. une estimation d’incertitude ;
-7. une analyse d’erreurs et de robustesse ;
-8. une démonstration produit complète.
+- La fusion multimodale réduira le MAE par rapport aux approches mono-source.
+- Le dataset du 15 juin sera plus précis que celui du 31 mai.
+- Le dataset du 31 mai conservera une valeur opérationnelle grâce à une anticipation plus importante.
+- Les modèles d’arbres seront difficiles à battre sur ce volume tabulaire.
+- La validation aléatoire produira probablement des résultats plus optimistes que la validation temporelle et groupée.
+- Les intervalles conformes ou quantiles permettront de communiquer une incertitude exploitable.
 
-## 7. Critères de non-réussite scientifique
+## 11. Risques de validité
 
-Le projet serait considéré scientifiquement insuffisant si :
+- cible dérivée construite avec des variables également présentes en entrée ;
+- variables calculées après la date de coupure ;
+- même parcelle dans le train et le test ;
+- couverture temporelle différente entre modalités ;
+- confusion entre cible dérivée et observation terrain ;
+- échantillon limité à une seule région ;
+- biais de sélection des parcelles ;
+- performances surestimées par un split aléatoire ;
+- comparaison inéquitable entre les jeux 31 mai et 15 juin.
 
-- la performance est mesurée uniquement sur un split aléatoire ;
-- les baselines simples sont absentes ;
-- le modèle complexe n’est pas comparé équitablement ;
-- les données du test influencent la préparation ou le tuning ;
-- la provenance et la licence des données ne sont pas documentées ;
-- les résultats ne sont pas reproductibles ;
-- aucune analyse d’incertitude ou de limite n’est fournie ;
-- le projet revendique une causalité non démontrée.
+## 12. Contribution attendue
 
-## 8. Formulation courte pour le rapport
+Le projet sera scientifiquement réussi s’il fournit :
 
-> AgriPredict AI étudie la capacité d’une architecture multimodale à combiner télédétection, météo, propriétés du sol et historique agricole afin d’améliorer la prédiction du rendement. Le système est évalué non seulement sur sa précision, mais aussi sur sa généralisation temporelle et géographique, son explicabilité, sa robustesse et la calibration de son incertitude.
+1. une documentation vérifiable de la cible ;
+2. une pipeline reproductible des données brutes aux tables ML ;
+3. une comparaison rigoureuse des horizons 31 mai et 15 juin ;
+4. une étude d’ablation multimodale ;
+5. une validation temporelle et par parcelle ;
+6. une comparaison équitable entre modèles classiques et neuronaux ;
+7. une estimation d’incertitude ;
+8. une analyse d’erreurs ;
+9. une démonstration produit complète.
 
-## 9. Points à confirmer avant clôture de la Phase 0
+## 13. Formulation courte pour le rapport
 
-- Culture principale retenue pour le module rendement.
-- Zone géographique définitive.
-- Années réellement disponibles.
-- Unité et définition exacte du rendement.
-- Horizon de prévision de la sécheresse.
-- Existence d’un partenaire ou expert agronome.
-- Droits de stockage et de redistribution des datasets.
-- Ressources de calcul disponibles.
+> AgriPredict AI étudie la prédiction multimodale de la date de récolte du blé à l’échelle parcellaire en Centre-Val de Loire. Le projet compare des prévisions arrêtées au 31 mai et au 15 juin afin de quantifier le compromis entre anticipation et précision, tout en évaluant la généralisation temporelle, la robustesse, l’explicabilité et l’incertitude des modèles.
