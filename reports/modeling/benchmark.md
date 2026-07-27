@@ -1,6 +1,6 @@
 # AgriPredict AI — Benchmark initial
 
-> Généré le `2026-07-27T23:32:27.983544+00:00`.
+> Généré le `2026-07-27T23:52:15.838795+00:00`.
 
 ## Comparaison des horizons
 

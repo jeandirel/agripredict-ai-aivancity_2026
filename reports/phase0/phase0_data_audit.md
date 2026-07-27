@@ -1,6 +1,6 @@
 # AgriPredict AI — Audit automatisé de Phase 0
 
-> Généré le `2026-07-27T23:30:34.127640+00:00`.
+> Généré le `2026-07-27T23:50:22.249086+00:00`.
 
 ## Décision G0 : `PHASE_0_COMPLETE_WITH_PHASE_2_PREREQUISITES`
 

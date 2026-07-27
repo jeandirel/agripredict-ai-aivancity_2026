@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-27T23:32:27.983544+00:00",
+  "generated_at": "2026-07-27T23:52:15.838795+00:00",
   "horizon_comparison": {
     "common_parcel_years": 1363,
     "target_equal_count": 1363,
@@ -8,7 +8,7 @@
   },
   "horizons": {
     "may31": {
-      "generated_at": "2026-07-27T23:31:23.159421+00:00",
+      "generated_at": "2026-07-27T23:51:11.441251+00:00",
       "horizon": "may31",
       "dataset": "data/master_ml_final_may31.csv",
       "task": "parcel-level wheat harvest-date regression",
@@ -254,36 +254,36 @@
         {
           "model": "random_forest",
           "temporal_metrics": {
-            "mae_days": 8.778283363031258,
+            "mae_days": 8.778283363031262,
             "rmse_days": 10.881786091022677,
             "median_absolute_error_days": 7.0256339921653534,
             "r2": 0.012320859626751446,
-            "bias_days": -4.24589900929992,
-            "p90_absolute_error_days": 17.824131353137666,
+            "bias_days": -4.2458990092999205,
+            "p90_absolute_error_days": 17.824131353137673,
             "within_3_days": 0.15337423312883436,
             "within_5_days": 0.3619631901840491,
             "within_7_days": 0.49693251533742333,
             "within_10_days": 0.6809815950920245
           },
           "group_cv_mae_mean": 5.907362358369239,
-          "group_cv_mae_std": 0.18074236393361084
+          "group_cv_mae_std": 0.18074236393361165
         },
         {
           "model": "extra_trees",
           "temporal_metrics": {
-            "mae_days": 8.931986818992192,
-            "rmse_days": 11.113810110862891,
-            "median_absolute_error_days": 7.117072649572577,
-            "r2": -0.030247233654115746,
-            "bias_days": -4.909861209427973,
+            "mae_days": 8.931986818992188,
+            "rmse_days": 11.113810110862888,
+            "median_absolute_error_days": 7.117072649572549,
+            "r2": -0.030247233654115302,
+            "bias_days": -4.909861209427974,
             "p90_absolute_error_days": 18.54679166666666,
             "within_3_days": 0.17791411042944785,
             "within_5_days": 0.37423312883435583,
             "within_7_days": 0.49693251533742333,
             "within_10_days": 0.6687116564417178
           },
-          "group_cv_mae_mean": 5.961771020299149,
-          "group_cv_mae_std": 0.1982352147923701
+          "group_cv_mae_mean": 5.96177102029915,
+          "group_cv_mae_std": 0.1982352147923704
         },
         {
           "model": "dummy_median",
@@ -322,7 +322,7 @@
       ]
     },
     "june15": {
-      "generated_at": "2026-07-27T23:32:27.981766+00:00",
+      "generated_at": "2026-07-27T23:52:15.837084+00:00",
       "horizon": "june15",
       "dataset": "data/master_ml_final_june15.csv",
       "task": "parcel-level wheat harvest-date regression",
@@ -431,9 +431,9 @@
       "temporal_metrics": {
         "mae_days": 8.463989434219492,
         "rmse_days": 10.320967063374454,
-        "median_absolute_error_days": 7.162227564102579,
+        "median_absolute_error_days": 7.162227564102551,
         "r2": 0.11150232258467452,
-        "bias_days": -1.7056106785171523,
+        "bias_days": -1.7056106785171505,
         "p90_absolute_error_days": 18.442198717948887,
         "within_3_days": 0.15337423312883436,
         "within_5_days": 0.25153374233128833,
@@ -441,108 +441,108 @@
         "within_10_days": 0.7300613496932515
       },
       "group_cv_mae_mean": 5.962312304131055,
-      "group_cv_mae_std": 0.18819432322174828,
+      "group_cv_mae_std": 0.18819432322174773,
       "residual_absolute_error_q90_days": 18.442198717948887,
       "global_feature_importance": [
         {
           "feature": "s2_ndvi_may_mean",
-          "importance_mean": 0.12323233328745253,
-          "importance_std": 0.04885073144729703
+          "importance_mean": 0.12323233328745409,
+          "importance_std": 0.048850731447296715
         },
         {
           "feature": "wv0010_0-5cm",
-          "importance_mean": 0.1125528084198526,
-          "importance_std": 0.04222494202933176
+          "importance_mean": 0.11255280841985416,
+          "importance_std": 0.04222494202933019
         },
         {
           "feature": "meteo_gdd_amj",
-          "importance_mean": 0.07407043088983434,
-          "importance_std": 0.024152315444907313
+          "importance_mean": 0.07407043088983478,
+          "importance_std": 0.024152315444907795
         },
         {
           "feature": "meteo_gdd_spring",
-          "importance_mean": 0.0710157519925545,
-          "importance_std": 0.032257188461005656
+          "importance_mean": 0.07101575199255739,
+          "importance_std": 0.03225718846100567
         },
         {
           "feature": "s2_ndvi_winter_mean",
-          "importance_mean": 0.04699282860757514,
-          "importance_std": 0.016651829651499646
+          "importance_mean": 0.046992828607576254,
+          "importance_std": 0.01665182965149806
         },
         {
           "feature": "s1_vv_april_mean",
-          "importance_mean": 0.03499144234046336,
-          "importance_std": 0.01833055758856713
+          "importance_mean": 0.03499144234046425,
+          "importance_std": 0.018330557588566918
         },
         {
           "feature": "s1_vv_march_mean",
-          "importance_mean": 0.03430371211525829,
-          "importance_std": 0.014542713812253997
+          "importance_mean": 0.03430371211525918,
+          "importance_std": 0.014542713812254065
         },
         {
           "feature": "clay_15-30cm",
-          "importance_mean": 0.03253951516700648,
-          "importance_std": 0.006944459757689017
+          "importance_mean": 0.032539515167008926,
+          "importance_std": 0.006944459757688635
         },
         {
           "feature": "s2_ndvi_march_mean",
-          "importance_mean": 0.029054384766137975,
-          "importance_std": 0.010756188841243056
+          "importance_mean": 0.029054384766139307,
+          "importance_std": 0.010756188841242383
         },
         {
           "feature": "s1_vv_std",
-          "importance_mean": 0.026195880689264817,
-          "importance_std": 0.008943914980845314
+          "importance_mean": 0.026195880689266815,
+          "importance_std": 0.008943914980844696
         },
         {
           "feature": "wv0010_15-30cm",
-          "importance_mean": 0.02393638000760623,
-          "importance_std": 0.010137000149963535
+          "importance_mean": 0.02393638000760756,
+          "importance_std": 0.010137000149964149
         },
         {
           "feature": "silt_0-5cm",
-          "importance_mean": 0.02154973110351177,
-          "importance_std": 0.012158327279442922
+          "importance_mean": 0.021549731103514436,
+          "importance_std": 0.012158327279442896
         },
         {
           "feature": "s2_ndvi_april_mean",
-          "importance_mean": 0.020990759038593154,
-          "importance_std": 0.018572541821431143
+          "importance_mean": 0.02099075903859471,
+          "importance_std": 0.018572541821432996
         },
         {
           "feature": "s1_vv_min",
-          "importance_mean": 0.020239438316029812,
-          "importance_std": 0.01641916155376309
+          "importance_mean": 0.020239438316031144,
+          "importance_std": 0.01641916155376273
         },
         {
           "feature": "s2_ndvi_spring_mean",
-          "importance_mean": 0.019719870811702345,
-          "importance_std": 0.007999808075000045
+          "importance_mean": 0.019719870811703233,
+          "importance_std": 0.007999808074999313
         },
         {
           "feature": "clay_0-5cm",
-          "importance_mean": 0.018689404069005988,
-          "importance_std": 0.007263942094191524
+          "importance_mean": 0.01868940406900821,
+          "importance_std": 0.007263942094191369
         },
         {
           "feature": "sand_0-5cm",
-          "importance_mean": 0.01734992347674491,
-          "importance_std": 0.007161376884807554
+          "importance_mean": 0.017349923476746465,
+          "importance_std": 0.007161376884807912
         },
         {
           "feature": "s1_ratio_std",
-          "importance_mean": 0.017320178543336784,
-          "importance_std": 0.014391891272652531
+          "importance_mean": 0.017320178543338338,
+          "importance_std": 0.01439189127265173
         },
         {
           "feature": "ocd_0-5cm",
-          "importance_mean": 0.017267366026952446,
-          "importance_std": 0.006075973586754172
+          "importance_mean": 0.017267366026954445,
+          "importance_std": 0.0060759735867543406
         },
         {
           "feature": "cec_0-5cm",
-          "importance_mean": 0.01553157444549158,
-          "importance_std": 0.0073971145933336025
+          "importance_mean": 0.015531574445494245,
+          "importance_std": 0.007397114593334818
         }
       ],
       "caution": "Predictive associations are not causal. The target is derived and must be presented as such.",
@@ -552,9 +552,9 @@
           "temporal_metrics": {
             "mae_days": 8.463989434219492,
             "rmse_days": 10.320967063374454,
-            "median_absolute_error_days": 7.162227564102579,
+            "median_absolute_error_days": 7.162227564102551,
             "r2": 0.11150232258467452,
-            "bias_days": -1.7056106785171523,
+            "bias_days": -1.7056106785171505,
             "p90_absolute_error_days": 18.442198717948887,
             "within_3_days": 0.15337423312883436,
             "within_5_days": 0.25153374233128833,
@@ -562,7 +562,7 @@
             "within_10_days": 0.7300613496932515
           },
           "group_cv_mae_mean": 5.962312304131055,
-          "group_cv_mae_std": 0.18819432322174828
+          "group_cv_mae_std": 0.18819432322174773
         },
         {
           "model": "random_forest",
@@ -571,15 +571,15 @@
             "rmse_days": 10.384785342017322,
             "median_absolute_error_days": 6.844568757631265,
             "r2": 0.10048054570675524,
-            "bias_days": -2.058483296277974,
-            "p90_absolute_error_days": 17.640752508371293,
+            "bias_days": -2.0584832962779727,
+            "p90_absolute_error_days": 17.640752508371275,
             "within_3_days": 0.1656441717791411,
             "within_5_days": 0.2822085889570552,
             "within_7_days": 0.50920245398773,
             "within_10_days": 0.7177914110429447
           },
           "group_cv_mae_mean": 5.922992025511365,
-          "group_cv_mae_std": 0.17936415644798875
+          "group_cv_mae_std": 0.1793641564479886
         },
         {
           "model": "hist_gradient_boosting",
