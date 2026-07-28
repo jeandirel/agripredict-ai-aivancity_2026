@@ -1,0 +1,188 @@
+name: Fast final AgriPredict v1.0 delivery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/finalize-fast.yml"
+      - "scripts/finalize_project_ci.py"
+      - "scripts/finalize_project.py"
+      - "src/**"
+      - "app/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "data/master_ml_final_may31.csv"
+      - "data/master_ml_final_june15.csv"
+
+concurrency:
+  group: agripredict-finalize-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+env:
+  PYTHONUNBUFFERED: "1"
+
+jobs:
+  final-delivery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Generate final scientific evidence
+        id: generate
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p reports/final
+          python scripts/finalize_project_ci.py \
+            --output artifacts/models \
+            --report-dir reports/final \
+            --random-state 42 2>&1 | tee /tmp/finalize.log
+
+      - name: Write and commit execution status
+        if: always()
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          outcome = "${{ steps.generate.outcome }}"
+          log_path = Path("/tmp/finalize.log")
+          log = log_path.read_text(encoding="utf-8", errors="replace") if log_path.exists() else "No log produced."
+          status = "SUCCEEDED" if outcome == "success" else "FAILED"
+          Path("reports/final").mkdir(parents=True, exist_ok=True)
+          Path("reports/final/WORKFLOW_STATUS.md").write_text(
+              f"""# Finalization workflow status
+
+- Status: **{status}**
+- Generated at: `{datetime.now(timezone.utc).isoformat()}`
+- Commit: `${{ github.sha }}`
+- Run: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+
+## Last log lines
+
+```text
+{chr(10).join(log.splitlines()[-150:])}
+```
+""",
+              encoding="utf-8",
+          )
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/final/WORKFLOW_STATUS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "ci: publish fast finalization status"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Fail when generation failed
+        if: steps.generate.outcome != 'success'
+        run: exit 1
+
+      - name: Correct stable parcel terminology
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          for root in (Path("reports/final"), Path("artifacts/models")):
+              for path in root.rglob("*") if root.exists() else []:
+                  if path.is_file() and path.suffix.lower() in {".md", ".json", ".csv"}:
+                      text = path.read_text(encoding="utf-8")
+                      text = text.replace("GroupKFold by parcelle_uid", "GroupKFold by ID_PARCEL")
+                      text = text.replace("GroupKFold par `parcelle_uid`", "GroupKFold par `ID_PARCEL`")
+                      text = text.replace("validation groupée par `parcelle_uid`", "validation groupée par `ID_PARCEL`")
+                      path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Tests
+        run: pytest --cov=src/agripredict --cov=app/api --cov-report=term-missing --cov-report=xml
+
+      - name: Lint
+        run: ruff check src app scripts tests
+
+      - name: API smoke test
+        run: |
+          uvicorn app.api.main:app --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:8000/readiness > /tmp/readiness.json && break
+            sleep 2
+          done
+          cat /tmp/readiness.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          result = json.loads(Path("/tmp/readiness.json").read_text())
+          assert result["status"] == "ready", result
+          PY
+
+      - name: Commit validated final reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/final reports/phase0
+          if ! git diff --cached --quiet; then
+            git commit -m "release: publish final AgriPredict v1.0.0 evaluation"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Build container
+        run: docker build -t agripredict-ai:1.0.0 .
+
+      - name: Package delivery
+        run: |
+          mkdir -p dist/agripredict-ai-v1.0.0
+          cp -r reports/final dist/agripredict-ai-v1.0.0/reports
+          cp -r artifacts/models dist/agripredict-ai-v1.0.0/models
+          cp README.md pyproject.toml Dockerfile docker-compose.yml LICENSE CITATION.cff dist/agripredict-ai-v1.0.0/
+          cp docs/ARCHITECTURE.md docs/DEPLOYMENT.md docs/ETHICS_AND_GOVERNANCE.md docs/data_sources.md dist/agripredict-ai-v1.0.0/
+          tar -czf dist/agripredict-ai-v1.0.0.tar.gz -C dist agripredict-ai-v1.0.0
+
+      - name: Upload models
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agripredict-v1-models
+          path: artifacts/models
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agripredict-v1-reports
+          path: reports/final
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Upload complete bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agripredict-v1-delivery
+          path: dist/agripredict-ai-v1.0.0.tar.gz
+          retention-days: 90
+          if-no-files-found: warn
