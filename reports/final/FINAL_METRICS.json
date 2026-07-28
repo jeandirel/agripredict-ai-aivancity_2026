@@ -1,0 +1,61 @@
+{
+  "project": "AgriPredict AI — aivancity AI Clinic 2026",
+  "version": "1.0.0",
+  "task": "parcel-level wheat harvest-date regression",
+  "region": "Centre-Val de Loire, France",
+  "target": "harvest_doy_derived",
+  "target_nature": "derived",
+  "alignment": {
+    "common_parcel_years": 1363,
+    "target_equal_count": 1363,
+    "target_different_count": 0
+  },
+  "protocol": {
+    "development_years": [2020, 2021, 2022],
+    "calibration_year": 2023,
+    "test_year": 2024,
+    "group_key": "ID_PARCEL",
+    "row_key": "parcelle_uid",
+    "uncertainty": "90% split-conformal"
+  },
+  "may31": {
+    "model": "random_forest",
+    "features": 67,
+    "mae_days": 8.492560175629361,
+    "mae_ci95": [7.609155629750067, 9.362676337262869],
+    "rmse_days": 10.356016925017734,
+    "r2": 0.10545742409814052,
+    "bias_days": -1.8597189658658364,
+    "within_5_days": 0.25153374233128833,
+    "within_7_days": 0.5276073619631901,
+    "conformal_coverage": 0.8588957055214724,
+    "conformal_mean_width_days": 31.172788800705515
+  },
+  "june15": {
+    "model": "random_forest",
+    "features": 72,
+    "mae_days": 8.294056181658856,
+    "mae_ci95": [7.410034319986723, 9.204705084759796],
+    "rmse_days": 10.211716241112187,
+    "r2": 0.13021284594922822,
+    "bias_days": -0.10197089239308713,
+    "within_5_days": 0.32515337423312884,
+    "within_7_days": 0.44171779141104295,
+    "conformal_coverage": 0.852760736196319,
+    "conformal_mean_width_days": 29.45720967304311
+  },
+  "paired_horizon_comparison": {
+    "mean_delta_absolute_error_days_june_minus_may": -0.19850399397050178,
+    "ci95": [-0.49247782148312175, 0.09470139619644549],
+    "probability_june15_lower_error": 0.9064,
+    "conclusion": "inconclusive"
+  },
+  "validation_status": {
+    "final_evidence_generation": "success",
+    "tests": "success",
+    "lint": "success",
+    "api_readiness": "success",
+    "artifact_upload": "success"
+  },
+  "scientific_limit": "Complete research prototype; external agronomic validation and direct parcel-level ground truth remain required before operational use."
+}
