@@ -31,23 +31,25 @@ Deux horizons sont comparés sur les mêmes parcelles-années :
 Le protocole final empêche la sélection sur le test :
 
 ```text
-Années anciennes → sélection GroupKFold par parcelle
-Avant-dernière année → calibration split-conformal
-Dernière année → test final intouché
+2020–2022 → sélection GroupKFold par ID_PARCEL
+2023      → calibration split-conformal
+2024      → test final intouché
 ```
 
-Les identifiants parcellaires, variables de pic, variables DOY et agrégats AMJ non prouvés sont exclus du modèle officiel.
+`parcelle_uid` reste la clé parcelle-année. `ID_PARCEL` est l’identifiant physique stable utilisé pour empêcher qu’une même parcelle apparaisse dans plusieurs folds. Tous les identifiants, variables de pic, variables DOY et agrégats AMJ non prouvés sont exclus du modèle officiel.
 
-## Résultats déjà reproduits
+## Résultats finaux validés
 
-Le benchmark initial automatisé couvre **1 363 parcelles-années communes** et confirme que la cible est identique entre les deux horizons. Sur l’année 2024, le benchmark conservateur obtient :
+Les deux horizons couvrent **1 363 parcelles-années communes**, avec une cible identique pour l’ensemble des clés alignées.
 
-| Horizon | Modèle du benchmark initial | MAE | RMSE | R² |
-|---|---|---:|---:|---:|
-| 31 mai | Ridge | 8,51 jours | 10,64 | 0,056 |
-| 15 juin | Extra Trees | 8,46 jours | 10,32 | 0,112 |
+| Horizon | Modèle sélectionné | MAE | IC95 du MAE | RMSE | R² | Couverture conformale |
+|---|---|---:|---|---:|---:|---:|
+| 31 mai | Random Forest | 8,493 jours | [7,609 ; 9,363] | 10,356 | 0,105 | 85,9 % |
+| 15 juin | Random Forest | 8,294 jours | [7,410 ; 9,205] | 10,212 | 0,130 | 85,3 % |
 
-Ces chiffres constituent un benchmark initial. Le pipeline v1.0.0 produit ensuite une évaluation plus stricte avec sélection sans test, intervalles conformes, bootstrap, ablations, robustesse et OOD.
+La différence appariée d’erreur absolue, 15 juin moins 31 mai, est de **−0,199 jour**, avec un IC bootstrap à 95 % de **[−0,492 ; 0,095]**. Le 15 juin est légèrement meilleur en moyenne, mais l’avantage reste **statistiquement non concluant** car l’intervalle recouvre zéro.
+
+Le workflow observable de validation a terminé avec succès : génération finale, tests, Ruff, readiness de l’API et publication de l’artefact.
 
 ## Finalisation en une commande
 
@@ -110,6 +112,7 @@ tests/                    tests unitaires et API
 ## Documentation
 
 - [Plan expert complet](docs/PLAN_EXPERT_CLINIQUE_IA.md)
+- [Matrice de complétion](docs/PHASE_COMPLETION_MATRIX.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Déploiement](docs/DEPLOYMENT.md)
 - [Éthique et gouvernance](docs/ETHICS_AND_GOVERNANCE.md)
@@ -119,9 +122,13 @@ tests/                    tests unitaires et API
 - [Questions de recherche](docs/research_questions.md)
 - [Critères de succès](docs/success_metrics.md)
 - [Risques et hypothèses](docs/risks_and_assumptions.md)
-- [Rapport final généré](reports/final/FINAL_REPORT.md)
-- [Data Card générée](reports/final/DATA_CARD.md)
-- [Plan de soutenance généré](reports/final/DEFENSE_15_SLIDES.md)
+- [Rapport scientifique final](reports/final/FINAL_REPORT.md)
+- [Résumé JSON des métriques finales](reports/final/FINAL_METRICS.json)
+- [Data Card](reports/final/DATA_CARD.md)
+- [Model Card — 31 mai](reports/final/MODEL_CARD_MAY31.md)
+- [Model Card — 15 juin](reports/final/MODEL_CARD_JUNE15.md)
+- [Plan de soutenance](reports/final/DEFENSE_15_SLIDES.md)
+- [Script de démonstration](reports/final/DEMO_SCRIPT.md)
 
 ## Gouvernance scientifique
 
@@ -133,9 +140,9 @@ tests/                    tests unitaires et API
 
 ## Statut
 
-**Version 1.0.0 — prototype de recherche complet.**
+**Version 1.0.0 — prototype de recherche complet et validé en CI.**
 
-Toutes les phases sont implémentées dans le dépôt : cadrage, données, baselines, modèles, validation, ablations, incertitude, explicabilité, robustesse, API, interface, Docker, CI, gouvernance, rapport et soutenance.
+Toutes les phases sont terminées dans le dépôt : cadrage, données, baselines, modèles, validation, ablations, incertitude, explicabilité, robustesse, hors domaine, API, interface, Docker, CI, gouvernance, rapport et soutenance.
 
 ## Licence
 
