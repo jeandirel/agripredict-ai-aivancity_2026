@@ -18,7 +18,7 @@
 | 11. Robustesse | Implémentée | valeurs manquantes, bruit et modalités absentes |
 | 12. Hors domaine | Implémentée | distance standardisée et stress OOD synthétique |
 | 13. API | Terminée | FastAPI, health, readiness, model-info, prediction et explain |
-| 14. Interface | Terminée | dashboard Streamlit |
+| 14. Interface | Terminée | Harvest Observatory React/TypeScript + dashboard Streamlit historique |
 | 15. MLOps et CI/CD | Terminée | tests, Ruff, Docker, workflows et artefacts |
 | 16. Éthique et gouvernance | Terminée | `ETHICS_AND_GOVERNANCE.md`, Model Cards, Data Card |
 | 17. Rapport et soutenance | Générés automatiquement | rapport final, 15 slides, script de démonstration |

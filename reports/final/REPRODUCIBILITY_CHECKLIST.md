@@ -6,11 +6,11 @@
 - [x] Seeds fixées.
 - [x] Test chronologique séparé.
 - [x] Sélection du modèle sans test.
-- [x] GroupKFold par identifiant physique stable `ID_PARCEL`.
+- [x] GroupKFold par parcelle.
 - [x] Intervalles conformes.
 - [x] Ablations.
 - [x] Robustesse.
-- [x] Diagnostic hors domaine.
+- [x] OOD.
 - [x] API et interface.
 - [x] Tests et CI.
 - [x] Docker.

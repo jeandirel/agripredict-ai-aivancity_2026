@@ -585,6 +585,7 @@ def main() -> int:
 
     output_root = Path(args.output)
     report_dir = Path(args.report_dir)
+    output_root.mkdir(parents=True, exist_ok=True)
     report_dir.mkdir(parents=True, exist_ok=True)
 
     raw_frames = {horizon: load_dataset(path) for horizon, path in DATASETS.items()}
@@ -638,6 +639,23 @@ def main() -> int:
 
     (report_dir / "final_evaluation.json").write_text(
         json.dumps(payload, indent=2, ensure_ascii=False, default=json_default),
+        encoding="utf-8",
+    )
+    # Keep the cross-horizon result beside the deployed models so the product
+    # API never has to depend on a potentially stale report directory.
+    (output_root / "horizon_comparison.json").write_text(
+        json.dumps(
+            {
+                "generated_at": payload["generated_at"],
+                "version": payload["version"],
+                "dataset_alignment": payload["dataset_alignment"],
+                "horizon_comparison": comparison,
+                "scientific_status": payload["scientific_status"],
+            },
+            indent=2,
+            ensure_ascii=False,
+            default=json_default,
+        ),
         encoding="utf-8",
     )
     (report_dir / "FINAL_REPORT.md").write_text(final_report_markdown(payload), encoding="utf-8")

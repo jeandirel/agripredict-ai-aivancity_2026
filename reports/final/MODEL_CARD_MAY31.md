@@ -1,4 +1,4 @@
-# Model Card — AgriPredict AI, horizon 31 mai
+# Model Card — AgriPredict AI may31
 
 ## Identification
 
@@ -11,26 +11,26 @@
 
 ## Sélection et validation
 
-- Années de développement : 2020, 2021 et 2022
+- Années de développement : [2020, 2021, 2022]
 - Année de calibration : 2023
 - Année de test : 2024
-- Sélection : GroupKFold par identifiant physique stable `ID_PARCEL`, sans consultation du test
+- Sélection : GroupKFold par parcelle, sans consultation du test
 
 ## Performance sur le test chronologique
 
-- MAE : 8,493 jours
-- RMSE : 10,356 jours
-- R² : 0,105
-- Prédictions à ±5 jours : 25,2 %
-- Prédictions à ±7 jours : 52,8 %
-- IC bootstrap à 95 % du MAE : [7,609 ; 9,363]
+- MAE : 8.504 jours
+- RMSE : 10.343 jours
+- R² : 0.108
+- Prédictions à ±5 jours : 24.5%
+- Prédictions à ±7 jours : 50.3%
+- IC bootstrap 95 % du MAE : [7.608; 9.368]
 
 ## Incertitude
 
 - Méthode : split-conformal
 - Couverture nominale : 90 %
-- Couverture observée : 85,9 %
-- Largeur moyenne : 31,17 jours
+- Couverture observée : 85.9%
+- Largeur moyenne : 30.92 jours
 
 ## Usage prévu
 
@@ -46,4 +46,4 @@ Aide à la planification logistique et à l’analyse expérimentale. Le modèle
 
 ## Données et risques
 
-Les identifiants, variables de pic, variables DOY et agrégats AMJ à risque sont exclus du modèle officiel. Les détails figurent dans les métadonnées et le rapport final.
+Les identifiants, variables de pic, variables DOY et agrégats AMJ à risque sont exclus du modèle officiel. Les détails figurent dans `metadata.json` et le rapport final.

@@ -36,8 +36,9 @@ Ablations + robustesse + OOD + explicabilité
 Modèle de déploiement refitté sur toutes les données
         │
         ├── FastAPI
-        ├── Dashboard Streamlit
-        └── Docker Compose
+        ├── React / TypeScript — Harvest Observatory
+        ├── Streamlit — interface historique
+        └── Docker Compose — FastAPI + Nginx
 ```
 
 ## 2. Principes d’architecture
@@ -70,9 +71,11 @@ Modèle de déploiement refitté sur toutes les données
 ### Produit
 
 - `app/api/main.py` : API FastAPI.
-- `app/dashboard/app.py` : interface Streamlit.
-- `Dockerfile` : image applicative.
-- `docker-compose.yml` : API + dashboard.
+- `frontend/` : SPA React/TypeScript, visualisations et client API.
+- `app/dashboard/app.py` : interface Streamlit historique.
+- `Dockerfile` : image FastAPI.
+- `frontend/Dockerfile` : build Node multi-stage puis service Nginx.
+- `docker-compose.yml` : API + Harvest Observatory, avec proxy `/api`.
 
 ### Qualité et livraison
 

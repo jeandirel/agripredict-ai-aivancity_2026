@@ -69,20 +69,23 @@ jobs:
           log = log_path.read_text(encoding="utf-8", errors="replace") if log_path.exists() else "No log produced."
           status = "SUCCEEDED" if outcome == "success" else "FAILED"
           Path("reports/final").mkdir(parents=True, exist_ok=True)
+          content = "\n".join([
+              "# Finalization workflow status",
+              "",
+              f"- Status: **{status}**",
+              f"- Generated at: `{datetime.now(timezone.utc).isoformat()}`",
+              "- Commit: `${{ github.sha }}`",
+              "- Run: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`",
+              "",
+              "## Last log lines",
+              "",
+              "```text",
+              *log.splitlines()[-150:],
+              "```",
+              "",
+          ])
           Path("reports/final/WORKFLOW_STATUS.md").write_text(
-              f"""# Finalization workflow status
-
-- Status: **{status}**
-- Generated at: `{datetime.now(timezone.utc).isoformat()}`
-- Commit: `${{ github.sha }}`
-- Run: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
-
-## Last log lines
-
-```text
-{chr(10).join(log.splitlines()[-150:])}
-```
-""",
+              content,
               encoding="utf-8",
           )
           PY
@@ -149,7 +152,9 @@ jobs:
           fi
 
       - name: Build container
-        run: docker build -t agripredict-ai:1.0.0 .
+        run: |
+          docker build -t agripredict-ai:1.0.0 .
+          docker build -t agripredict-observatory:1.0.0 frontend
 
       - name: Package delivery
         run: |

@@ -55,7 +55,8 @@ Le workflow observable de validation a terminé avec succès : génération fina
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows : .venv\Scripts\activate
+# macOS / Linux : source .venv/bin/activate
+# PowerShell    : & .\.venv\Scripts\Activate.ps1
 make install
 make final
 ```
@@ -79,6 +80,9 @@ make final
 
 ### Local
 
+`make install` installe à la fois le package Python et les dépendances de
+l’interface React.
+
 ```bash
 make api
 make dashboard
@@ -86,13 +90,16 @@ make dashboard
 
 - API : `http://localhost:8000`
 - Documentation OpenAPI : `http://localhost:8000/docs`
-- Dashboard : `http://localhost:8501`
+- Harvest Observatory : `http://localhost:8501`
+
+L’ancienne interface Streamlit reste accessible avec
+`make dashboard-legacy`.
 
 ### Docker
 
 ```bash
 make final
-docker compose up --build
+make docker-up
 ```
 
 ## Architecture du dépôt
@@ -102,7 +109,8 @@ configs/data/             manifeste des datasets
 src/agripredict/          préparation, modèles et évaluation avancée
 scripts/                  téléchargement, audit, entraînement et finalisation
 app/api/                  FastAPI
-app/dashboard/            Streamlit
+frontend/                 React + TypeScript / Harvest Observatory
+app/dashboard/            Streamlit historique
 reports/modeling/         benchmark initial reproduit
 reports/final/            livrables scientifiques v1.0.0
 tests/                    tests unitaires et API
@@ -123,7 +131,7 @@ tests/                    tests unitaires et API
 - [Critères de succès](docs/success_metrics.md)
 - [Risques et hypothèses](docs/risks_and_assumptions.md)
 - [Rapport scientifique final](reports/final/FINAL_REPORT.md)
-- [Résumé JSON des métriques finales](reports/final/FINAL_METRICS.json)
+- [Évaluation scientifique générée](reports/final/final_evaluation.json)
 - [Data Card](reports/final/DATA_CARD.md)
 - [Model Card — 31 mai](reports/final/MODEL_CARD_MAY31.md)
 - [Model Card — 15 juin](reports/final/MODEL_CARD_JUNE15.md)

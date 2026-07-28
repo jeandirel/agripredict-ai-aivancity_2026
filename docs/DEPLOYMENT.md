@@ -4,7 +4,8 @@
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows : .venv\Scripts\activate
+# macOS / Linux : source .venv/bin/activate
+# PowerShell    : & .\.venv\Scripts\Activate.ps1
 make install
 make final
 ```
@@ -13,13 +14,16 @@ make final
 
 ## 2. Lancement local
 
-Terminal 1 :
+`make install` installe les dépendances Python et frontend. Lancer ensuite deux
+terminaux depuis la racine du dépôt.
+
+Terminal 1 — API :
 
 ```bash
 make api
 ```
 
-Terminal 2 :
+Terminal 2 — application React :
 
 ```bash
 make dashboard
@@ -31,19 +35,27 @@ Services :
 - OpenAPI : `http://localhost:8000/docs`
 - Dashboard : `http://localhost:8501`
 
+L’ancien dashboard Streamlit reste disponible pour la période de transition :
+
+```bash
+make dashboard-legacy
+```
+
 ## 3. Docker Compose
 
-Les modèles doivent d’abord exister dans `artifacts/models`.
+Les modèles doivent d’abord exister dans `artifacts/models`. Compose construit
+deux images indépendantes : FastAPI avec Python, puis la SPA avec Node et Nginx.
+Nginx sert l’interface sur le port 8501 et relaie `/api/*` vers le service API.
 
 ```bash
 make final
-docker compose up --build
+make docker-up
 ```
 
 Arrêt :
 
 ```bash
-docker compose down
+make docker-down
 ```
 
 ## 4. Variables d’environnement
@@ -51,7 +63,7 @@ docker compose down
 | Variable | Usage | Valeur par défaut |
 |---|---|---|
 | `AGRIPREDICT_MODEL_DIR` | Répertoire des modèles | `artifacts/models` |
-| `AGRIPREDICT_API_URL` | URL utilisée par Streamlit | `http://localhost:8000` |
+| `AGRIPREDICT_CORS_ORIGINS` | Origines autorisées, séparées par des virgules, pour un frontend déployé séparément | aucune |
 | `KAGGLE_USERNAME` | API Kaggle | aucune |
 | `KAGGLE_KEY` | API Kaggle | aucune |
 
@@ -64,7 +76,13 @@ make audit
 make final
 make quality
 docker build -t agripredict-ai:1.0.0 .
+docker build -t agripredict-observatory:1.0.0 frontend
 ```
+
+`make quality` exécute Ruff, pytest, les tests frontend, le lint TypeScript et
+le build de production. Les contrôles frontend peuvent aussi être lancés
+séparément avec `make frontend-test`, `make frontend-lint` et
+`make frontend-build`.
 
 Vérifier ensuite :
 

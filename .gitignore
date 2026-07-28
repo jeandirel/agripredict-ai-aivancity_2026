@@ -5,8 +5,21 @@ __pycache__/
 .ruff_cache/
 .coverage
 htmlcov/
+*.egg-info/
+build/
+dist/
 .venv/
 venv/
+
+# Frontend
+frontend/node_modules/
+frontend/.npm-cache/
+frontend/dist/
+frontend/coverage/
+frontend/*.tsbuildinfo
+frontend/.vite/
+frontend/.env.local
+frontend/.env.*.local
 
 # Secrets
 .env

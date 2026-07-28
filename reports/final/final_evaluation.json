@@ -1,0 +1,1680 @@
+{
+  "generated_at": "2026-07-28T11:00:32.780702+00:00",
+  "version": "1.0.0",
+  "project": "AgriPredict AI — aivancity AI Clinic 2026",
+  "dataset_alignment": {
+    "common_parcel_years": 1363,
+    "target_equal_count": 1363,
+    "target_different_count": 0
+  },
+  "horizons": {
+    "may31": {
+      "generated_at": "2026-07-28T10:59:14.898698+00:00",
+      "version": "1.0.0",
+      "horizon": "may31",
+      "task": "parcel-level wheat harvest-date regression",
+      "domain": "wheat parcels in Centre-Val de Loire, France",
+      "target": "harvest_doy_derived",
+      "target_nature": "derived",
+      "target_unit": "day_of_year",
+      "evaluation_protocol": {
+        "development_years": [
+          2020,
+          2021,
+          2022
+        ],
+        "calibration_year": 2023,
+        "test_year": 2024,
+        "model_selection": "GroupKFold by parcelle_uid on development years only",
+        "uncertainty": "90% split-conformal interval calibrated on the penultimate year",
+        "test_usage": "single final evaluation; never used for model-family selection"
+      },
+      "rows": {
+        "all": 1363,
+        "development": 900,
+        "calibration": 300,
+        "test": 163
+      },
+      "feature_count": 67,
+      "feature_columns": [
+        "year",
+        "SURF_PARC",
+        "phh2o_0-5cm",
+        "phh2o_5-15cm",
+        "phh2o_15-30cm",
+        "nitrogen_0-5cm",
+        "nitrogen_5-15cm",
+        "nitrogen_15-30cm",
+        "soc_0-5cm",
+        "soc_5-15cm",
+        "soc_15-30cm",
+        "clay_0-5cm",
+        "clay_5-15cm",
+        "clay_15-30cm",
+        "sand_0-5cm",
+        "silt_0-5cm",
+        "cec_0-5cm",
+        "cec_5-15cm",
+        "cec_15-30cm",
+        "bdod_0-5cm",
+        "bdod_5-15cm",
+        "bdod_15-30cm",
+        "cfvo_0-5cm",
+        "cfvo_5-15cm",
+        "cfvo_15-30cm",
+        "wv0033_0-5cm",
+        "wv1500_0-5cm",
+        "wv0010_0-5cm",
+        "wv0010_15-30cm",
+        "ocd_0-5cm",
+        "ocd_5-15cm",
+        "ocd_15-30cm",
+        "s2_ndvi_march_mean",
+        "s2_ndvi_april_mean",
+        "s2_ndvi_may_mean",
+        "s2_ndvi_winter_mean",
+        "s2_ndvi_spring_mean",
+        "s2_ndwi_amplitude",
+        "s2_ndvi_std",
+        "s2_ndvi_amplitude",
+        "s2_evi_std",
+        "s1_vv_min",
+        "s1_vv_max",
+        "s1_vv_mean",
+        "s1_vh_min",
+        "s1_vh_mean",
+        "s1_vh_amplitude",
+        "s1_ratio_min",
+        "s1_ratio_max",
+        "s1_ratio_mean",
+        "s1_ratio_amplitude",
+        "s1_vv_march_mean",
+        "s1_vv_april_mean",
+        "s1_vv_may_mean",
+        "s1_vv_winter_mean",
+        "s1_vv_std",
+        "s1_vh_std",
+        "s1_ratio_std",
+        "meteo_t_winter_mean",
+        "meteo_precip_winter_sum",
+        "meteo_precip_spring_sum",
+        "meteo_et0_spring_sum",
+        "meteo_wb_spring",
+        "meteo_gdd_spring",
+        "meteo_gdd_to_may31",
+        "meteo_frost_days",
+        "region"
+      ],
+      "excluded_columns": [
+        "ID_PARCEL",
+        "harvest_doy_derived",
+        "parcelle_uid",
+        "s1_ratio_min_doy",
+        "s1_vv_min_doy",
+        "s2_ndwi_peak",
+        "s2_peak_ndvi"
+      ],
+      "selected_model": "random_forest",
+      "model_selection_scores": [
+        {
+          "model": "random_forest",
+          "group_cv_mae_mean": 5.807295650713745,
+          "group_cv_mae_std": 0.34990983914522095,
+          "status": "ok"
+        },
+        {
+          "model": "extra_trees",
+          "group_cv_mae_mean": 5.857580804843309,
+          "group_cv_mae_std": 0.3584149207343321,
+          "status": "ok"
+        },
+        {
+          "model": "hist_gradient_boosting",
+          "group_cv_mae_mean": 6.0096721838883145,
+          "group_cv_mae_std": 0.3729492974435512,
+          "status": "ok"
+        },
+        {
+          "model": "ridge",
+          "group_cv_mae_mean": 6.04267815130703,
+          "group_cv_mae_std": 0.3055000334821809,
+          "status": "ok"
+        },
+        {
+          "model": "dummy_median",
+          "group_cv_mae_mean": 8.1517094017094,
+          "group_cv_mae_std": 0.44704329114555014,
+          "status": "ok"
+        },
+        {
+          "model": "mlp_neural_network",
+          "group_cv_mae_mean": 12.963743088753432,
+          "group_cv_mae_std": 0.7220558728647852,
+          "status": "ok"
+        }
+      ],
+      "temporal_metrics": {
+        "mae_days": 8.5036529390358,
+        "rmse_days": 10.343011734766922,
+        "median_absolute_error_days": 6.96016278744392,
+        "r2": 0.10770276448619664,
+        "bias_days": -1.8604343614449228,
+        "p90_absolute_error_days": 18.477999435287,
+        "within_3_days": 0.15337423312883436,
+        "within_5_days": 0.24539877300613497,
+        "within_7_days": 0.5030674846625767,
+        "within_10_days": 0.7239263803680982
+      },
+      "bootstrap_mae_ci95": {
+        "lower": 7.607697975602311,
+        "upper": 9.3675547130794
+      },
+      "conformal_interval": {
+        "nominal_coverage": 0.9,
+        "calibration_quantile_days": 15.457905982906084,
+        "empirical_test_coverage": 0.8588957055214724,
+        "mean_width_days": 30.91581196581217,
+        "median_width_days": 30.915811965812168
+      },
+      "residual_absolute_error_q90_days": 15.457905982906084,
+      "global_feature_importance": [
+        {
+          "feature": "wv0010_0-5cm",
+          "importance_mean": 0.19737381416600464,
+          "importance_std": 0.03340920454028459
+        },
+        {
+          "feature": "s2_ndvi_may_mean",
+          "importance_mean": 0.15316887602232154,
+          "importance_std": 0.06997090519654602
+        },
+        {
+          "feature": "silt_0-5cm",
+          "importance_mean": 0.10944391531411202,
+          "importance_std": 0.017469311318952935
+        },
+        {
+          "feature": "sand_0-5cm",
+          "importance_mean": 0.043888500985238554,
+          "importance_std": 0.0054443019806081116
+        },
+        {
+          "feature": "wv0033_0-5cm",
+          "importance_mean": 0.04260051852046831,
+          "importance_std": 0.012261764280202972
+        },
+        {
+          "feature": "s1_ratio_max",
+          "importance_mean": 0.0402419339050315,
+          "importance_std": 0.012629545704745473
+        },
+        {
+          "feature": "clay_15-30cm",
+          "importance_mean": 0.025128605710702523,
+          "importance_std": 0.01323168705033582
+        },
+        {
+          "feature": "s1_vv_winter_mean",
+          "importance_mean": 0.019327460072226854,
+          "importance_std": 0.01286698340390356
+        },
+        {
+          "feature": "wv0010_15-30cm",
+          "importance_mean": 0.019266269690700444,
+          "importance_std": 0.006607086092045768
+        },
+        {
+          "feature": "s1_ratio_mean",
+          "importance_mean": 0.017983898417028854,
+          "importance_std": 0.027043810219639624
+        },
+        {
+          "feature": "ocd_0-5cm",
+          "importance_mean": 0.01648746183590144,
+          "importance_std": 0.008378794515056135
+        },
+        {
+          "feature": "s1_vh_std",
+          "importance_mean": 0.015739829642309466,
+          "importance_std": 0.011447391798698662
+        },
+        {
+          "feature": "s1_vv_max",
+          "importance_mean": 0.0148441899872509,
+          "importance_std": 0.026056024731238584
+        },
+        {
+          "feature": "s1_vv_may_mean",
+          "importance_mean": 0.014784633239642186,
+          "importance_std": 0.012960676915664583
+        },
+        {
+          "feature": "nitrogen_0-5cm",
+          "importance_mean": 0.014105525259108687,
+          "importance_std": 0.009226523346296565
+        },
+        {
+          "feature": "cec_5-15cm",
+          "importance_mean": 0.013987503506165178,
+          "importance_std": 0.011780962986098197
+        },
+        {
+          "feature": "wv1500_0-5cm",
+          "importance_mean": 0.013632956629713089,
+          "importance_std": 0.00814909218142038
+        },
+        {
+          "feature": "s1_vh_amplitude",
+          "importance_mean": 0.013630427692969738,
+          "importance_std": 0.00791561801944282
+        },
+        {
+          "feature": "s1_ratio_amplitude",
+          "importance_mean": 0.011907304840650834,
+          "importance_std": 0.006053208136418834
+        },
+        {
+          "feature": "s1_vv_std",
+          "importance_mean": 0.009832113434271372,
+          "importance_std": 0.005545450214916214
+        },
+        {
+          "feature": "cec_15-30cm",
+          "importance_mean": 0.00902023773186511,
+          "importance_std": 0.00894923594461549
+        },
+        {
+          "feature": "s1_ratio_std",
+          "importance_mean": 0.009007243060484837,
+          "importance_std": 0.012761319357932214
+        },
+        {
+          "feature": "s2_ndvi_april_mean",
+          "importance_mean": 0.008978289725526611,
+          "importance_std": 0.008820496762355688
+        },
+        {
+          "feature": "clay_0-5cm",
+          "importance_mean": 0.007533166222048582,
+          "importance_std": 0.005563935380634442
+        },
+        {
+          "feature": "ocd_15-30cm",
+          "importance_mean": 0.007066709131935189,
+          "importance_std": 0.005911499122062503
+        }
+      ],
+      "ablation_study": [
+        {
+          "configuration": "all_modalities",
+          "modalities": [
+            "other",
+            "sentinel1",
+            "sentinel2",
+            "soil",
+            "weather"
+          ],
+          "feature_count": 67,
+          "mae_days": 8.816462194453184,
+          "rmse_days": 10.966957891555717,
+          "median_absolute_error_days": 6.785411044973529,
+          "r2": -0.003200787889109824,
+          "bias_days": -4.276749524071435,
+          "p90_absolute_error_days": 18.062349159174165,
+          "within_3_days": 0.17177914110429449,
+          "within_5_days": 0.3558282208588957,
+          "within_7_days": 0.5153374233128835,
+          "within_10_days": 0.6687116564417178
+        },
+        {
+          "configuration": "satellite_weather",
+          "modalities": [
+            "sentinel1",
+            "sentinel2",
+            "weather"
+          ],
+          "feature_count": 37,
+          "mae_days": 8.86458231249124,
+          "rmse_days": 10.835535612686957,
+          "median_absolute_error_days": 7.0619746503496685,
+          "r2": 0.02069881429303888,
+          "bias_days": -3.621207884573114,
+          "p90_absolute_error_days": 17.542388675213655,
+          "within_3_days": 0.12883435582822086,
+          "within_5_days": 0.3067484662576687,
+          "within_7_days": 0.49079754601226994,
+          "within_10_days": 0.6871165644171779
+        },
+        {
+          "configuration": "soil_weather",
+          "modalities": [
+            "soil",
+            "weather"
+          ],
+          "feature_count": 41,
+          "mae_days": 8.896590118761312,
+          "rmse_days": 11.525500180712497,
+          "median_absolute_error_days": 7.19892288614173,
+          "r2": -0.10798804990957711,
+          "bias_days": -5.7741526102206615,
+          "p90_absolute_error_days": 19.384190906084672,
+          "within_3_days": 0.25153374233128833,
+          "within_5_days": 0.4049079754601227,
+          "within_7_days": 0.48466257668711654,
+          "within_10_days": 0.6257668711656442
+        },
+        {
+          "configuration": "soil",
+          "modalities": [
+            "soil"
+          ],
+          "feature_count": 33,
+          "mae_days": 9.3145935035128,
+          "rmse_days": 11.990685152282653,
+          "median_absolute_error_days": 7.496113754301291,
+          "r2": -0.19923283711508355,
+          "bias_days": -6.679418550199823,
+          "p90_absolute_error_days": 19.89847589077586,
+          "within_3_days": 0.2822085889570552,
+          "within_5_days": 0.38650306748466257,
+          "within_7_days": 0.4785276073619632,
+          "within_10_days": 0.6012269938650306
+        },
+        {
+          "configuration": "satellite_soil",
+          "modalities": [
+            "sentinel1",
+            "sentinel2",
+            "soil"
+          ],
+          "feature_count": 59,
+          "mae_days": 9.392346260377309,
+          "rmse_days": 11.78429398829458,
+          "median_absolute_error_days": 7.638047466422364,
+          "r2": -0.15830424954558087,
+          "bias_days": -5.501151138965564,
+          "p90_absolute_error_days": 19.56399526677022,
+          "within_3_days": 0.2085889570552147,
+          "within_5_days": 0.3496932515337423,
+          "within_7_days": 0.4539877300613497,
+          "within_10_days": 0.6257668711656442
+        },
+        {
+          "configuration": "satellite",
+          "modalities": [
+            "sentinel1",
+            "sentinel2"
+          ],
+          "feature_count": 29,
+          "mae_days": 9.467810753550024,
+          "rmse_days": 11.695765833706462,
+          "median_absolute_error_days": 7.338998789405025,
+          "r2": -0.14096636434868826,
+          "bias_days": -4.691340590093296,
+          "p90_absolute_error_days": 18.39527089577088,
+          "within_3_days": 0.1656441717791411,
+          "within_5_days": 0.31901840490797545,
+          "within_7_days": 0.4785276073619632,
+          "within_10_days": 0.6012269938650306
+        },
+        {
+          "configuration": "sentinel1",
+          "modalities": [
+            "sentinel1"
+          ],
+          "feature_count": 20,
+          "mae_days": 9.548204667123368,
+          "rmse_days": 12.049683097119805,
+          "median_absolute_error_days": 7.559776175213585,
+          "r2": -0.21106307593719742,
+          "bias_days": -5.850971708406913,
+          "p90_absolute_error_days": 20.706502785409008,
+          "within_3_days": 0.17177914110429449,
+          "within_5_days": 0.3374233128834356,
+          "within_7_days": 0.48466257668711654,
+          "within_10_days": 0.6134969325153374
+        },
+        {
+          "configuration": "weather",
+          "modalities": [
+            "weather"
+          ],
+          "feature_count": 11,
+          "mae_days": 9.653229711210164,
+          "rmse_days": 11.961844778916275,
+          "median_absolute_error_days": 7.931373651811043,
+          "r2": -0.1934709097054681,
+          "bias_days": -5.329296159360604,
+          "p90_absolute_error_days": 19.6789712989617,
+          "within_3_days": 0.147239263803681,
+          "within_5_days": 0.3312883435582822,
+          "within_7_days": 0.43558282208588955,
+          "within_10_days": 0.6073619631901841
+        },
+        {
+          "configuration": "sentinel2",
+          "modalities": [
+            "sentinel2"
+          ],
+          "feature_count": 12,
+          "mae_days": 9.706127835383192,
+          "rmse_days": 12.019534113456453,
+          "median_absolute_error_days": 7.644765427859227,
+          "r2": -0.20501036190989375,
+          "bias_days": -4.549349726066363,
+          "p90_absolute_error_days": 18.76130338110958,
+          "within_3_days": 0.15337423312883436,
+          "within_5_days": 0.25766871165644173,
+          "within_7_days": 0.44785276073619634,
+          "within_10_days": 0.6319018404907976
+        },
+        {
+          "configuration": "context_only",
+          "modalities": [],
+          "feature_count": 3,
+          "mae_days": 10.821350020828557,
+          "rmse_days": 13.618120590654398,
+          "median_absolute_error_days": 8.774428571428473,
+          "r2": -0.5468559203372394,
+          "bias_days": -5.2472059655617675,
+          "p90_absolute_error_days": 23.32493605593127,
+          "within_3_days": 0.1901840490797546,
+          "within_5_days": 0.294478527607362,
+          "within_7_days": 0.38650306748466257,
+          "within_10_days": 0.5766871165644172
+        }
+      ],
+      "robustness_study": [
+        {
+          "scenario": "baseline",
+          "mae_days": 8.5036529390358,
+          "rmse_days": 10.343011734766922,
+          "median_absolute_error_days": 6.960162787443977,
+          "r2": 0.10770276448619664,
+          "bias_days": -1.8604343614449224,
+          "p90_absolute_error_days": 18.477999435287078,
+          "within_3_days": 0.15337423312883436,
+          "within_5_days": 0.24539877300613497,
+          "within_7_days": 0.5030674846625767,
+          "within_10_days": 0.7239263803680982,
+          "delta_mae_days": 3.552713678800501e-15,
+          "relative_mae_change": 4.1778676814194303e-16
+        },
+        {
+          "scenario": "numeric_missing_10pct",
+          "mae_days": 8.580084049329447,
+          "rmse_days": 10.444162679393513,
+          "median_absolute_error_days": 7.10366608160362,
+          "r2": 0.09016473016869642,
+          "bias_days": -2.063348399470349,
+          "p90_absolute_error_days": 18.805026661070354,
+          "within_3_days": 0.12269938650306748,
+          "within_5_days": 0.26993865030674846,
+          "within_7_days": 0.49079754601226994,
+          "within_10_days": 0.7239263803680982,
+          "delta_mae_days": 0.07643111029364924,
+          "relative_mae_change": 0.008988032653919143
+        },
+        {
+          "scenario": "numeric_noise_5pct_std",
+          "mae_days": 8.498416801423128,
+          "rmse_days": 10.333824170311177,
+          "median_absolute_error_days": 6.937141267297449,
+          "r2": 0.10928729275881555,
+          "bias_days": -1.875635805606883,
+          "p90_absolute_error_days": 18.652365201465255,
+          "within_3_days": 0.147239263803681,
+          "within_5_days": 0.25153374233128833,
+          "within_7_days": 0.5030674846625767,
+          "within_10_days": 0.7239263803680982,
+          "delta_mae_days": -0.005236137612669722,
+          "relative_mae_change": -0.0006157515658515847
+        },
+        {
+          "scenario": "missing_soil",
+          "mae_days": 8.903223549655293,
+          "rmse_days": 10.7691303729422,
+          "median_absolute_error_days": 7.249602271571064,
+          "r2": 0.03266526670354519,
+          "bias_days": -2.152764144271394,
+          "p90_absolute_error_days": 20.78940300671547,
+          "within_3_days": 0.12269938650306748,
+          "within_5_days": 0.1901840490797546,
+          "within_7_days": 0.4601226993865031,
+          "within_10_days": 0.7361963190184049,
+          "delta_mae_days": 0.39957061061949517,
+          "relative_mae_change": 0.04698811363587955
+        },
+        {
+          "scenario": "missing_sentinel1",
+          "mae_days": 8.489053428521606,
+          "rmse_days": 10.454939997527562,
+          "median_absolute_error_days": 7.218471357346431,
+          "r2": 0.08828604565590326,
+          "bias_days": -1.4010918471581784,
+          "p90_absolute_error_days": 19.727870461945564,
+          "within_3_days": 0.15950920245398773,
+          "within_5_days": 0.26380368098159507,
+          "within_7_days": 0.4785276073619632,
+          "within_10_days": 0.7239263803680982,
+          "delta_mae_days": -0.014599510514191394,
+          "relative_mae_change": -0.0017168516423304062
+        },
+        {
+          "scenario": "missing_sentinel2",
+          "mae_days": 8.598067520882319,
+          "rmse_days": 10.502526766325188,
+          "median_absolute_error_days": 7.026127696377728,
+          "r2": 0.07996763195542,
+          "bias_days": -1.9942636060258605,
+          "p90_absolute_error_days": 18.24554184727308,
+          "within_3_days": 0.147239263803681,
+          "within_5_days": 0.24539877300613497,
+          "within_7_days": 0.49693251533742333,
+          "within_10_days": 0.7361963190184049,
+          "delta_mae_days": 0.09441458184652163,
+          "relative_mae_change": 0.011102826341032093
+        },
+        {
+          "scenario": "missing_weather",
+          "mae_days": 8.807778256274233,
+          "rmse_days": 10.93908009946419,
+          "median_absolute_error_days": 6.899363743895094,
+          "r2": 0.001892963259526259,
+          "bias_days": -4.273059415341814,
+          "p90_absolute_error_days": 18.588700256919036,
+          "within_3_days": 0.147239263803681,
+          "within_5_days": 0.37423312883435583,
+          "within_7_days": 0.50920245398773,
+          "within_10_days": 0.6625766871165644,
+          "delta_mae_days": 0.3041253172384355,
+          "relative_mae_change": 0.035764079204403575
+        }
+      ],
+      "ood_diagnostics": {
+        "numeric_feature_count": 66,
+        "distance_threshold_q95": 1.4098174468329763,
+        "test_flagged_count": 60,
+        "test_flagged_rate": 0.36809815950920244,
+        "test_distance_mean": 1.4077693098700381,
+        "test_distance_max": 3.6946654030772113,
+        "synthetic_ood_auc": 0.9850954119462532
+      },
+      "segmented_metrics": [
+        {
+          "segment_type": "target_quartile",
+          "segment": "(164.999, 180.0]",
+          "rows": 57,
+          "mae_days": 8.907025306098198,
+          "rmse_days": 10.158372933873894,
+          "median_absolute_error_days": 6.96016278744392,
+          "r2": -3.3444845878846836,
+          "bias_days": 8.907025306098198,
+          "p90_absolute_error_days": 19.57499031339024,
+          "within_3_days": 0.017543859649122806,
+          "within_5_days": 0.05263157894736842,
+          "within_7_days": 0.5087719298245614,
+          "within_10_days": 0.7719298245614035
+        },
+        {
+          "segment_type": "target_quartile",
+          "segment": "(180.0, 190.0]",
+          "rows": 30,
+          "mae_days": 2.679840557744734,
+          "rmse_days": 3.329343270605422,
+          "median_absolute_error_days": 2.058258985805878,
+          "r2": -1.2661450168994763,
+          "bias_days": -0.4317157826741095,
+          "p90_absolute_error_days": 5.4832302410552565,
+          "within_3_days": 0.6,
+          "within_5_days": 0.8333333333333334,
+          "within_7_days": 0.9666666666666667,
+          "within_10_days": 1.0
+        },
+        {
+          "segment_type": "target_quartile",
+          "segment": "(190.0, 195.0]",
+          "rows": 41,
+          "mae_days": 5.978277569483388,
+          "rmse_days": 6.350512175854995,
+          "median_absolute_error_days": 6.369158501220966,
+          "r2": -51.96332596065621,
+          "bias_days": -5.978277569483388,
+          "p90_absolute_error_days": 8.340754311660703,
+          "within_3_days": 0.14634146341463414,
+          "within_5_days": 0.2926829268292683,
+          "within_7_days": 0.5853658536585366,
+          "within_10_days": 1.0
+        },
+        {
+          "segment_type": "target_quartile",
+          "segment": "(195.0, 217.0]",
+          "rows": 35,
+          "mae_days": 15.796868272402216,
+          "rmse_days": 16.535154358053816,
+          "median_absolute_error_days": 14.642403277278135,
+          "r2": -8.903880449177832,
+          "bias_days": -15.796868272402216,
+          "p90_absolute_error_days": 22.652658669108735,
+          "within_3_days": 0.0,
+          "within_5_days": 0.0,
+          "within_7_days": 0.0,
+          "within_10_days": 0.08571428571428572
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(1.0390000000000001, 2.84]",
+          "rows": 41,
+          "mae_days": 8.018946483056252,
+          "rmse_days": 9.55754161171051,
+          "median_absolute_error_days": 7.014294363044343,
+          "r2": 0.08561470252811865,
+          "bias_days": -2.7492422084464936,
+          "p90_absolute_error_days": 14.640313105875748,
+          "within_3_days": 0.17073170731707318,
+          "within_5_days": 0.1951219512195122,
+          "within_7_days": 0.4878048780487805,
+          "within_10_days": 0.7317073170731707
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(2.84, 5.04]",
+          "rows": 41,
+          "mae_days": 9.100308320321268,
+          "rmse_days": 10.65809376917736,
+          "median_absolute_error_days": 7.231586258648832,
+          "r2": 0.058621266309650144,
+          "bias_days": -2.4383462798775475,
+          "p90_absolute_error_days": 20.21644002294005,
+          "within_3_days": 0.07317073170731707,
+          "within_5_days": 0.17073170731707318,
+          "within_7_days": 0.43902439024390244,
+          "within_10_days": 0.7317073170731707
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(5.04, 10.285]",
+          "rows": 40,
+          "mae_days": 8.189510344834563,
+          "rmse_days": 10.559760994011233,
+          "median_absolute_error_days": 6.558097691081969,
+          "r2": 0.16262343660538492,
+          "bias_days": -0.1423961340453765,
+          "p90_absolute_error_days": 19.536711291717456,
+          "within_3_days": 0.2,
+          "within_5_days": 0.325,
+          "within_7_days": 0.575,
+          "within_10_days": 0.775
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(10.285, 38.42]",
+          "rows": 41,
+          "mae_days": 8.698184593438413,
+          "rmse_days": 10.562762621306403,
+          "median_absolute_error_days": 6.884954466829356,
+          "r2": 0.0922157857023499,
+          "bias_days": -2.0698494520102844,
+          "p90_absolute_error_days": 18.650871336996374,
+          "within_3_days": 0.17073170731707318,
+          "within_5_days": 0.2926829268292683,
+          "within_7_days": 0.5121951219512195,
+          "within_10_days": 0.6585365853658537
+        }
+      ],
+      "risk_feature_sensitivity": {
+        "status": "audit_only_not_deployable",
+        "safe_feature_count": 67,
+        "risk_feature_count": 71,
+        "reintroduced_columns": [
+          "s1_ratio_min_doy",
+          "s1_vv_min_doy",
+          "s2_ndwi_peak",
+          "s2_peak_ndvi"
+        ],
+        "metrics_with_risk_features": {
+          "mae_days": 8.770592403236948,
+          "rmse_days": 10.926636945066415,
+          "median_absolute_error_days": 7.292988018925456,
+          "r2": 0.004162356340345341,
+          "bias_days": -4.406886465202044,
+          "p90_absolute_error_days": 17.62542054080176,
+          "within_3_days": 0.15950920245398773,
+          "within_5_days": 0.3619631901840491,
+          "within_7_days": 0.49693251533742333,
+          "within_10_days": 0.6932515337423313
+        },
+        "warning": "Any improvement may be caused by post-cutoff information or circularity with the derived target. These features remain excluded from the official model."
+      },
+      "reference_row": {
+        "year": 2022.0,
+        "SURF_PARC": 5.59,
+        "phh2o_0-5cm": 66.0,
+        "phh2o_5-15cm": 69.0,
+        "phh2o_15-30cm": 69.0,
+        "nitrogen_0-5cm": 541.0,
+        "nitrogen_5-15cm": 162.0,
+        "nitrogen_15-30cm": 152.0,
+        "soc_0-5cm": 381.0,
+        "soc_5-15cm": 163.0,
+        "soc_15-30cm": 137.0,
+        "clay_0-5cm": 241.0,
+        "clay_5-15cm": 254.0,
+        "clay_15-30cm": 271.0,
+        "sand_0-5cm": 258.0,
+        "silt_0-5cm": 477.0,
+        "cec_0-5cm": 275.0,
+        "cec_5-15cm": 184.0,
+        "cec_15-30cm": 164.0,
+        "bdod_0-5cm": 130.0,
+        "bdod_5-15cm": 135.0,
+        "bdod_15-30cm": 139.0,
+        "cfvo_0-5cm": 114.0,
+        "cfvo_5-15cm": 130.0,
+        "cfvo_15-30cm": 120.0,
+        "wv0033_0-5cm": 315.0,
+        "wv1500_0-5cm": 152.0,
+        "wv0010_0-5cm": 364.0,
+        "wv0010_15-30cm": 344.0,
+        "ocd_0-5cm": 473.0,
+        "ocd_5-15cm": 199.0,
+        "ocd_15-30cm": 184.0,
+        "s2_ndvi_march_mean": 0.7457050979137421,
+        "s2_ndvi_april_mean": 0.8494318425655365,
+        "s2_ndvi_may_mean": 0.8292320370674133,
+        "s2_ndvi_winter_mean": 0.4348744377493858,
+        "s2_ndvi_spring_mean": 0.7990335623423258,
+        "s2_ndwi_amplitude": 0.7173487842082977,
+        "s2_ndvi_std": 0.2604737487153026,
+        "s2_ndvi_amplitude": 0.7162212878465652,
+        "s2_evi_std": 0.228788111249427,
+        "s1_vv_min": -18.285687337820992,
+        "s1_vv_max": -7.051108102506154,
+        "s1_vv_mean": -11.820165208293696,
+        "s1_vh_min": -24.906945998327885,
+        "s1_vh_mean": -19.5611506935425,
+        "s1_vh_amplitude": 10.144019536896597,
+        "s1_ratio_min": 3.4799269992668584,
+        "s1_ratio_max": 11.62779698822871,
+        "s1_ratio_mean": 7.620177216383261,
+        "s1_ratio_amplitude": 8.235796138715886,
+        "s1_vv_march_mean": -12.0515386551893,
+        "s1_vv_april_mean": -15.614743313176511,
+        "s1_vv_may_mean": -15.794451419325927,
+        "s1_vv_winter_mean": -9.69907234074247,
+        "s1_vv_std": 2.941779700829976,
+        "s1_vh_std": 2.375960985146346,
+        "s1_ratio_std": 2.077847352812962,
+        "meteo_t_winter_mean": 5.70025,
+        "meteo_precip_winter_sum": 249.51,
+        "meteo_precip_spring_sum": 145.23,
+        "meteo_et0_spring_sum": 215.66915566573425,
+        "meteo_wb_spring": -62.20146299449078,
+        "meteo_gdd_spring": 1019.42,
+        "meteo_gdd_to_may31": 2089.46,
+        "meteo_frost_days": 9.0,
+        "region": "Centre-Val de Loire"
+      },
+      "limitations": [
+        "The target is derived and is not a direct parcel-level field observation.",
+        "External generalisation outside Centre-Val de Loire has not been demonstrated.",
+        "Peak, DOY and selected AMJ variables are excluded until their lineage and cutoff availability are proven.",
+        "The deployment candidate is refitted on all rows after the scientific evaluation; reported metrics come only from the evaluation model."
+      ]
+    },
+    "june15": {
+      "generated_at": "2026-07-28T11:00:32.705613+00:00",
+      "version": "1.0.0",
+      "horizon": "june15",
+      "task": "parcel-level wheat harvest-date regression",
+      "domain": "wheat parcels in Centre-Val de Loire, France",
+      "target": "harvest_doy_derived",
+      "target_nature": "derived",
+      "target_unit": "day_of_year",
+      "evaluation_protocol": {
+        "development_years": [
+          2020,
+          2021,
+          2022
+        ],
+        "calibration_year": 2023,
+        "test_year": 2024,
+        "model_selection": "GroupKFold by parcelle_uid on development years only",
+        "uncertainty": "90% split-conformal interval calibrated on the penultimate year",
+        "test_usage": "single final evaluation; never used for model-family selection"
+      },
+      "rows": {
+        "all": 1363,
+        "development": 900,
+        "calibration": 300,
+        "test": 163
+      },
+      "feature_count": 72,
+      "feature_columns": [
+        "year",
+        "SURF_PARC",
+        "phh2o_0-5cm",
+        "phh2o_5-15cm",
+        "phh2o_15-30cm",
+        "nitrogen_0-5cm",
+        "nitrogen_5-15cm",
+        "nitrogen_15-30cm",
+        "soc_0-5cm",
+        "soc_5-15cm",
+        "soc_15-30cm",
+        "clay_0-5cm",
+        "clay_5-15cm",
+        "clay_15-30cm",
+        "sand_0-5cm",
+        "silt_0-5cm",
+        "cec_0-5cm",
+        "cec_5-15cm",
+        "cec_15-30cm",
+        "bdod_0-5cm",
+        "bdod_5-15cm",
+        "bdod_15-30cm",
+        "cfvo_0-5cm",
+        "cfvo_5-15cm",
+        "cfvo_15-30cm",
+        "wv0033_0-5cm",
+        "wv1500_0-5cm",
+        "wv0010_0-5cm",
+        "wv0010_15-30cm",
+        "ocd_0-5cm",
+        "ocd_5-15cm",
+        "ocd_15-30cm",
+        "s2_ndvi_march_mean",
+        "s2_ndvi_april_mean",
+        "s2_ndvi_may_mean",
+        "s2_ndvi_winter_mean",
+        "s2_ndvi_spring_mean",
+        "s2_ndwi_amplitude",
+        "s2_ndvi_std",
+        "s2_ndvi_amplitude",
+        "s2_evi_std",
+        "s1_vv_min",
+        "s1_vv_max",
+        "s1_vv_mean",
+        "s1_vh_min",
+        "s1_vh_mean",
+        "s1_vh_amplitude",
+        "s1_ratio_min",
+        "s1_ratio_max",
+        "s1_ratio_mean",
+        "s1_ratio_amplitude",
+        "s1_vv_march_mean",
+        "s1_vv_april_mean",
+        "s1_vv_may_mean",
+        "s1_vv_winter_mean",
+        "s1_vv_std",
+        "s1_vh_std",
+        "s1_ratio_std",
+        "meteo_t_winter_mean",
+        "meteo_precip_winter_sum",
+        "meteo_precip_spring_sum",
+        "meteo_et0_spring_sum",
+        "meteo_wb_spring",
+        "meteo_gdd_spring",
+        "meteo_gdd_to_may31",
+        "meteo_frost_days",
+        "meteo_wb_amj",
+        "meteo_gdd_amj",
+        "meteo_heat_stress_days",
+        "meteo_dry_streak_max",
+        "meteo_wet_streak_max",
+        "region"
+      ],
+      "excluded_columns": [
+        "ID_PARCEL",
+        "harvest_doy_derived",
+        "meteo_et0_amj_sum",
+        "meteo_precip_amj_n_days",
+        "meteo_precip_amj_sum",
+        "meteo_radiation_amj_sum",
+        "meteo_t_amj_max",
+        "meteo_t_amj_mean",
+        "meteo_t_amj_min",
+        "meteo_t_amj_std",
+        "parcelle_uid",
+        "s1_ratio_min_doy",
+        "s1_vv_min_doy",
+        "s2_ndwi_peak",
+        "s2_ndwi_peak_doy",
+        "s2_peak_doy",
+        "s2_peak_evi",
+        "s2_peak_ndvi"
+      ],
+      "selected_model": "random_forest",
+      "model_selection_scores": [
+        {
+          "model": "random_forest",
+          "group_cv_mae_mean": 5.810523542204971,
+          "group_cv_mae_std": 0.38809237601435237,
+          "status": "ok"
+        },
+        {
+          "model": "extra_trees",
+          "group_cv_mae_mean": 5.862830626780638,
+          "group_cv_mae_std": 0.3366362476671293,
+          "status": "ok"
+        },
+        {
+          "model": "hist_gradient_boosting",
+          "group_cv_mae_mean": 6.029723232066944,
+          "group_cv_mae_std": 0.36342532526963367,
+          "status": "ok"
+        },
+        {
+          "model": "ridge",
+          "group_cv_mae_mean": 6.031829096145204,
+          "group_cv_mae_std": 0.29932502403780303,
+          "status": "ok"
+        },
+        {
+          "model": "dummy_median",
+          "group_cv_mae_mean": 8.1517094017094,
+          "group_cv_mae_std": 0.44704329114555014,
+          "status": "ok"
+        },
+        {
+          "model": "mlp_neural_network",
+          "group_cv_mae_mean": 12.122109694338352,
+          "group_cv_mae_std": 0.45530052761580203,
+          "status": "ok"
+        }
+      ],
+      "temporal_metrics": {
+        "mae_days": 8.337405460521664,
+        "rmse_days": 10.226024410338857,
+        "median_absolute_error_days": 7.264742446211301,
+        "r2": 0.12777372989655278,
+        "bias_days": -0.385387917339986,
+        "p90_absolute_error_days": 16.78676219474962,
+        "within_3_days": 0.19631901840490798,
+        "within_5_days": 0.3006134969325153,
+        "within_7_days": 0.4662576687116564,
+        "within_10_days": 0.7116564417177914
+      },
+      "bootstrap_mae_ci95": {
+        "lower": 7.474924923746856,
+        "upper": 9.250493013390363
+      },
+      "conformal_interval": {
+        "nominal_coverage": 0.9,
+        "calibration_quantile_days": 14.852726419413926,
+        "empirical_test_coverage": 0.852760736196319,
+        "mean_width_days": 29.705452838827856,
+        "median_width_days": 29.705452838827853
+      },
+      "residual_absolute_error_q90_days": 14.852726419413926,
+      "global_feature_importance": [
+        {
+          "feature": "wv0010_0-5cm",
+          "importance_mean": 0.17383996995516227,
+          "importance_std": 0.02274557444671802
+        },
+        {
+          "feature": "meteo_gdd_amj",
+          "importance_mean": 0.11642235965632253,
+          "importance_std": 0.02407424409253391
+        },
+        {
+          "feature": "s2_ndvi_may_mean",
+          "importance_mean": 0.09727016786822529,
+          "importance_std": 0.038866092579551634
+        },
+        {
+          "feature": "silt_0-5cm",
+          "importance_mean": 0.0611705626265584,
+          "importance_std": 0.010283183860666767
+        },
+        {
+          "feature": "s2_ndvi_winter_mean",
+          "importance_mean": 0.05460502339822537,
+          "importance_std": 0.03697383950128347
+        },
+        {
+          "feature": "s1_vv_max",
+          "importance_mean": 0.03486590452406557,
+          "importance_std": 0.032821782913237105
+        },
+        {
+          "feature": "s1_vv_march_mean",
+          "importance_mean": 0.03091130225360894,
+          "importance_std": 0.03955795738793974
+        },
+        {
+          "feature": "s1_ratio_mean",
+          "importance_mean": 0.027372257718950355,
+          "importance_std": 0.0360875492866686
+        },
+        {
+          "feature": "cec_15-30cm",
+          "importance_mean": 0.02419712823637976,
+          "importance_std": 0.013633488976741097
+        },
+        {
+          "feature": "wv0033_0-5cm",
+          "importance_mean": 0.023522025288174264,
+          "importance_std": 0.008789304997772496
+        },
+        {
+          "feature": "clay_15-30cm",
+          "importance_mean": 0.023475511886215994,
+          "importance_std": 0.015447739127649957
+        },
+        {
+          "feature": "s1_vv_winter_mean",
+          "importance_mean": 0.021937459483323263,
+          "importance_std": 0.01505084728961476
+        },
+        {
+          "feature": "cec_5-15cm",
+          "importance_mean": 0.019458888197329216,
+          "importance_std": 0.006173222533430342
+        },
+        {
+          "feature": "s1_ratio_max",
+          "importance_mean": 0.016004554014878325,
+          "importance_std": 0.017343208695965225
+        },
+        {
+          "feature": "ocd_15-30cm",
+          "importance_mean": 0.015315417941659248,
+          "importance_std": 0.009453866183749085
+        },
+        {
+          "feature": "s1_vv_april_mean",
+          "importance_mean": 0.014810087935057226,
+          "importance_std": 0.015194766710828145
+        },
+        {
+          "feature": "s1_vh_amplitude",
+          "importance_mean": 0.01449596529439412,
+          "importance_std": 0.009408970124812155
+        },
+        {
+          "feature": "s2_ndvi_april_mean",
+          "importance_mean": 0.014182774076988647,
+          "importance_std": 0.007614028170533267
+        },
+        {
+          "feature": "s1_ratio_std",
+          "importance_mean": 0.014017150507584564,
+          "importance_std": 0.013477631804591963
+        },
+        {
+          "feature": "s1_vh_min",
+          "importance_mean": 0.01238107532840016,
+          "importance_std": 0.005834158764652308
+        },
+        {
+          "feature": "s2_ndvi_march_mean",
+          "importance_mean": 0.01067495000472296,
+          "importance_std": 0.007197518811129134
+        },
+        {
+          "feature": "s1_vv_min",
+          "importance_mean": 0.010230572981956287,
+          "importance_std": 0.012356786109001294
+        },
+        {
+          "feature": "meteo_gdd_spring",
+          "importance_mean": 0.009967168640335977,
+          "importance_std": 0.0027634147172293936
+        },
+        {
+          "feature": "s1_vh_mean",
+          "importance_mean": 0.009644565519896009,
+          "importance_std": 0.0049099874872721334
+        },
+        {
+          "feature": "nitrogen_5-15cm",
+          "importance_mean": 0.009333716908121792,
+          "importance_std": 0.010271095887027426
+        }
+      ],
+      "ablation_study": [
+        {
+          "configuration": "satellite_weather",
+          "modalities": [
+            "sentinel1",
+            "sentinel2",
+            "weather"
+          ],
+          "feature_count": 42,
+          "mae_days": 8.40027652034401,
+          "rmse_days": 10.332859297974618,
+          "median_absolute_error_days": 7.998193986569049,
+          "r2": 0.10945361723164027,
+          "bias_days": -0.12859122105175766,
+          "p90_absolute_error_days": 17.626521670459212,
+          "within_3_days": 0.19631901840490798,
+          "within_5_days": 0.3496932515337423,
+          "within_7_days": 0.4294478527607362,
+          "within_10_days": 0.6625766871165644
+        },
+        {
+          "configuration": "all_modalities",
+          "modalities": [
+            "other",
+            "sentinel1",
+            "sentinel2",
+            "soil",
+            "weather"
+          ],
+          "feature_count": 72,
+          "mae_days": 8.454645530133059,
+          "rmse_days": 10.384046142429101,
+          "median_absolute_error_days": 6.701976419413796,
+          "r2": 0.10060859856934479,
+          "bias_days": -1.9687081500994326,
+          "p90_absolute_error_days": 17.630272268009747,
+          "within_3_days": 0.1656441717791411,
+          "within_5_days": 0.3006134969325153,
+          "within_7_days": 0.5214723926380368,
+          "within_10_days": 0.7177914110429447
+        },
+        {
+          "configuration": "soil_weather",
+          "modalities": [
+            "soil",
+            "weather"
+          ],
+          "feature_count": 46,
+          "mae_days": 8.611107199442516,
+          "rmse_days": 10.666844231364156,
+          "median_absolute_error_days": 6.41840995115993,
+          "r2": 0.050953659589641265,
+          "bias_days": -2.911850744411532,
+          "p90_absolute_error_days": 18.676354382885588,
+          "within_3_days": 0.12883435582822086,
+          "within_5_days": 0.3006134969325153,
+          "within_7_days": 0.5705521472392638,
+          "within_10_days": 0.7239263803680982
+        },
+        {
+          "configuration": "weather",
+          "modalities": [
+            "weather"
+          ],
+          "feature_count": 16,
+          "mae_days": 9.306589665502113,
+          "rmse_days": 11.140046160952839,
+          "median_absolute_error_days": 8.16989760008505,
+          "r2": -0.0351171246772648,
+          "bias_days": -0.782880803194884,
+          "p90_absolute_error_days": 19.3098690249003,
+          "within_3_days": 0.1165644171779141,
+          "within_5_days": 0.2331288343558282,
+          "within_7_days": 0.3803680981595092,
+          "within_10_days": 0.6871165644171779
+        },
+        {
+          "configuration": "soil",
+          "modalities": [
+            "soil"
+          ],
+          "feature_count": 33,
+          "mae_days": 9.314593503512805,
+          "rmse_days": 11.99068515228266,
+          "median_absolute_error_days": 7.496113754301291,
+          "r2": -0.19923283711508488,
+          "bias_days": -6.67941855019983,
+          "p90_absolute_error_days": 19.89847589077586,
+          "within_3_days": 0.2822085889570552,
+          "within_5_days": 0.38650306748466257,
+          "within_7_days": 0.4785276073619632,
+          "within_10_days": 0.6012269938650306
+        },
+        {
+          "configuration": "satellite_soil",
+          "modalities": [
+            "sentinel1",
+            "sentinel2",
+            "soil"
+          ],
+          "feature_count": 59,
+          "mae_days": 9.392346260377316,
+          "rmse_days": 11.78429398829458,
+          "median_absolute_error_days": 7.638047466422336,
+          "r2": -0.1583042495455813,
+          "bias_days": -5.501151138965559,
+          "p90_absolute_error_days": 19.563995266770164,
+          "within_3_days": 0.2085889570552147,
+          "within_5_days": 0.3496932515337423,
+          "within_7_days": 0.4539877300613497,
+          "within_10_days": 0.6257668711656442
+        },
+        {
+          "configuration": "satellite",
+          "modalities": [
+            "sentinel1",
+            "sentinel2"
+          ],
+          "feature_count": 29,
+          "mae_days": 9.467810753550014,
+          "rmse_days": 11.695765833706457,
+          "median_absolute_error_days": 7.338998789404911,
+          "r2": -0.14096636434868715,
+          "bias_days": -4.691340590093285,
+          "p90_absolute_error_days": 18.395270895770864,
+          "within_3_days": 0.1656441717791411,
+          "within_5_days": 0.31901840490797545,
+          "within_7_days": 0.4785276073619632,
+          "within_10_days": 0.6012269938650306
+        },
+        {
+          "configuration": "sentinel1",
+          "modalities": [
+            "sentinel1"
+          ],
+          "feature_count": 20,
+          "mae_days": 9.548204667123374,
+          "rmse_days": 12.049683097119809,
+          "median_absolute_error_days": 7.559776175213642,
+          "r2": -0.2110630759371983,
+          "bias_days": -5.8509717084069175,
+          "p90_absolute_error_days": 20.706502785409008,
+          "within_3_days": 0.17177914110429449,
+          "within_5_days": 0.3374233128834356,
+          "within_7_days": 0.48466257668711654,
+          "within_10_days": 0.6134969325153374
+        },
+        {
+          "configuration": "sentinel2",
+          "modalities": [
+            "sentinel2"
+          ],
+          "feature_count": 12,
+          "mae_days": 9.706127835383198,
+          "rmse_days": 12.01953411345646,
+          "median_absolute_error_days": 7.644765427859312,
+          "r2": -0.20501036190989486,
+          "bias_days": -4.549349726066363,
+          "p90_absolute_error_days": 18.7613033811095,
+          "within_3_days": 0.15337423312883436,
+          "within_5_days": 0.25766871165644173,
+          "within_7_days": 0.44785276073619634,
+          "within_10_days": 0.6319018404907976
+        },
+        {
+          "configuration": "context_only",
+          "modalities": [],
+          "feature_count": 3,
+          "mae_days": 10.821350020828556,
+          "rmse_days": 13.618120590654396,
+          "median_absolute_error_days": 8.77442857142853,
+          "r2": -0.5468559203372392,
+          "bias_days": -5.247205965561778,
+          "p90_absolute_error_days": 23.324936055931214,
+          "within_3_days": 0.1901840490797546,
+          "within_5_days": 0.294478527607362,
+          "within_7_days": 0.38650306748466257,
+          "within_10_days": 0.5766871165644172
+        }
+      ],
+      "robustness_study": [
+        {
+          "scenario": "baseline",
+          "mae_days": 8.33740546052166,
+          "rmse_days": 10.226024410338855,
+          "median_absolute_error_days": 7.264742446211358,
+          "r2": 0.1277737298965531,
+          "bias_days": -0.38538791733998984,
+          "p90_absolute_error_days": 16.786762194749688,
+          "within_3_days": 0.19631901840490798,
+          "within_5_days": 0.3006134969325153,
+          "within_7_days": 0.4662576687116564,
+          "within_10_days": 0.7116564417177914,
+          "delta_mae_days": 1.7763568394002505e-15,
+          "relative_mae_change": 2.130587084688942e-16
+        },
+        {
+          "scenario": "numeric_missing_10pct",
+          "mae_days": 8.419274562264608,
+          "rmse_days": 10.251332034260361,
+          "median_absolute_error_days": 7.4791807706185125,
+          "r2": 0.12345117243990078,
+          "bias_days": -0.7363781936508196,
+          "p90_absolute_error_days": 17.992355590705568,
+          "within_3_days": 0.17177914110429449,
+          "within_5_days": 0.2822085889570552,
+          "within_7_days": 0.4539877300613497,
+          "within_10_days": 0.7239263803680982,
+          "delta_mae_days": 0.08186910174294937,
+          "relative_mae_change": 0.009819493861802297
+        },
+        {
+          "scenario": "numeric_noise_5pct_std",
+          "mae_days": 8.354938962757043,
+          "rmse_days": 10.246930223933104,
+          "median_absolute_error_days": 7.46072837810334,
+          "r2": 0.1242037718661565,
+          "bias_days": -0.3497732405418404,
+          "p90_absolute_error_days": 16.877366931216894,
+          "within_3_days": 0.2085889570552147,
+          "within_5_days": 0.294478527607362,
+          "within_7_days": 0.4662576687116564,
+          "within_10_days": 0.7055214723926381,
+          "delta_mae_days": 0.01753350223538419,
+          "relative_mae_change": 0.0021029926298303295
+        },
+        {
+          "scenario": "missing_soil",
+          "mae_days": 8.586014735222173,
+          "rmse_days": 10.441422989967291,
+          "median_absolute_error_days": 7.649158577533456,
+          "r2": 0.09064199947396656,
+          "bias_days": -0.34782849105278013,
+          "p90_absolute_error_days": 19.075993747456348,
+          "within_3_days": 0.18404907975460122,
+          "within_5_days": 0.3312883435582822,
+          "within_7_days": 0.44171779141104295,
+          "within_10_days": 0.6993865030674846,
+          "delta_mae_days": 0.24860927470051486,
+          "relative_mae_change": 0.029818541976601887
+        },
+        {
+          "scenario": "missing_sentinel1",
+          "mae_days": 8.40726943877386,
+          "rmse_days": 10.341875301324016,
+          "median_absolute_error_days": 7.8018212447273925,
+          "r2": 0.1078988351737431,
+          "bias_days": 0.5925980723646779,
+          "p90_absolute_error_days": 17.132478164428274,
+          "within_3_days": 0.22699386503067484,
+          "within_5_days": 0.3496932515337423,
+          "within_7_days": 0.44171779141104295,
+          "within_10_days": 0.6932515337423313,
+          "delta_mae_days": 0.06986397825220081,
+          "relative_mae_change": 0.008379582663097391
+        },
+        {
+          "scenario": "missing_sentinel2",
+          "mae_days": 8.425339775737788,
+          "rmse_days": 10.318222482805647,
+          "median_absolute_error_days": 7.402385276760214,
+          "r2": 0.11197480335365628,
+          "bias_days": -0.5377313870661365,
+          "p90_absolute_error_days": 17.09826657509168,
+          "within_3_days": 0.20245398773006135,
+          "within_5_days": 0.2822085889570552,
+          "within_7_days": 0.44171779141104295,
+          "within_10_days": 0.7300613496932515,
+          "delta_mae_days": 0.08793431521612938,
+          "relative_mae_change": 0.010546963996474206
+        },
+        {
+          "scenario": "missing_weather",
+          "mae_days": 8.861414151167802,
+          "rmse_days": 10.973129657525018,
+          "median_absolute_error_days": 6.750225554538048,
+          "r2": -0.004330228289000981,
+          "bias_days": -4.2118088306759836,
+          "p90_absolute_error_days": 18.80236460923336,
+          "within_3_days": 0.147239263803681,
+          "within_5_days": 0.3558282208588957,
+          "within_7_days": 0.5153374233128835,
+          "within_10_days": 0.6687116564417178,
+          "delta_mae_days": 0.5240086906461432,
+          "relative_mae_change": 0.06285033073266857
+        }
+      ],
+      "ood_diagnostics": {
+        "numeric_feature_count": 71,
+        "distance_threshold_q95": 1.3790583688478242,
+        "test_flagged_count": 77,
+        "test_flagged_rate": 0.4723926380368098,
+        "test_distance_mean": 1.432182830435931,
+        "test_distance_max": 3.589559234046847,
+        "synthetic_ood_auc": 0.9861492717076292
+      },
+      "segmented_metrics": [
+        {
+          "segment_type": "target_quartile",
+          "segment": "(164.999, 180.0]",
+          "rows": 57,
+          "mae_days": 10.369295675186601,
+          "rmse_days": 11.430462370068625,
+          "median_absolute_error_days": 8.72704202279212,
+          "r2": -4.500694837623227,
+          "bias_days": 10.369295675186601,
+          "p90_absolute_error_days": 20.492776536426394,
+          "within_3_days": 0.0,
+          "within_5_days": 0.017543859649122806,
+          "within_7_days": 0.15789473684210525,
+          "within_10_days": 0.6666666666666666
+        },
+        {
+          "segment_type": "target_quartile",
+          "segment": "(180.0, 190.0]",
+          "rows": 30,
+          "mae_days": 2.6278915731259644,
+          "rmse_days": 3.476876198751508,
+          "median_absolute_error_days": 2.2814054244366417,
+          "r2": -1.4714339127133313,
+          "bias_days": 1.1747468457853927,
+          "p90_absolute_error_days": 6.15213760938143,
+          "within_3_days": 0.7333333333333333,
+          "within_5_days": 0.8666666666666667,
+          "within_7_days": 0.9333333333333333,
+          "within_10_days": 1.0
+        },
+        {
+          "segment_type": "target_quartile",
+          "segment": "(190.0, 195.0]",
+          "rows": 41,
+          "mae_days": 4.423932044525054,
+          "rmse_days": 4.9405421799746225,
+          "median_absolute_error_days": 4.7814714845339665,
+          "r2": -31.05582560232247,
+          "bias_days": -4.423932044525054,
+          "p90_absolute_error_days": 6.812036451973825,
+          "within_3_days": 0.24390243902439024,
+          "within_5_days": 0.5365853658536586,
+          "within_7_days": 0.926829268292683,
+          "within_10_days": 1.0
+        },
+        {
+          "segment_type": "target_quartile",
+          "segment": "(195.0, 217.0]",
+          "rows": 35,
+          "mae_days": 14.506550730288248,
+          "rmse_days": 15.338446273769074,
+          "median_absolute_error_days": 14.084479891635937,
+          "r2": -7.522198022347219,
+          "bias_days": -14.506550730288248,
+          "p90_absolute_error_days": 21.00749107142857,
+          "within_3_days": 0.0,
+          "within_5_days": 0.0,
+          "within_7_days": 0.02857142857142857,
+          "within_10_days": 0.2
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(1.0390000000000001, 2.84]",
+          "rows": 41,
+          "mae_days": 7.858524760216061,
+          "rmse_days": 9.336262453170445,
+          "median_absolute_error_days": 7.083476171976258,
+          "r2": 0.1274648273676613,
+          "bias_days": -1.355957697874623,
+          "p90_absolute_error_days": 13.465891012922299,
+          "within_3_days": 0.17073170731707318,
+          "within_5_days": 0.2682926829268293,
+          "within_7_days": 0.43902439024390244,
+          "within_10_days": 0.7804878048780488
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(2.84, 5.04]",
+          "rows": 41,
+          "mae_days": 8.835998343966375,
+          "rmse_days": 10.45258654764832,
+          "median_absolute_error_days": 7.719309930809828,
+          "r2": 0.09457422421523809,
+          "bias_days": -0.9434300794621087,
+          "p90_absolute_error_days": 20.391199608262127,
+          "within_3_days": 0.07317073170731707,
+          "within_5_days": 0.21951219512195122,
+          "within_7_days": 0.4634146341463415,
+          "within_10_days": 0.6585365853658537
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(5.04, 10.285]",
+          "rows": 40,
+          "mae_days": 8.358998473459442,
+          "rmse_days": 10.675205103693367,
+          "median_absolute_error_days": 7.351384736212879,
+          "r2": 0.14421419171132677,
+          "bias_days": 1.380567072510832,
+          "p90_absolute_error_days": 20.24600821759261,
+          "within_3_days": 0.275,
+          "within_5_days": 0.325,
+          "within_7_days": 0.45,
+          "within_10_days": 0.725
+        },
+        {
+          "segment_type": "surface_quartile",
+          "segment": "(10.285, 38.42]",
+          "rows": 41,
+          "mae_days": 8.296626923296916,
+          "rmse_days": 10.398698038425087,
+          "median_absolute_error_days": 6.955416879416845,
+          "r2": 0.12019683313028451,
+          "bias_days": -0.5796588916108538,
+          "p90_absolute_error_days": 16.830511942918093,
+          "within_3_days": 0.2682926829268293,
+          "within_5_days": 0.3902439024390244,
+          "within_7_days": 0.5121951219512195,
+          "within_10_days": 0.6829268292682927
+        }
+      ],
+      "risk_feature_sensitivity": {
+        "status": "audit_only_not_deployable",
+        "safe_feature_count": 72,
+        "risk_feature_count": 87,
+        "reintroduced_columns": [
+          "meteo_et0_amj_sum",
+          "meteo_precip_amj_n_days",
+          "meteo_precip_amj_sum",
+          "meteo_radiation_amj_sum",
+          "meteo_t_amj_max",
+          "meteo_t_amj_mean",
+          "meteo_t_amj_min",
+          "meteo_t_amj_std",
+          "s1_ratio_min_doy",
+          "s1_vv_min_doy",
+          "s2_ndwi_peak",
+          "s2_ndwi_peak_doy",
+          "s2_peak_doy",
+          "s2_peak_evi",
+          "s2_peak_ndvi"
+        ],
+        "metrics_with_risk_features": {
+          "mae_days": 8.232407497524061,
+          "rmse_days": 10.181194467272862,
+          "median_absolute_error_days": 7.215576719576632,
+          "r2": 0.13540448511718162,
+          "bias_days": -0.8843905843077946,
+          "p90_absolute_error_days": 17.562644823463614,
+          "within_3_days": 0.19631901840490798,
+          "within_5_days": 0.3067484662576687,
+          "within_7_days": 0.4785276073619632,
+          "within_10_days": 0.7055214723926381
+        },
+        "warning": "Any improvement may be caused by post-cutoff information or circularity with the derived target. These features remain excluded from the official model."
+      },
+      "reference_row": {
+        "year": 2022.0,
+        "SURF_PARC": 5.59,
+        "phh2o_0-5cm": 66.0,
+        "phh2o_5-15cm": 69.0,
+        "phh2o_15-30cm": 69.0,
+        "nitrogen_0-5cm": 541.0,
+        "nitrogen_5-15cm": 162.0,
+        "nitrogen_15-30cm": 152.0,
+        "soc_0-5cm": 381.0,
+        "soc_5-15cm": 163.0,
+        "soc_15-30cm": 137.0,
+        "clay_0-5cm": 241.0,
+        "clay_5-15cm": 254.0,
+        "clay_15-30cm": 271.0,
+        "sand_0-5cm": 258.0,
+        "silt_0-5cm": 477.0,
+        "cec_0-5cm": 275.0,
+        "cec_5-15cm": 184.0,
+        "cec_15-30cm": 164.0,
+        "bdod_0-5cm": 130.0,
+        "bdod_5-15cm": 135.0,
+        "bdod_15-30cm": 139.0,
+        "cfvo_0-5cm": 114.0,
+        "cfvo_5-15cm": 130.0,
+        "cfvo_15-30cm": 120.0,
+        "wv0033_0-5cm": 315.0,
+        "wv1500_0-5cm": 152.0,
+        "wv0010_0-5cm": 364.0,
+        "wv0010_15-30cm": 344.0,
+        "ocd_0-5cm": 473.0,
+        "ocd_5-15cm": 199.0,
+        "ocd_15-30cm": 184.0,
+        "s2_ndvi_march_mean": 0.7457050979137421,
+        "s2_ndvi_april_mean": 0.8494318425655365,
+        "s2_ndvi_may_mean": 0.8292320370674133,
+        "s2_ndvi_winter_mean": 0.4348744377493858,
+        "s2_ndvi_spring_mean": 0.7990335623423258,
+        "s2_ndwi_amplitude": 0.7173487842082977,
+        "s2_ndvi_std": 0.2604737487153026,
+        "s2_ndvi_amplitude": 0.7162212878465652,
+        "s2_evi_std": 0.228788111249427,
+        "s1_vv_min": -18.285687337820992,
+        "s1_vv_max": -7.051108102506154,
+        "s1_vv_mean": -11.820165208293696,
+        "s1_vh_min": -24.906945998327885,
+        "s1_vh_mean": -19.5611506935425,
+        "s1_vh_amplitude": 10.144019536896597,
+        "s1_ratio_min": 3.4799269992668584,
+        "s1_ratio_max": 11.62779698822871,
+        "s1_ratio_mean": 7.620177216383261,
+        "s1_ratio_amplitude": 8.235796138715886,
+        "s1_vv_march_mean": -12.0515386551893,
+        "s1_vv_april_mean": -15.614743313176511,
+        "s1_vv_may_mean": -15.794451419325927,
+        "s1_vv_winter_mean": -9.69907234074247,
+        "s1_vv_std": 2.941779700829976,
+        "s1_vh_std": 2.375960985146346,
+        "s1_ratio_std": 2.077847352812962,
+        "meteo_t_winter_mean": 5.70025,
+        "meteo_precip_winter_sum": 249.51,
+        "meteo_precip_spring_sum": 145.23,
+        "meteo_et0_spring_sum": 215.66915566573425,
+        "meteo_wb_spring": -62.20146299449078,
+        "meteo_gdd_spring": 1019.42,
+        "meteo_gdd_to_may31": 2089.46,
+        "meteo_frost_days": 9.0,
+        "meteo_wb_amj": -144.58379646471718,
+        "meteo_gdd_amj": 1326.84,
+        "meteo_heat_stress_days": 2.0,
+        "meteo_dry_streak_max": 16.0,
+        "meteo_wet_streak_max": 3.0,
+        "region": "Centre-Val de Loire"
+      },
+      "limitations": [
+        "The target is derived and is not a direct parcel-level field observation.",
+        "External generalisation outside Centre-Val de Loire has not been demonstrated.",
+        "Peak, DOY and selected AMJ variables are excluded until their lineage and cutoff availability are proven.",
+        "The deployment candidate is refitted on all rows after the scientific evaluation; reported metrics come only from the evaluation model."
+      ]
+    }
+  },
+  "horizon_comparison": {
+    "mean_delta_absolute_error_days_june_minus_may": -0.166247478514138,
+    "ci95_lower": -0.4010075682839571,
+    "ci95_upper": 0.07592001730254047,
+    "probability_june15_lower_error": 0.912,
+    "conclusion": "inconclusive"
+  },
+  "scientific_status": "Complete research prototype. External agronomic validation and direct parcel-level ground truth remain required before operational use."
+}

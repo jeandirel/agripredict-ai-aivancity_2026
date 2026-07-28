@@ -7,7 +7,7 @@
 - Unité : parcelle × année
 - Cible : `harvest_doy_derived`
 - Nature de la cible : dérivée
-- Parcelles-années communes aux deux horizons : 1 363
+- Parcelles-années communes aux deux horizons : 1363
 
 ## Sources
 
@@ -31,9 +31,9 @@ Le registre détaillé des URLs figure dans `docs/data_sources.md` et `configs/d
 - unicité de `parcelle_uid × year` ;
 - alignement des cibles entre horizons ;
 - exclusion des identifiants ;
-- séparation des folds par identifiant physique stable `ID_PARCEL` ;
 - exclusion conservatrice des pics, DOY et agrégats AMJ non prouvés ;
 - test chronologique ;
+- validation groupée par parcelle ;
 - suivi des valeurs manquantes et des modalités.
 
 ## Limites

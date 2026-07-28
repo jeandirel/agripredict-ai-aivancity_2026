@@ -333,8 +333,12 @@ def robustness_study(
     numeric = list(X_test.select_dtypes(include=["number", "bool"]).columns)
     if numeric:
         missing = X_test.copy()
+        # Missing values require floating-point columns (integer columns cannot
+        # represent NaN). Cast before assignment to remain compatible with
+        # current and future pandas versions.
+        missing[numeric] = missing[numeric].astype(float)
         mask = generator.random((len(missing), len(numeric))) < 0.10
-        numeric_values = missing[numeric].astype(float).to_numpy()
+        numeric_values = missing[numeric].to_numpy()
         numeric_values[mask] = np.nan
         missing.loc[:, numeric] = numeric_values
         scenarios.append(("numeric_missing_10pct", missing))

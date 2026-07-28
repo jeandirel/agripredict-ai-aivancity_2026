@@ -78,22 +78,23 @@ jobs:
           outcome = "${{ steps.generation.outcome }}"
           log_path = Path("/tmp/agripredict-finalize.log")
           log = log_path.read_text(encoding="utf-8", errors="replace") if log_path.exists() else "No generation log was produced."
-          tail = "\n".join(log.splitlines()[-120:])
           status = "SUCCEEDED" if outcome == "success" else "FAILED"
-          content = f"""# Finalization workflow status
-
-- Status: **{status}**
-- Step outcome: `{outcome}`
-- Generated at: `{datetime.now(timezone.utc).isoformat()}`
-- Commit: `${{ github.sha }}`
-- Run: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
-
-## Last generation log lines
-
-```text
-{tail}
-```
-"""
+          content = "\n".join([
+              "# Finalization workflow status",
+              "",
+              f"- Status: **{status}**",
+              f"- Step outcome: `{outcome}`",
+              f"- Generated at: `{datetime.now(timezone.utc).isoformat()}`",
+              "- Commit: `${{ github.sha }}`",
+              "- Run: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`",
+              "",
+              "## Last generation log lines",
+              "",
+              "```text",
+              *log.splitlines()[-120:],
+              "```",
+              "",
+          ])
           Path("reports/final/WORKFLOW_STATUS.md").write_text(content, encoding="utf-8")
           PY
           git config user.name "github-actions[bot]"
@@ -177,7 +178,9 @@ jobs:
           fi
 
       - name: Build production container
-        run: docker build -t agripredict-ai:1.0.0 .
+        run: |
+          docker build -t agripredict-ai:1.0.0 .
+          docker build -t agripredict-observatory:1.0.0 frontend
 
       - name: Create delivery bundle
         run: |
