@@ -54,11 +54,62 @@ jobs:
         run: python scripts/audit_phase0.py
 
       - name: Run strict final evaluation and generate all deliverables
+        id: generation
+        continue-on-error: true
+        shell: bash
         run: |
+          set -o pipefail
+          mkdir -p reports/final
           python scripts/finalize_project.py \
             --output artifacts/models \
             --report-dir reports/final \
-            --random-state 42
+            --random-state 42 2>&1 | tee /tmp/agripredict-finalize.log
+
+      - name: Publish generation status to the repository
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p reports/final
+          python - <<'PY'
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          outcome = "${{ steps.generation.outcome }}"
+          log_path = Path("/tmp/agripredict-finalize.log")
+          log = log_path.read_text(encoding="utf-8", errors="replace") if log_path.exists() else "No generation log was produced."
+          tail = "\n".join(log.splitlines()[-120:])
+          status = "SUCCEEDED" if outcome == "success" else "FAILED"
+          content = f"""# Finalization workflow status
+
+- Status: **{status}**
+- Step outcome: `{outcome}`
+- Generated at: `{datetime.now(timezone.utc).isoformat()}`
+- Commit: `${{ github.sha }}`
+- Run: `${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`
+
+## Last generation log lines
+
+```text
+{tail}
+```
+"""
+          Path("reports/final/WORKFLOW_STATUS.md").write_text(content, encoding="utf-8")
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/final/WORKFLOW_STATUS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "ci: publish AgriPredict finalization status"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Stop after failed generation
+        if: steps.generation.outcome != 'success'
+        run: |
+          echo "The final evaluation failed. See reports/final/WORKFLOW_STATUS.md."
+          exit 1
 
       - name: Enforce stable parcel-group terminology in generated evidence
         run: |
