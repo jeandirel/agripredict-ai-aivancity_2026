@@ -1,0 +1,79 @@
+name: Finalization PR diagnostics
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "tests/.final-trigger"
+      - "scripts/finalize_project_ci.py"
+      - "scripts/finalize_project.py"
+      - "src/**"
+      - "app/**"
+      - "tests/**"
+      - "pyproject.toml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose-finalization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Generate final evidence
+        run: |
+          set -o pipefail
+          python scripts/finalize_project_ci.py \
+            --output artifacts/models \
+            --report-dir reports/final \
+            --random-state 42 2>&1 | tee finalize-pr.log
+
+      - name: Test
+        run: pytest --cov=src/agripredict --cov=app/api --cov-report=term-missing
+
+      - name: Lint
+        run: ruff check src app scripts tests
+
+      - name: API readiness
+        run: |
+          uvicorn app.api.main:app --host 127.0.0.1 --port 8000 > api.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          for attempt in $(seq 1 30); do
+            curl --fail --silent http://127.0.0.1:8000/readiness > readiness.json && break
+            sleep 2
+          done
+          cat readiness.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          status = json.loads(Path("readiness.json").read_text())
+          assert status["status"] == "ready", status
+          PY
+
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finalization-pr-diagnostics
+          path: |
+            finalize-pr.log
+            api.log
+            readiness.json
+            reports/final
+            artifacts/models
+          retention-days: 14
+          if-no-files-found: warn
